@@ -4,7 +4,7 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */ /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 
-html {
+/*html {
     font-family: sans-serif;
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%
@@ -189,11 +189,11 @@ table {
 
 td, th {
     padding: 0
-}
+}*/
 /*! Source: https://github.com/h5bp/html5-boilerplate/blob/master/src/css/main.css */
 
 @media print {
-    *, :after, :before {
+    /**, :after, :before {
         color: #000 !important;
         text-shadow: none !important;
         background: 0 0 !important;
@@ -241,7 +241,7 @@ td, th {
 
     h2, h3 {
         page-break-after: avoid
-    }
+    }*/
 
     .navbar {
         display: none
@@ -1448,7 +1448,7 @@ hr {
     cursor: pointer
 }
 
-.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+/*.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
     font-family: inherit;
     font-weight: 500;
     line-height: 1.1;
@@ -1505,7 +1505,7 @@ hr {
 
 p {
     margin: 0 0 10px
-}
+}*/
 
 .lead {
     margin-bottom: 20px;

@@ -20,6 +20,10 @@ namespace WL.Home.Models
         public string Url { get; set; }
         //父栏目ID
         public int Parentid { get; set; }
+        //推荐
+        public bool Recommend { get; set; }
+        //点击次数
+        public int Click { get; set; }
 
         public CategoryModels()
         {
@@ -29,6 +33,8 @@ namespace WL.Home.Models
             Picture = "";
             Url = "";
             Parentid = 0;
+            Recommend = false;
+            Click = 0;
         }
     }
 }

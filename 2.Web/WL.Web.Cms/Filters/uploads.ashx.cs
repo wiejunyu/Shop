@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 
-namespace GGAPI.Web.Rerport.Filters
+namespace WL.Web.Cms.Filters
 {
     /// <summary>
     /// uploads 的摘要说明

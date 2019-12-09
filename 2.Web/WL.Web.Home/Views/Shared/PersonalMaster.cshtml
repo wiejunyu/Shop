@@ -145,32 +145,24 @@
                         </a>
                         <ul class="sub-menu">
                             <li class="MyOrder">
-                                <a href="/Personal/MyOrder">我的订单</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="Logistics">
-                        <a href="javascript:void(0);">
-                            <i class="fa fa-plane"></i>
-                            <span class="title">物流管理</span>
-                        </a>
-                        <ul class="sub-menu">
-                            <li class="LogisticsQuery">
-                                <a href="/Personal/LogisticsQuery">物流查询</a>
+                                <a href="/personal/myorder.html">我的订单</a>
                             </li>
                         </ul>
                     </li>
                     <li class="Setup">
                         <a href="javascript:void(0);">
                             <i class="fa fa-cogs"></i>
-                            <span class="title">系统设置</span>
+                            <span class="title">个人管理</span>
                         </a>
                         <ul class="sub-menu">
                             <li class="Basic">
-                                <a href="/Personal/Index">基本资料设置</a>
+                                <a href="/personal/personal.html">基本资料设置</a>
+                            </li>
+                            <li class="Address">
+                                <a href="/personal/address.html">收货地址</a>
                             </li>
                             <li class="HeadPortrait">
-                                <a href="/Personal/Portrait">头像设置</a>
+                                <a href="/personal/portrait.html">头像设置</a>
                             </li>
                         </ul>
                     </li>
@@ -183,6 +175,9 @@
         <div class="page-content-wrapper">
             <div class="page-content">
                 <div class="page-content-body">
+                    <div class="Mask">
+
+                    </div>
                     @RenderBody()
                 </div>
             </div>
@@ -196,15 +191,53 @@
         <!-- END FOOTER -->
     </div>
     <!-- END CONTAINER -->
+    
 
     <div class="portlet-body">
         <div style="text-align: center;" id="loading" class="display-none">
             <div style="margin:0 auto">
-                <img src="~/Image/loading.gif" /><br/>
+                <img src="~/Image/loading.gif" /><br />
                 <label>Loading...</label>
             </div>
         </div>
     </div>
+
+
+    <div id="myConfirm" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="false" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">提示</h4>
+                </div>
+                <div class="modal-body">
+                    <p id="myConfirm_p">
+                        这是一个提示
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn default" data-dismiss="modal" aria-hidden="true">取消</button>
+                    <button data-dismiss="modal" class="btn blue" onclick="" id="myConfirm_btn">提交</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="#myConfirm" role="button" class="btn yellow" data-toggle="modal" style="display:none" id="confirm">提交</a>
+    <script>
+        function MyConfirm(f,arr,msg)
+        {
+            var str = '';
+            if (arr != null && arr != '') {
+                for (temp in arr) {
+                    str += (arr[temp] + ",");
+                }
+                str = str.substring(0, str.length - 1);
+            }
+            $("#myConfirm_btn").attr("onclick", f + "(" + str + ")");
+            $("#myConfirm_p").html(msg);
+            $("#confirm").click();
+        }
+    </script>
 
     <!-- BEGIN FOOTER -->
     <a href="#myModal1" role="button" class="btn red" data-toggle="modal" style="display:none" id="msg"></a>
@@ -253,17 +286,17 @@
         function LogOut() {
             $.ajax({
                 type: "POST",
-                url: "/Login/LogOut",
+                url: "/Data/LogOut",
                 data: {},
                 dataType: "json",
                 success: function (data) {
                     if (data == 1) {
-                        window.location = "/Home/Index";
+                        window.location = "/index.html";
                     }
                 }
             });
         };
-        function _show(){
+        function _show() {
             $("#loading").show();
         }
         function _hide() {

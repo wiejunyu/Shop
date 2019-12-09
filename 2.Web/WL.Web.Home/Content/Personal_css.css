@@ -2,3 +2,104 @@
     width: 5%;
     margin-left: 50px;
 }
+
+
+.address {
+    overflow: hidden;
+    margin-top:10px
+}
+
+.address .form-group {
+    overflow: hidden;
+    float: left;
+    width: 40%;
+}
+
+.address .form-group .CityChoice_form-group {
+    width: 30%
+}
+
+.address .form-control {
+    float: left;
+}
+
+.address .btn {
+    margin-left: 5%;
+}
+#address .form-group .l {
+    float:left;
+}
+#address .form-group .l input {
+    margin-left: 0% !important;
+}
+#address .form-group .form-group {
+    width: 80% !important;
+    margin-left:50px;
+}
+.rowfixed {
+    position: fixed;
+    left: 15%;
+    top: -12%;
+    width: 35%;
+}
+.Mask {
+    display:none;
+    width: 100%;
+    height: 1000px;
+    background: #999;
+    z-index: 9;
+}
+.orderHead table {
+    width: 100%;
+}
+.orderHead .head {
+    background: #f1f1f1;
+}
+.orderHead td {
+    text-align: center;
+    padding: 1%;
+}
+.order {
+    margin-bottom: 15px;
+}
+.order table {
+    width: 100%;
+    margin-bottom: 10px;
+    border: solid 1px #ececec;
+}
+.order .head{
+    background:#f1f1f1;
+}
+
+.order td{
+    float:left;
+    text-align: center;
+    padding:1%;
+}
+.order label{
+    margin-bottom:0px;
+}
+.order input{
+    box-sizing: border-box;
+}
+.order .right{
+    float:right;
+}
+.order img{
+    float:left;
+    margin-right:10px;
+    width:78px;
+    height:80px;
+}
+.order .ec{
+    color:#9c9c9c;
+}
+.order .align {
+    text-align: left;
+}
+.pagination-container:first-child {
+    float:left;
+}
+.portlet-body .r {
+    float: right;
+}

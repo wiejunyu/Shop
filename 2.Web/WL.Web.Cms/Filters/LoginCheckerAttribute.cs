@@ -7,8 +7,8 @@ using System.Collections;
 using System.Web.Routing;
 using WL.Cms.Models;
 using WL.Cms.Manager;
-using WL.Web.Cms.Controllers;
 using WL.Infrastructure.Common;
+using WL.Web.Cms.Controllers;
 
 namespace WL.Web.Cms.Filters
 {
@@ -19,6 +19,7 @@ namespace WL.Web.Cms.Filters
         //当action跳转的时候验证
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
+            CookiesManager.AddCookies();
             List<Menu> list = new List<Menu>();
             List<Menu> Toplist = new List<Menu>();
             List<Menu> Menulist = new List<Menu>();
@@ -45,7 +46,7 @@ namespace WL.Web.Cms.Filters
                             filterContext.Controller.ViewData["username"] = user.UserName;
                             filterContext.Controller.ViewBag.Permission = user.Permission;
                             filterContext.Controller.ViewBag.Leader = user.Leader;
-                            string ip = Common.IPAddress;
+                            string ip = Common.GetUserIp();
                             user.IP = ip;
                             user.LoginTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                             UserManager.UpdateUser(user);

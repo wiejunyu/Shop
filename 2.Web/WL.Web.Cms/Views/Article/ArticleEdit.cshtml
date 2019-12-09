@@ -3,9 +3,9 @@
     ViewBag.Title = "CMS || 文章编辑";
     Layout = "~/Views/Shared/MainMaster.cshtml";
 }
-
-@model WL.Cms.Models.Article
+@model WL.Cms.Models.ArticleModels
 @using WL.Cms.Models
+
 
 <link rel="stylesheet" type="text/css" href="~/Scripts/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.css">
 <script type="text/javascript" src="~/Scripts/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.js"></script>
@@ -28,6 +28,11 @@
         </ul>
         <!-- END PAGE TITLE & BREADCRUMB-->
     </div>
+</div>
+<div class="p-nav-top">
+    <ul class="p-nav-left">
+        <li><button type="button" class="btn red" onclick="EditArticle()">提交文章</button></li>
+    </ul>
 </div>
 <div class="row">
     <div class="col-md-6" style="width:100%;">
@@ -56,8 +61,8 @@
                             <div class="col-md-6">
                                 <select class="form-control" id="catid" name="catid">
                                     @{
-                                        List<Columu> Flist = ViewData["listFather"] as List<Columu>;
-                                        List<Columu> Slist = ViewData["listSon"] as List<Columu>;
+                                        List<ColumuModels> Flist = ViewData["listFather"] as List<ColumuModels>;
+                                        List<ColumuModels> Slist = ViewData["listSon"] as List<ColumuModels>;
                                     }
                                     @if (Slist.Count == 0)
                                     {
@@ -65,11 +70,11 @@
                                     }
                                     else
                                     {
-                                        foreach (Columu temp in Flist)
+                                        foreach (ColumuModels temp in Flist)
                                         {
                                             <option value="@temp.ID" disabled=""> @temp.catname </option>
-                                            List<Columu> list = Slist.Where(p => p.parentid == temp.ID).ToList();
-                                            foreach (Columu temp1 in Slist)
+                                            List<ColumuModels> list = Slist.Where(p => p.parentid == temp.ID).ToList();
+                                            foreach (ColumuModels temp1 in Slist)
                                             {
                                                 if (temp1.parentid == temp.ID)
                                                 {
@@ -205,6 +210,25 @@
         </div>
     </div>
 </div>
+
+<div style="position:fixed;top:143px;left:245px;z-index: 9999;display:none;" id="AddArticle"><button type="button" class="btn red" onclick="EditArticle()">文章提交</button></div>
+<script>
+    $(function () {
+        $(window).scroll(function(){
+            var top = $(".p-nav-left button").offset().top;
+            var tops = $(document).scrollTop();
+            if(tops > top)
+            {
+                $("#AddArticle").show();
+            }
+            if (tops < top) {
+                $("#AddArticle").hide();
+            }
+        });
+    });
+</script>
+
+
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>UE使用案例</title>
 <script type="text/javascript" charset="utf-8" src="~/Scripts/assets/plugins/ueditor/ueditor.config.js"></script>
@@ -281,6 +305,11 @@
         $("form").show();
     };
     function _hide() {
+        $("#loading1").show();
+        $("#chart_1").show();
+        $("form").hide();
+    };
+    function OK() {
         $("#loading1").show();
         $("#chart_1").show();
         $("form").hide();

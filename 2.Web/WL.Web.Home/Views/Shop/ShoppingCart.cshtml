@@ -1,0 +1,414 @@
+﻿
+@{
+    ViewBag.Title = "订单确认";
+    Layout = "~/Views/Shared/ShopMaster.cshtml";
+}
+@model WL.Home.Models.ShopModels
+@using WL.Home.Models
+@using WL.Home.Manager
+@using WL.Infrastructure.Common
+@{
+    List<AddressModels> Address = AddressManager.GetAddress();
+    List<ShopModels> list = ViewData["list"] as List<ShopModels>;
+    decimal Total = ViewBag.Total;
+    Total = System.Decimal.Round(Total, 2);
+    string address = null;
+}
+<link href="~/Scripts/assets/plugins/CityChoice/CityChoice_bootstrap.css" rel="stylesheet" />
+<div class="g-wrapper">
+    <div class="shop-rate"></div>
+    <div class="clearfix"></div>
+</div>
+
+
+<div class="g-wrapper confirm-main">
+    <!-- 收货地址 -->
+    <div class="m-confirm-section" data-addressmanager="goods">
+        <div class="section-title g-clearfix">
+            <h3 class="title">收货地址</h3>
+            <div class="cont">
+                @if (Address.Count != 0)
+                {
+                    int state = 0;
+                    foreach (AddressModels temp in Address)
+                    {
+                        if (temp.Choice)
+                        {
+                            state++;
+                            address = temp.province + " " + temp.city + " " + temp.district + " " + temp.address + " （" + temp.name + " 收）" + "" + temp.tel;
+                            <span class="default" data-container="defaultAddress" id="AddressAll">@temp.province @temp.city @temp.district @temp.address （@temp.name 收） @Common.HidePhone(temp.tel)</span>
+                            <a href="javascript:void 0;" class="update" data-act="settingAddress" onclick="AddressShow();">设置</a>
+                        }
+                        else
+                        {
+                            if (state == 0)
+                            {
+                                state++;
+                                address = "请设置收货地址";
+                                <span class="default" data-container="defaultAddress" id="AddressAll">未设置收货地址或默认地址</span>
+                                <a href="javascript:void 0;" class="update" data-act="settingAddress" onclick="AddressShow();">设置</a>
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    address = "请设置收货地址";
+                    <span class="default" data-container="defaultAddress" id="AddressAll">请设置收货地址</span>
+                    <a href="javascript:void 0;" class="update" data-act="settingAddress" onclick="AddressShow();">设置</a>
+                }
+            </div>
+        </div>
+        <div class="section-body" data-container="addressWrap" style="display:none;" id="Address">
+            <div class="section-inside">
+                <div class="m-section-list" data-container="addressList">
+                    @if (Address != null)
+                    {
+                        foreach (AddressModels temp in Address)
+                        {
+                            <div class="list-item on" data-id="41078">
+                                @if (temp.Choice)
+                                {
+                                    <input type="radio" name="Address" value="@temp.date" checked />
+                                }
+                                else
+                                {
+                                    <input type="radio" name="Address" value="@temp.date" />
+                                }
+                                <label class="item" data-act="selectAddress">@temp.province @temp.city @temp.district @temp.address （@temp.name 收） @Common.HidePhone(temp.tel)</label>
+                                @if (temp.Choice)
+                                {
+                                    <span class="default">默认</span>
+                                }
+                                <div class="handle">
+                                    <a href="javascript:void 0;" data-act="editAddress" onclick="editAddress(@temp.date)">编辑</a>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        @Html.Raw("您还没有设置收货地址")
+                    }
+                </div>
+                <div class="handle-btns">
+                    <a href="javascript:void 0;" class="btn" onclick="AddAddressShow()">新增收货地址</a>
+                    <a href="/Personal/Address" class="btn" target="_blank">管理收货地址</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 发票信息 -->
+    <div class="m-confirm-section">
+        <div class="section-title g-clearfix">
+            <h3 class="title">发票信息</h3>
+            <div class="cont">
+                <span class="default" id="Invoice">不使用发票</span>
+                <a href="javascript:void 0;" class="update" onclick="InvoiceEdit()">设置</a>
+            </div>
+        </div>
+
+        <div class="section-body" id="invoiceWrap" style="display:none;">
+            <div class="m-radio-items">
+                <input type="radio" name="Invoice" value="0" />
+                <label>增值税专用发票</label>
+                <input type="radio" name="Invoice" value="1" />
+                <label>普通发票</label>
+                <input type="radio" name="Invoice" value="2" checked />
+                <label>不使用发票</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="m-confirm-section">
+        <div class="section-title g-clearfix">
+            <h3 class="title">支付方式</h3>
+            <div class="cont">
+                <span class="default" id="Pay">货到付款</span>
+                <a href="javascript:void 0;" class="update" onclick="PayEdit()">设置</a>
+            </div>
+        </div>
+
+        <div class="section-body" id="PayWrap" style="display:none;">
+            <div class="m-radio-items">
+                <input type="radio" name="Pay" value="0" checked />
+                <label>货到付款</label>
+                <input type="radio" name="Pay" value="1" disabled />
+                <label>支付宝(尚未开通)</label>
+                <input type="radio" name="Pay" value="2" disabled />
+                <label>网银(尚未开通)</label>
+            </div>
+        </div>
+    </div>
+
+    <div id="confirmGoods">
+        <div class="m-confirm-goods">
+            <table class="m-confirm-table">
+                <thead>
+                    <tr>
+                        <th class="goods"><strong class="confirm-title">商品清单</strong>商品信息</th>
+                        <th class="count">数量</th>
+                        <th class="price">单价</th>
+                        <th class="total">金额</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="table-title">
+                        <td colspan="4">
+                            <strong>宇宙物流</strong>
+                        </td>
+                    </tr>
+                    @foreach (ShopModels temp in list)
+                    {
+                    <tr class="table-goods">
+                        <td>
+                            <div class="m-goods-item">
+                                <a href="/product/1172580" class="pic" target="_blank">
+                                    <img src="@temp.Image">
+                                </a>
+                                <div class="info">
+                                    <p class="title"><a href="/product/1172580" target="_blank">@temp.Name；@temp.Model</a></p>
+                                    <p>品牌：@temp.Brand</p>
+                                    <p>型号：@temp.Model</p>
+                                    <p>订货号：@temp.id</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="">@temp.Buy 个</td>
+                        <td>
+                            <p><strong class="g-highlight">￥@System.Decimal.Round(temp.Trueprice, 2)</strong></p>
+                            <p class="initial"><strong>￥@System.Decimal.Round(temp.Price, 2)</strong></p>
+                        </td>
+                        @{
+                            decimal t = temp.Buy * temp.Trueprice;
+                        }
+                        <td><strong class="g-highlight">￥@System.Decimal.Round(@t,2)</strong></td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="m-confirm-balance g-clearfix">
+        <div class="balance-remark">
+            <div class="m-form-normal">
+                <div class="form-item">
+                    <label class="item-title" style="width:60px;">备注：</label>
+                    <div class="item-cont" style="margin-left:70px;">
+                        <textarea id="Remarks" class="long" maxlength="250" placeholder="若您需对订单有特殊要求，请告知我们，我们客服会第一时间跟您沟通，尽量满足您的需求！"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="balance-money" id="confirmBalance">
+            <div>
+                <p>商品总金额：<span class="price">@Total 元</span></p>
+                <p>运费：<span class="price">0.00元</span></p>
+                <p class="important">应付金额：<span class="price"><strong class="g-highlight">@Html.Raw(System.Decimal.Round(@Total + 0, 2)) 元</strong></span></p>
+                <p><a href="/Shop/Index" class="tobuy">返回继续购物</a><a href="javascript:void 0;" class="btn-submit" data-act="submitConfirm" onclick="SetOrder()">提交订单</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row profile rowfixed" id="edit" style="background: rgb(102, 102, 102); padding: 1%; opacity: 0.95;">
+    <div class="col-md-12">
+        <form method="post" id="EditAddress" action="/Personal/SetAddress">
+            <!--BEGIN TABS-->
+            <label class="control-label">添加收货地址</label>
+            <div style="width:100%;border-bottom:solid 1px #808080;"></div>
+            <div class="form-group Editaddress">
+                <div class="form-group" style="width:45%;" id="distpickerEdit">
+                    <div class="CityChoice_form-group"><select class="CityChoice_form-control" name="province"><option data-code="" data-text="—— 省 ——" value="">—— 省 ——</option><option data-code="110000" data-text="北京市" value="北京市">北京市</option><option data-code="120000" data-text="天津市" value="天津市">天津市</option><option data-code="130000" data-text="河北省" value="河北省">河北省</option><option data-code="140000" data-text="山西省" value="山西省">山西省</option><option data-code="150000" data-text="内蒙古自治区" value="内蒙古自治区">内蒙古自治区</option><option data-code="210000" data-text="辽宁省" value="辽宁省">辽宁省</option><option data-code="220000" data-text="吉林省" value="吉林省">吉林省</option><option data-code="230000" data-text="黑龙江省" value="黑龙江省">黑龙江省</option><option data-code="310000" data-text="上海市" value="上海市">上海市</option><option data-code="320000" data-text="江苏省" value="江苏省">江苏省</option><option data-code="330000" data-text="浙江省" value="浙江省">浙江省</option><option data-code="340000" data-text="安徽省" value="安徽省">安徽省</option><option data-code="350000" data-text="福建省" value="福建省">福建省</option><option data-code="360000" data-text="江西省" value="江西省">江西省</option><option data-code="370000" data-text="山东省" value="山东省">山东省</option><option data-code="410000" data-text="河南省" value="河南省">河南省</option><option data-code="420000" data-text="湖北省" value="湖北省">湖北省</option><option data-code="430000" data-text="湖南省" value="湖南省">湖南省</option><option data-code="440000" data-text="广东省" value="广东省">广东省</option><option data-code="450000" data-text="广西壮族自治区" value="广西壮族自治区" selected="">广西壮族自治区</option><option data-code="460000" data-text="海南省" value="海南省">海南省</option><option data-code="500000" data-text="重庆市" value="重庆市">重庆市</option><option data-code="510000" data-text="四川省" value="四川省">四川省</option><option data-code="520000" data-text="贵州省" value="贵州省">贵州省</option><option data-code="530000" data-text="云南省" value="云南省">云南省</option><option data-code="540000" data-text="西藏自治区" value="西藏自治区">西藏自治区</option><option data-code="610000" data-text="陕西省" value="陕西省">陕西省</option><option data-code="620000" data-text="甘肃省" value="甘肃省">甘肃省</option><option data-code="630000" data-text="青海省" value="青海省">青海省</option><option data-code="640000" data-text="宁夏回族自治区" value="宁夏回族自治区">宁夏回族自治区</option><option data-code="650000" data-text="新疆维吾尔自治区" value="新疆维吾尔自治区">新疆维吾尔自治区</option><option data-code="710000" data-text="台湾省" value="台湾省">台湾省</option><option data-code="810000" data-text="香港特别行政区" value="香港特别行政区">香港特别行政区</option><option data-code="820000" data-text="澳门特别行政区" value="澳门特别行政区">澳门特别行政区</option></select></div>
+                    <div class="CityChoice_form-group"><select class="CityChoice_form-control" name="city"><option data-code="" data-text="—— 市 ——" value="">—— 市 ——</option><option data-code="450100" data-text="南宁市" value="南宁市" selected="">南宁市</option><option data-code="450200" data-text="柳州市" value="柳州市">柳州市</option><option data-code="450300" data-text="桂林市" value="桂林市">桂林市</option><option data-code="450400" data-text="梧州市" value="梧州市">梧州市</option><option data-code="450500" data-text="北海市" value="北海市">北海市</option><option data-code="450600" data-text="防城港市" value="防城港市">防城港市</option><option data-code="450700" data-text="钦州市" value="钦州市">钦州市</option><option data-code="450800" data-text="贵港市" value="贵港市">贵港市</option><option data-code="450900" data-text="玉林市" value="玉林市">玉林市</option><option data-code="451000" data-text="百色市" value="百色市">百色市</option><option data-code="451100" data-text="贺州市" value="贺州市">贺州市</option><option data-code="451200" data-text="河池市" value="河池市">河池市</option><option data-code="451300" data-text="来宾市" value="来宾市">来宾市</option><option data-code="451400" data-text="崇左市" value="崇左市">崇左市</option></select></div>
+                    <div class="CityChoice_form-group"><select class="CityChoice_form-control" name="district"><option data-code="" data-text="—— 区 ——" value="">—— 区 ——</option><option data-code="450102" data-text="兴宁区" value="兴宁区">兴宁区</option><option data-code="450103" data-text="青秀区" value="青秀区">青秀区</option><option data-code="450105" data-text="江南区" value="江南区">江南区</option><option data-code="450107" data-text="西乡塘区" value="西乡塘区" selected="">西乡塘区</option><option data-code="450108" data-text="良庆区" value="良庆区">良庆区</option><option data-code="450109" data-text="邕宁区" value="邕宁区">邕宁区</option><option data-code="450110" data-text="武鸣区" value="武鸣区">武鸣区</option><option data-code="450123" data-text="隆安县" value="隆安县">隆安县</option><option data-code="450124" data-text="马山县" value="马山县">马山县</option><option data-code="450125" data-text="上林县" value="上林县">上林县</option><option data-code="450126" data-text="宾阳县" value="宾阳县">宾阳县</option><option data-code="450127" data-text="横县" value="横县">横县</option></select></div>
+                </div>
+                <div class="form-group">
+                    <input type="text" placeholder="详细地址" class="form-control" value="" name="address" style="width:45%">
+                    <input type="text" placeholder="姓名" class="form-control" value="" name="name" style="width:20%">
+                    <input type="text" placeholder="联系电话" class="form-control" value="" name="tel" style="width:30%">
+                </div>
+                <input type="hidden" value="1526202812" name="date">
+                <input type="submit" class="btn green" value="添加" style="margin-left: 1%;background: #e80d42;">
+                <input type="button" class="btn red" value="返回" style="margin-left: 1%;background:#3434e8;" id="edit_btn">
+            </div>
+        </form>
+        <!--END TABS-->
+    </div>
+</div>
+<script src="~/Scripts/assets/plugins/CityChoice/CityChoice_distpicker.js"></script>
+<script>
+    //序列化form
+    $.fn.serializeObject = function () {
+        var o = {};
+        var a = this.serializeArray();
+
+        $.each(a, function () {
+            if (o[this.name]) {
+                if (!o[this.name].push) {
+                    o[this.name] = [o[this.name]];
+                }
+                o[this.name].push(this.value || '');
+            } else {
+                o[this.name] = this.value || '';
+            }
+        });
+        return o;
+    };
+</script>
+<script>
+    $(function () {
+        $("#edit_btn").click(function () {
+            $("#edit").animate({ left: "-100%", height: "0px" });
+        });
+        $("#distpickerEdit").distpicker({
+            province: "",
+            city: "",
+            district: ""
+        });
+        $("input[name='Address']").change(function () {
+            $("#AddressAll").html($(this).parent().find("label").html());
+        });
+        $("input[name='Invoice']").change(function () {
+
+            if ($(this).val() == 0) {
+                $("#Invoice").html('增值税专用发票');
+            }
+            if ($(this).val() == 1) {
+                $("#Invoice").html('普通发票');
+            }
+            if ($(this).val() == 2) {
+                $("#Invoice").html('不使用发票');
+            }
+        });
+        $("input[name='Pay']").change(function () {
+
+            if ($(this).val() == 0) {
+                $("#Pay").html('货到付款');
+            }
+            if ($(this).val() == 1) {
+                $("#Pay").html('货到付款');
+            }
+            if ($(this).val() == 2) {
+                $("#Pay").html('货到付款');
+            }
+        });
+        $("#EditAddress").submit(function () {
+            _show();
+            var url = $(this).attr('action');
+            var data = $(this).serialize();
+
+            var data_arr = $(this).serializeArray();
+
+            if (data_arr[0].value == "") {
+                _hide();
+                message(true, "省、自治区不能为空", "");
+                return false;
+            }
+            if (data_arr[1].value == "") {
+                _hide();
+                message(true, "城市不能为空", "");
+                return false;
+            }
+            if (data_arr[2].value == "") {
+                _hide();
+                message(true, "县区不能为空", "");
+                return false;
+            }
+            if (data_arr[3].value == "") {
+                _hide();
+                message(true, "详细地址不能为空", "");
+                return false;
+            }
+            if (data_arr[4].value == "") {
+                _hide();
+                message(true, "名称不能为空", "");
+                return false;
+            }
+            var tel = data_arr[5].value;
+            if (tel == "") {
+                _hide();
+                message(true, "电话不能为空", "");
+                return false;
+            }
+            else if (tel.search(/^(((13[0-9]{1})|(15[0-9]{1}))+\d{8})$/) == -1) {
+                _hide();
+                message(true, "手机号码格式错误", "");
+                return false;
+            }
+            if (@Address.Count >= 5) {
+                _hide();
+                message(true, "最多只能添加五个收货地址", "");
+                return false;
+            }
+            var jsondata = undefined;
+            jsondata = $("#EditAddress").serializeObject();
+            jsondata = { json: JSON.stringify(jsondata) };
+            $.ajax({
+                type: "POST",
+                async: true,
+                dataType: 'json',
+                url: url,
+                data: jsondata,
+                success: function (data) {
+                    if (data == '1') {
+                        _hide();
+                        message(true, "收货地址添加成功", " ");
+                    }
+                    else {
+                        _hide();
+                        message(true, "收货地址添加失败", "");
+                    }
+                }
+            });
+            return false;
+        });
+    });
+    function AddressShow() {
+        $("#Address").toggle();
+    }
+    function InvoiceEdit() {
+        $("#invoiceWrap").toggle();
+    }
+    function PayEdit()
+    {
+        $("#PayWrap").toggle();
+    }
+    function AddAddressShow() {
+        if (@Address.Count >= 5) {
+            _hide();
+            message(true, "最多只能添加五个收货地址", "");
+            return false;
+        }
+        $("#edit").animate({ left: "15%", height: "120px" });
+    }
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]);
+        return null;
+    }
+    function SetOrder()
+    {
+        @*$.ajax({
+            type: "POST",
+            async: true,
+            url: "/Shop/SetOrder",
+            data: {
+                Sid: getQueryString("id"),
+                Number:@Convert.ToInt32(Model.Remarks),
+                Money:@Html.Raw(System.Decimal.Round(@Total + 0, 2)),
+                Address: '@address',
+                Invoice: $('input[name="Invoice"]:checked').val(),
+                Remarks: $("#Remarks").val(),
+                Pay: $('input[name="Pay"]:checked').val()
+            },
+            dataType: 'json',
+            success: function (json) {
+                message(json.error, json.message, json.link);   //消息提示
+            }
+        });*@
+    }
+
+</script>

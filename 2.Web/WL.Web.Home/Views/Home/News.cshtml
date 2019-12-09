@@ -13,14 +13,14 @@
             <div class="goods_item_list_article">
                 @foreach (ArticleModels temp in ViewData["list"] as List<ArticleModels>)
                 {
-                    <figure onclick="javascript:window.location.href='/Home/Article?aid=@temp.id';">
+                    <figure onclick="javascript:window.location.href='@Html.Raw("/article/" + temp.id + ".html")';">
                         <div class=" goods_item_list_info">
                             <ul>
-                                <li><img src="@temp.thumb" title="@temp.title"></li>
+                                <li><img src="@Html.Raw(" http://admin.chengyunvip.com")@temp.thumb" title="@temp.title"></li>
                             </ul>
                             <ul>
                                 <li><h3>@temp.title</h3></li>
-                                <li><time><img src="/image/time.png" class="time" style="width: 1.5%;">@Common.ConvertDate(temp.createtime.ToString())</time>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;来源：跨境物流链</li>
+                                <li><time><i class="fa fa-clock-o fa-fw"></i>@Common.ConvertDate(temp.createtime.ToString())</time>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;来源：跨境物流链</li>
                                 <li>
                                     <p>
                                         @temp.description
@@ -28,7 +28,7 @@
                                     </p>
                                 </li>
                                 <li>
-                                    <a href="/Home/Article?aid=@temp.id" title="@temp.title" class="more_detail">
+                                    <a href="@Html.Raw("/article/" + temp.id + ".html")" title="@temp.title" class="more_detail">
                                         更多
                                     </a>
                                 </li>

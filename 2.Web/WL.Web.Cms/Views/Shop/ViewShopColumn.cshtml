@@ -1,0 +1,340 @@
+﻿
+@{
+    ViewBag.Title = "CMS || 商品管理 - 查看商品栏目";
+    Layout = "~/Views/Shared/MainMaster.cshtml";
+}
+<link rel="stylesheet" type="text/css" href="~/Scripts/assets/plugins/data-tables/DT_bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="~/Scripts/assets/plugins/bootstrap-datepicker/css/datepicker.css" />
+<link rel="stylesheet" type="text/css" href="~/Scripts/assets/plugins/bootstrap-daterangepicker/daterangepicker-bs2.css" />
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <ul class="page-breadcrumb breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="/Home/Index">首页</a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li><a href="/Shop/AddShop">商品管理</a><i class="fa fa-angle-right"></i></li>
+            <li class="active">查看商品栏目</li>
+            <li class="btn-group">
+                <div class="actions">
+                    <a href="javascript:;" class="btn blue" onclick="BatchDel();">批量删除</a>
+                </div>
+            </li>
+        </ul>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>
+<div class="p-nav-top">
+
+</div>
+<div class="form-inline">
+    <div class="form-group">
+        <select class="form-control" id="catRank">
+            <option value="1" selected="selected">一级栏目</option>
+            <option value="2">二级栏目</option>
+            <option value="3">三级栏目</option>
+            <option value="4">四级栏目</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <select class="form-control" id="cat">
+            <option value="-1">按父栏目查看</option>
+        </select>
+    </div>
+</div>
+<div class="clearfix">
+    <br>
+</div>
+<div class="row">
+    <div class="col-md-12" id="col-md-1">
+        <!-- END EXAMPLE TABLE PORTLET-->
+        <div class="portlet box grey">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-globe"></i><font id="title">查看商品栏目</font>
+                </div>
+                <div class="tools">
+                    <a href="javascript:;" class="collapse"></a>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <table class="table table-striped table-bordered table-hover" id="sample_1">
+                    <thead>
+                        <tr>
+                            <th class="table-checkbox">
+                                <input type="checkbox" class="group-checkable" data-set="#sample_1 .checkboxes" />
+                            </th>
+                            <th>
+                                ID
+                            </th>
+                            <th>
+                                名称
+                            </th>
+                            <th>
+                                父栏目
+                            </th>
+                            <th>
+                                推荐
+                            </th>
+                            <th>
+                                点击
+                            </th>
+                            <th>
+                                操作
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="detaillist"></tbody>
+                </table>
+            </div>
+            <input type="hidden" id="hidID" value="" />
+        </div>
+    </div>
+</div>
+<div style="text-align: center; display: none;padding:150px 0px;" id="loading1">
+    <div style="margin:0 auto">
+        <img title="progressBar_m" style="BORDER-TOP-WIDTH: 0px; PADDING-RIGHT: 0px; DISPLAY: inline; PADDING-LEFT: 0px; BORDER-LEFT-WIDTH: 0px; BACKGROUND-IMAGE: none; BORDER-BOTTOM-WIDTH: 0px; PADDING-TOP: 0px; BORDER-RIGHT-WIDTH: 0px" height="25" alt="progressBar_m" src="/Scripts/js/loading.gif" width="25" border="0">
+    </div>
+</div>
+
+<script type="text/javascript" src="~/Scripts/assets/plugins/data-tables/jquery.dataTables.js"></script>
+<script type="text/javascript" src="~/Scripts/assets/plugins/data-tables/DT_bootstrap.js"></script>
+
+<script>
+    $(function () {
+        $("#catRank").select2();
+        $("#catRank").change(function () {
+            editableTable.reload("sample_1", "/Shop/RankGetShopColumuList?cid=" + $("#catRank").find("option:selected").val());
+            if ($("#catRank").find("option:selected").val() != 4)
+                var data = { Rank: $("#catRank").find("option:selected").val() - 1 };
+            else
+                var data = { Rank: 1 };
+            $.ajax({
+                type: "POST",
+                url: "/Shop/RankGetShopColumu",
+                data: data,
+                success: function (data) {
+                    if (data != "") {
+                        $("#cat").html("<option value='-1'>按父栏目查看</option>" + data);
+                        $("#cat").select2();
+                        $("#s2id_cat").css("width", "200px");
+                    }
+                    else
+                    {
+                        $("#cat").html("<option value='-1'>按父栏目查看</option>");
+                        $("#cat").select2();
+                        $("#s2id_cat").css("width", "200px");
+                    }
+                }
+            });
+        });
+
+        $("#cat").change(function () {
+            if ($("#cat").find("option:selected").val() != -1)
+            {
+                editableTable.reload("sample_1", "/Shop/ParentidGetShopColumuList?cid=" + $("#cat").find("option:selected").val());
+            }
+        });
+
+        editableTable.init("sample_1", "/Shop/RankGetShopColumuList?cid=" + 1, true, true, [0,6], 1, "desc", [
+                {
+                    "fnRender": function (obj) {
+                        return '<input type="checkbox" class="checkboxes" data-type="' + obj.aData.id + '"/>';
+                    }
+                },
+                { "mData": "id" },
+                {
+                    "fnRender": function (obj) {
+                        return "<a href='" + obj.aData.Url + "' target='_blank'>" + obj.aData.Name + "</a>";
+                    }
+                },
+                { "mData": "Picture" },
+                {
+                    "fnRender": function (obj) {
+                        if (obj.aData.Recommend == 1) {
+                            return "推荐";
+                        }
+                        else {
+                            return "不推荐";
+                        }
+                    }
+                },
+                { "mData": "Click" },
+                {
+                    "fnRender": function (obj) {
+                        var str = "";
+                        str += "<a class='btn btn-xs blue' href='/Shop/EditShopColumn?cid=" + obj.aData.id + "'>编辑</a>  ";
+                        str += "<a class='btn btn-xs red' href='javascript:;' onclick=ShopColumuDelete('" + obj.aData.id + "')>删除</a>";
+                        return str;
+                    }
+                }
+        ]);
+    });
+
+    jQuery('#sample_1 .group-checkable').change(function () {
+        var set = jQuery(this).attr("data-set");
+        var checked = jQuery(this).is(":checked");
+        jQuery(set).each(function () {
+            if (checked) {
+                $(this).attr("checked", true);
+                $(this).parents('tr').addClass("active");
+            } else {
+                $(this).attr("checked", false);
+                $(this).parents('tr').removeClass("active");
+            }
+        });
+        jQuery.uniform.update(set);
+    });
+    var cid = 0;
+    function ShopColumuDelete(id) {
+        cid = id;
+        $("#cf").trigger('click');
+    };
+    function okShopColumuDelete() {
+        _hide();
+        //删除栏目
+        $.ajax({
+            type: "post", //要用post方式
+            data: "{'cid':'" + cid + "'}",
+            url: "/Shop/ShopColumuDelete",//方法所在页面和方法名
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                if (data == "1")//返回的数据用data.d获取内容
+                {
+                    $("#myModal1 .modal-body p").html("删除商品栏目成功");
+                    $("#msg").trigger('click');
+                    sid = 0;
+                }
+                else {
+                    $("#myModal1 .modal-body p").html("删除商品栏目失败");
+                    $("#msg").trigger('click');
+                    sid = 0;
+                }
+            }
+        });
+    };
+
+    function BatchDel() {
+        $("#cf1").trigger('click');
+    }
+    function BatchDelOk() {
+        _hide();
+        var myArray = new Array()
+        var $Move = $('.checkboxes');
+        $Move.each(function () {
+            var $this = $(this);
+            if ($this.is(':checked')) {
+                myArray.push($this.data('type'));
+            }
+        });
+        var json = JSON.stringify(myArray);
+        $.ajax({
+            type: "post", //要用post方式
+            data: "{'cid':'" + json + "'}",
+            url: "/Shop/ColumuBatchDel",//方法所在页面和方法名
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                if (data == "0")//返回的数据用data.d获取内容
+                {
+                    _show();
+                    $("#myModal1 .modal-body p").html("批量删除商品栏目成功");
+                    $("#msg").trigger('click');
+                    aid = 0;
+                }
+                else {
+                    _show();
+                    $("#myModal1 .modal-body p").html("部分商品删除栏目失败");
+                    $("#msg").trigger('click');
+                    aid = 0;
+                }
+            }
+        });
+    }
+
+    function _hide(){
+        $(".row").hide();
+        $("#loading1").show();
+    }
+    function _show(){
+        $(".row").show();
+        $("#loading1").hide();
+    }
+</script>
+<style>
+    #detaillist tr td:nth-child(3) {
+        width: 80%;
+    }
+    #cat {
+        width: 200px;
+    }
+</style>
+
+<div class="modal-backdrop fade in" style="display:none"></div>
+
+<div id="myModal2" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="false" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title">提示</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    确认要删除信息吗？
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn default" data-dismiss="modal" aria-hidden="true">取消</button>
+                <button data-dismiss="modal" class="btn blue" onclick="okShopColumuDelete()">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+<a href="#myModal2" role="button" class="btn yellow" data-toggle="modal" style="display:none" id="cf">提交</a>
+
+
+<div id="myModal3" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="false" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title">提示</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    确认要删除信息吗？
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn default" data-dismiss="modal" aria-hidden="true">取消</button>
+                <button data-dismiss="modal" class="btn blue" onclick="BatchDelOk()">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+<a href="#myModal3" role="button" class="btn yellow" data-toggle="modal" style="display:none" id="cf1">提交</a>
+
+
+<a href="#myModal1" role="button" class="btn red" data-toggle="modal" style="display:none" id="msg">Alert</a>
+<div id="myModal1" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="false" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title">提示</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    成功删除栏目
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button data-dismiss="modal" class="btn green" onclick="window.location.reload();">确认</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,17 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{889716AF-17AE-4A33-87BC-84F6E1E02DE7}</ProjectGuid>
+    <ProjectGuid>{7B464B3D-BD9A-4873-AE69-9DEC859166BC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>JH.Cms</RootNamespace>
-    <AssemblyName>JH.Cms</AssemblyName>
+    <RootNamespace>WL.Cms</RootNamespace>
+    <AssemblyName>WL.Cms</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,9 +30,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\vs2012\web\post\packages\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -47,15 +45,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Manager\ArticleManager.cs" />
-    <Compile Include="Manager\TestManager.cs" />
     <Compile Include="Manager\ColumuManager.cs" />
+    <Compile Include="Manager\CookiesManager.cs" />
     <Compile Include="Manager\LoggerManager.cs" />
     <Compile Include="Manager\MenuManager.cs" />
+    <Compile Include="Manager\ShopManager.cs" />
+    <Compile Include="Manager\SysconfigManager.cs" />
     <Compile Include="Manager\UserManager.cs" />
-    <Compile Include="Models\Article.cs" />
-    <Compile Include="Models\Columu.cs" />
+    <Compile Include="Models\ArticleModels.cs" />
+    <Compile Include="Models\ColumuModels.cs" />
+    <Compile Include="Models\CommonModels.cs" />
+    <Compile Include="Models\HttpModels.cs" />
     <Compile Include="Models\LoggerModels.cs" />
     <Compile Include="Models\Menu.cs" />
+    <Compile Include="Models\SysconfigModels.cs" />
     <Compile Include="Models\UserModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -64,13 +67,14 @@
       <Project>{90013fd8-7a88-4d37-8e9f-b2c04df9349e}</Project>
       <Name>WL.Infrastructure</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WL.Home\WL.Home.csproj">
+      <Project>{34211909-99FE-4328-8D47-EF621FD96B0C}</Project>
+      <Name>WL.Home</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

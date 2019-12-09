@@ -7,8 +7,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using System.Drawing.Drawing2D;
 
 namespace WL.Infrastructure.Common
 {
@@ -18,6 +18,7 @@ namespace WL.Infrastructure.Common
         private static int key_seed = 1;
         private static int noseed = 1;
         private static int domseed = 1;
+        private static int geseed = 1;
         /// <summary> 
         /// 取得客户端真实IP。如果有代理则取第一个非内网地址 
         /// </summary> 
@@ -74,6 +75,55 @@ namespace WL.Infrastructure.Common
                 }
                 return result;
             }
+        }
+        /// <summary>
+        /// 绕过cnd获取真实ip
+        /// </summary>
+        /// <returns></returns>
+        public static string GetUserIp()
+        {
+            string userIP = "未获取用户IP";
+
+            try
+            {
+                if (HttpContext.Current == null
+            || HttpContext.Current.Request == null
+            || HttpContext.Current.Request.ServerVariables == null)
+                    return "";
+
+                string CustomerIP = "";
+
+                //CDN加速后取到的IP  
+                CustomerIP = HttpContext.Current.Request.Headers["Cdn-Src-Ip"];
+                if (!string.IsNullOrEmpty(CustomerIP))
+                {
+                    return CustomerIP;
+                }
+
+                CustomerIP = HttpContext.Current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
+
+                if (!String.IsNullOrEmpty(CustomerIP))
+                    return CustomerIP;
+
+                if (HttpContext.Current.Request.ServerVariables["HTTP_VIA"] != null)
+                {
+                    CustomerIP = HttpContext.Current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
+                    if (CustomerIP == null)
+                        CustomerIP = HttpContext.Current.Request.ServerVariables["REMOTE_ADDR"];
+                }
+                else
+                {
+                    CustomerIP = HttpContext.Current.Request.ServerVariables["REMOTE_ADDR"];
+
+                }
+
+                if (string.Compare(CustomerIP, "unknown", true) == 0)
+                    return HttpContext.Current.Request.UserHostAddress;
+                return CustomerIP;
+            }
+            catch { }
+
+            return userIP;
         }
         /**/
         /// <summary>
@@ -214,7 +264,7 @@ namespace WL.Infrastructure.Common
         {
             return datetime.AddDays(1 - datetime.Day);
         }
-        /**//// <summary>
+        /// <summary>
         /// 取得某月的最后一天
         /// </summary>
         /// <param name="datetime">要取得月份最后一天的时间</param>
@@ -224,7 +274,7 @@ namespace WL.Infrastructure.Common
             return datetime.AddDays(1 - datetime.Day).AddMonths(1).AddDays(-1);
         }
 
-        /**//// <summary>
+        /// <summary>
         /// 取得上个月第一天
         /// </summary>
         /// <param name="datetime">要取得上个月第一天的当前时间</param>
@@ -234,7 +284,7 @@ namespace WL.Infrastructure.Common
             return datetime.AddDays(1 - datetime.Day).AddMonths(-1);
         }
 
-        /**//// <summary>
+        /// <summary>
         /// 取得上个月的最后一天
         /// </summary>
         /// <param name="datetime">要取得上个月最后一天的当前时间</param>
@@ -243,7 +293,6 @@ namespace WL.Infrastructure.Common
         {
             return datetime.AddDays(1 - datetime.Day).AddDays(-1);
         }
-
 
         /// <summary>
         /// 判断字符串是否为正整数
@@ -304,7 +353,6 @@ namespace WL.Infrastructure.Common
             tbout_trade_no = sb + "-" + DateTime.Now.ToString("yyyyMMddHHmmssff");
             return tbout_trade_no;
         }
-
         /// <summary>
         /// 生成密匙
         /// </summary>
@@ -330,7 +378,6 @@ namespace WL.Infrastructure.Common
             key = MD5.Md5UTF8(num_id + sb).ToLower();
             return key;
         }
-
         /// <summary>
         /// PostUTF8格式的JSON
         /// </summary>
@@ -365,9 +412,44 @@ namespace WL.Infrastructure.Common
             }
             return msg;
         }
-
         /// <summary>
-        /// PostUTF8格式的表单
+        /// PostUTF8格式的Form
+        /// </summary>
+        /// <param name="json"></param>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public static string PostUtf8Form(string json, string url, int timeout = 1000000)
+        {
+            byte[] encodebytes = System.Text.Encoding.UTF8.GetBytes(json);
+            HttpHelper helper = new HttpHelper();
+            HttpItem item = new HttpItem();
+            item.URL = url;
+            item.Timeout = timeout;
+            item.Method = "POST";
+            item.Allowautoredirect = true;
+            item.ContentType = "application/x-www-form-urlencoded";
+            item.PostdataByte = encodebytes;
+            item.PostEncoding = Encoding.UTF8;
+            item.PostDataType = PostDataType.Byte;
+            HttpResult result = helper.GetHtml(item);
+            string msg = "";
+            if ((int)result.StatusCode < 400)
+            {
+                msg = result.Html;
+                if (msg == "操作超时")
+                {
+                    //LoggerFactory.Current.Create().LogError("请求错误，状态码为" + (int)result.StatusCode + ",url为" + url);
+                    msg = "";
+                }
+            }
+            else
+            {
+                //LoggerFactory.Current.Create().LogError("请求错误，状态码为" + (int)result.StatusCode + ",url为" + url);
+            }
+            return msg;
+        }
+        /// <summary>
+        /// PostGB2312格式的表单
         /// </summary>
         /// <param name="json"></param>
         /// <param name="url"></param>
@@ -402,7 +484,6 @@ namespace WL.Infrastructure.Common
             }
             return msg;
         }
-
         /// <summary>
         /// PostUTF8格式的JSON
         /// </summary>
@@ -438,7 +519,6 @@ namespace WL.Infrastructure.Common
             }
             return msg;
         }
-
         /// <summary>
         /// Get格式
         /// </summary>
@@ -468,7 +548,6 @@ namespace WL.Infrastructure.Common
             }
             return msg;
         }
-
         /// <summary>
         /// 生成随机字符串
         /// </summary>
@@ -491,7 +570,28 @@ namespace WL.Infrastructure.Common
             }
             return sb.ToString();
         }
-
+        /// <summary>
+        /// 生成6位邀请码
+        /// </summary>
+        /// <returns></returns>
+        public static string get_generate_str()
+        {
+            if (geseed == int.MaxValue)
+            {
+                geseed = 1;
+            }
+            geseed++;
+            char[] constant = {'0','1','2','3','4','5','6','7','8','9',
+                               'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
+                               'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
+            StringBuilder sb = new StringBuilder(6);
+            Random rd = new Random((unchecked((int)DateTime.Now.Ticks + geseed)));
+            for (int i = 0; i < 6; i++)
+            {
+                sb.Append(constant[rd.Next(62)]);
+            }
+            return sb.ToString();
+        }
         /// <summary>
         /// 生成6位订单号
         /// </summary>
@@ -511,7 +611,26 @@ namespace WL.Infrastructure.Common
             }
             return rm;
         }
+        /// <summary>
+        /// 把数组所有元素，按照“参数=参数值”的模式用“&”字符拼接成字符串，并对参数值做urlencode
+        /// </summary>
+        /// <param name="sArray">需要拼接的数组</param>
+        /// <param name="code">字符编码</param>
+        /// <returns>拼接完成以后的字符串</returns>
+        public static string CreateLinkStringA(SortedDictionary<string, string> dicArray)
+        {
+            StringBuilder prestr = new StringBuilder();
+            foreach (KeyValuePair<string, string> temp in dicArray)
+            {
+                prestr.Append(temp.Key + "=" + temp.Value + "&");
+            }
 
+            //去掉最後一個&字符
+            int nLen = prestr.Length;
+            prestr.Remove(nLen - 1, 1);
+
+            return prestr.ToString();
+        }
         /// <summary>
         /// 把数组所有元素，按照“参数=参数值”的模式用“&”字符拼接成字符串，并对参数值做urlencode
         /// </summary>
@@ -532,7 +651,6 @@ namespace WL.Infrastructure.Common
 
             return prestr.ToString();
         }
-
         /// <summary>
         /// 把数组所有元素，按照“参数值”的模式用“&”字符拼接成字符串，并对参数值做urlencode
         /// </summary>
@@ -548,7 +666,6 @@ namespace WL.Infrastructure.Common
             }
             return prestr.ToString();
         }
-
         /// <summary>
         /// 多余字段用指定字符串代替
         /// </summary>
@@ -565,6 +682,47 @@ namespace WL.Infrastructure.Common
             return value;
         }
 
+        /// <summary>  
+        /// 每隔n个字符插入n个字符  
+        /// </summary>  
+        /// <param name="input">源字符串</param>  
+        /// <param name="interval">间隔字符数</param>  
+        /// <param name="value">待插入值</param>  
+        /// <returns>返回新生成字符串</returns>  
+        public static string InsertFormat(string input, int interval, string value)
+        {
+            for (int i = interval; i < input.Length; i += interval + value.Length)
+                input = input.Insert(i, value);
+            return input;
+        }
+
+        /// <summary>
+        /// 手机号码隐藏中间4位
+        /// </summary>
+        /// <param name="phone"></param>
+        /// <returns></returns>
+        public static string HidePhone(string phone)
+        {
+            return Regex.Replace(phone, "(\\d{3})\\d{4}(\\d{4})", "$1****$2");
+        }
+        /// <summary>
+        /// 判断是否带http，flase=有，ture=没有
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public static bool IsHttp(string url)
+        {
+            string reg = @"^(http(s)?:\/\/)?(www\.)?[\w-]+(\.\w{2,4})?\.\w{2,4}?(\/)?$";
+            Regex r = new Regex(reg);
+            //给网址去所有空格
+            string urlStr = url.Trim();
+            Match m = r.Match(urlStr);
+
+            //判断是否带http://
+            if (!m.Success)
+                return false;
+            return true;
+        }
         #region 得到一周的周一和周日的日期
         /// <summary> 
         /// 计算本周的周一日期 
@@ -608,7 +766,6 @@ namespace WL.Infrastructure.Common
         }
         #endregion
     }
-
     public class ValidateCode
     {
         public ValidateCode()

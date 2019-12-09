@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace JH.Web.Cms
+namespace WL.Web.Cms
 {
     public class RouteConfig
     {
@@ -16,7 +16,8 @@ namespace JH.Web.Cms
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional },
+                namespaces: new string[] { "WL.Web.Cms.Controllers" }
             );
         }
     }

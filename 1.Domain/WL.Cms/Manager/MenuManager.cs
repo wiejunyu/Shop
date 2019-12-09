@@ -1,10 +1,10 @@
-﻿using WL.Cms.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WL.Cms.Models;
 using WL.Infrastructure.Data;
 
 namespace WL.Cms.Manager
@@ -18,7 +18,7 @@ namespace WL.Cms.Manager
         /// <returns></returns>
         public static List<Menu> GetMenuList()
         {
-            string sql = "Select * from Cms_Menu";
+            string sql = "Select * from CMS_Menu";
             return new BaseDAL().GetList<Menu>(sql, null);
         }
         /// <summary>
@@ -29,7 +29,7 @@ namespace WL.Cms.Manager
         {
             DynamicParameters param = new DynamicParameters();
             param.Add("@RoleID", id);
-            string sql = "Select * from Cms_RoleMenu where RoleID=@RoleID";
+            string sql = "Select * from CMS_RoleMenu where RoleID=@RoleID";
             return new BaseDAL().GetList<RoleMenu>(sql, param);
         }
         /// <summary>
@@ -41,7 +41,7 @@ namespace WL.Cms.Manager
         {
             DynamicParameters param = new DynamicParameters();
             param.Add("@ID", id);
-            string sql = "Select * from Cms_Menu where ID=@ID";
+            string sql = "Select * from CMS_Menu where ID=@ID";
             return new BaseDAL().Single<Menu>(sql, param);
         }
         /// <summary>
@@ -52,7 +52,7 @@ namespace WL.Cms.Manager
         public static bool UpdateMenu(Menu temp)
         {
             #region sql
-            StringBuilder sb = new StringBuilder("Update Cms_Menu set Name=@Name,");
+            StringBuilder sb = new StringBuilder("Update CMS_Menu set Name=@Name,");
             sb.Append("Url=@Url,Action=@Action,Sort=@Sort,Lv=@Lv,Icon=@Icon,Pid=@Pid");
             sb.Append(" where ID=@ID");
 
@@ -80,7 +80,7 @@ namespace WL.Cms.Manager
         public static int AddMenu(Menu temp)
         {
             #region sql
-            StringBuilder sb = new StringBuilder("Insert into Cms_Menu (");
+            StringBuilder sb = new StringBuilder("Insert into CMS_Menu (");
             sb.Append("Name,Url,Action,Sort,Lv,Icon,Pid)");
             sb.Append(" values (");
             sb.Append("@Name,@Url,@Action,@Sort,@Lv,@Icon,@Pid);SELECT @ID=SCOPE_IDENTITY()");
@@ -108,7 +108,7 @@ namespace WL.Cms.Manager
         public static bool AddRoleMenu(RoleMenu temp)
         {
             #region sql
-            StringBuilder sb = new StringBuilder("Insert into Cms_RoleMenu (");
+            StringBuilder sb = new StringBuilder("Insert into CMS_RoleMenu (");
             sb.Append("MenuID,RoleID)");
             sb.Append(" values (");
             sb.Append("@MenuID,@RoleID)");
@@ -132,7 +132,7 @@ namespace WL.Cms.Manager
         {
             DynamicParameters param = new DynamicParameters();
             param.Add("@ID", id);
-            string sql = "select id from Cms_Menu where Pid = @ID";
+            string sql = "select id from CMS_Menu where Pid = @ID";
             List<Menu> list = new BaseDAL().GetList<Menu>(sql, param);
             //如果还有子菜单，继续递归
             if (list != null && list.Count > 0)
@@ -146,7 +146,7 @@ namespace WL.Cms.Manager
             //删除当前菜单
             param = new DynamicParameters();
             param.Add("@ID", id);
-            sql = "Delete Cms_Menu where ID=@ID";
+            sql = "Delete CMS_Menu where ID=@ID";
             return new BaseDAL().Delete(sql, param);
         }
 
@@ -159,7 +159,7 @@ namespace WL.Cms.Manager
         {
             DynamicParameters param = new DynamicParameters();
             param.Add("@MenuID", id);
-            string sql = "Delete Cms_RoleMenu where MenuID=@MenuID";
+            string sql = "Delete CMS_RoleMenu where MenuID=@MenuID";
 
             return new BaseDAL().Delete(sql, param);
         }
@@ -172,7 +172,7 @@ namespace WL.Cms.Manager
         {
             DynamicParameters param = new DynamicParameters();
             param.Add("@RoleID", id);
-            string sql = "Delete Cms_RoleMenu where RoleID=@RoleID";
+            string sql = "Delete CMS_RoleMenu where RoleID=@RoleID";
 
             return new BaseDAL().Delete(sql, param);
         }
@@ -184,14 +184,14 @@ namespace WL.Cms.Manager
         {
             DynamicParameters param = new DynamicParameters();
             param.Add("@Permission", permission);
-            string sql = "Select * from Cms_RoleMenu where RoleID=@Permission";
+            string sql = "Select * from CMS_RoleMenu where RoleID=@Permission";
             List<RoleMenu> list = new BaseDAL().GetList<RoleMenu>(sql, param);
             List<Menu> last = new List<Menu>();
             foreach (RoleMenu m in list)
             {
                 param = new DynamicParameters();
                 param.Add("@ID", m.MenuID);
-                sql = "Select * from Cms_Menu where ID=@ID";
+                sql = "Select * from CMS_Menu where ID=@ID";
                 Menu d = new BaseDAL().Single<Menu>(sql, param);
                 last.Add(d);
             }
@@ -256,7 +256,7 @@ namespace WL.Cms.Manager
         public static bool AddRole(Role Role)
         {
             #region sql
-            StringBuilder sb = new StringBuilder("Insert into Role (");
+            StringBuilder sb = new StringBuilder("Insert into Cms_Role (");
             sb.Append("Name,Remark)");
             sb.Append(" values (");
             sb.Append("@Name,@Remark)");
@@ -281,7 +281,7 @@ namespace WL.Cms.Manager
         {
             DynamicParameters param = new DynamicParameters();
             param.Add("@ID", ID);
-            string sql = "Delete Role where ID=@ID";
+            string sql = "Delete Cms_Role where ID=@ID";
 
             return new BaseDAL().Delete(sql, param);
         }
@@ -291,7 +291,7 @@ namespace WL.Cms.Manager
         /// <returns></returns>
         public static List<Role> GetRoleList()
         {
-            string sql = "Select * from Role";
+            string sql = "Select * from Cms_Role";
             List<Role> list = new BaseDAL().GetList<Role>(sql, null);
             return list;
         }

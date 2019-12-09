@@ -1,0 +1,566 @@
+﻿@{
+    ViewBag.Title = "基本资料设置";
+    Layout = "~/Views/Shared/PersonalMaster.cshtml";
+}
+@model WL.Home.Models.UserDetailsModels
+@using WL.Home.Models;
+@using WL.Home.Manager;
+@using WL.Infrastructure.Common;
+@{
+    UserModels user = ViewData["user"] as UserModels;
+    List<OrderModels> Order = ViewData["Order"] as List<OrderModels>;
+    List<OrderModels> list = Order;
+    DateTime dt = Convert.ToDateTime(DateTime.Now.Date.ToString());
+    list = list.Where(p => p.Date >= dt).ToList();
+    list = list.Where(p => p.Date < dt.AddDays(1)).ToList();
+    list = list.Where(p => p.UserId == user.ID).ToList();
+    int Day = list.Count();
+    DateTime First = Convert.ToDateTime(Common.GetMondayDate(DateTime.Now).ToString("yyyy-MM-dd"));
+    DateTime Last = Convert.ToDateTime(Common.GetSundayDate(DateTime.Now).ToString("yyyy-MM-dd"));
+    list = Order;
+    list = list.Where(p => p.Date >= First).ToList();
+    list = list.Where(p => p.Date < Last.AddDays(1)).ToList();
+    list = list.Where(p => p.UserId == user.ID).ToList();
+    int Week = list.Count();
+    int Total = Order.Where(p => p.UserId == user.ID).Count();
+    list = Order;
+    list = list.Where(p => p.UserId == user.ID).ToList();
+    list = list.OrderByDescending(p => p.Date).ThenByDescending(p => p.Date).ToList();
+    list = list.Take(20).ToList();
+}
+<link href="~/Scripts/assets/plugins/CityChoice/CityChoice_bootstrap.css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="~/Scripts/assets/plugins/data-tables/DT_bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="~/Scripts/assets/plugins/bootstrap-datepicker/css/datepicker.css" />
+<link rel="stylesheet" type="text/css" href="~/Scripts/assets/plugins/bootstrap-daterangepicker/daterangepicker-bs2.css" />
+
+<!-- BEGIN STYLE CUSTOMIZER -->
+<div class="theme-panel hidden-xs hidden-sm">
+    <div class="toggler">
+    </div>
+    <div class="toggler-close">
+    </div>
+    <div class="theme-options">
+        <div class="theme-option theme-colors clearfix">
+            <span>
+                主题颜色
+            </span>
+            <ul>
+                <li class="color-black current color-default" data-style="default">
+                </li>
+                <li class="color-blue" data-style="blue">
+                </li>
+                <li class="color-brown" data-style="brown">
+                </li>
+                <li class="color-purple" data-style="purple">
+                </li>
+                <li class="color-grey" data-style="grey">
+                </li>
+                <li class="color-white color-light" data-style="light">
+                </li>
+            </ul>
+        </div>
+        <div class="theme-option">
+            <span>
+                布局
+            </span>
+            <select class="layout-option form-control input-small">
+                <option value="fluid" selected="selected">fluid</option>
+                <option value="boxed">boxed</option>
+            </select>
+        </div>
+        <div class="theme-option">
+            <span>
+                头部
+            </span>
+            <select class="header-option form-control input-small">
+                <option value="fixed" selected="selected">Fixed</option>
+                <option value="default">Default</option>
+            </select>
+        </div>
+        <div class="theme-option">
+            <span>
+                侧边栏
+            </span>
+            <select class="sidebar-option form-control input-small">
+                <option value="fixed">Fixed</option>
+                <option value="default" selected="selected">Default</option>
+            </select>
+        </div>
+        <div class="theme-option">
+            <span>
+                面包屑
+            </span>
+            <select class="sidebar-pos-option form-control input-small">
+                <option value="left" selected="selected">左边</option>
+                <option value="right">右边</option>
+            </select>
+        </div>
+        <div class="theme-option">
+            <span>
+                底部
+            </span>
+            <select class="footer-option form-control input-small">
+                <option value="fixed">Fixed</option>
+                <option value="default" selected="selected">Default</option>
+            </select>
+        </div>
+    </div>
+</div>
+<!-- END STYLE CUSTOMIZER -->
+<!-- BEGIN PAGE HEADER-->
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h3 class="page-title">
+            用户资料 <small>用户基本资料</small>
+        </h3>
+        <ul class="page-breadcrumb breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="/personal/myorder.html">个人中心</a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <a href="/personal/personal.html">个人管理</a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <a href="#">
+                    基本资料设置
+                </a>
+            </li>
+        </ul>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>
+<!-- END PAGE HEADER-->
+<!-- BEGIN PAGE CONTENT-->
+<div class="row profile">
+    <div class="col-md-12">
+        <!--BEGIN TABS-->
+        <div class="tabbable tabbable-custom tabbable-full-width">
+            <ul class="nav nav-tabs">
+                <li class="active">
+                    <a href="#tab_1_1" data-toggle="tab">概观</a>
+                </li>
+                <li>
+                    <a href="#tab_1_3" data-toggle="tab">账户</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="tab_1_1">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <ul class="list-unstyled profile-nav">
+                                <li>
+                                    <img src="@Html.Raw(user.Portrait)" class="img-responsive" alt="" />
+                                    <a href="/personal/personal.html" class="profile-edit">编辑</a>
+                                </li>
+                                <li>
+                                    <a href="/personal/myorder.html">订单</a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        消息
+                                        <span>
+                                            0
+                                        </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0);" onclick="SetUp()">设置</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="row">
+                                <div class="col-md-8 profile-info">
+                                    <h1>@Html.Raw(user.UserName)</h1>
+                                    <p>
+                                        @if (Model.Describe == "")
+                                        {
+                                            @Html.Raw("暂未开通个人简介。");
+                                        }
+                                        else
+                                        {
+                                            @Model.Describe;
+                                        }
+                                    </p>
+                                    <p>
+                                        <a href="#">www.admin.com</a>
+                                    </p>
+                                    <ul class="list-inline">
+                                        <li>
+                                            <i class="fa fa-map-marker"></i> 南宁市
+                                        </li>
+                                        <li>
+                                            <i class="fa fa-calendar"></i> 1995-03-10
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!--end col-md-8-->
+                                <div class="col-md-4">
+                                    <div class="portlet sale-summary">
+                                        <div class="portlet-title">
+                                            <div class="caption">
+                                                订单状态
+                                            </div>
+                                            <div class="tools">
+                                                <a class="reload" href="javascript:;"></a>
+                                            </div>
+                                        </div>
+                                        <div class="portlet-body">
+                                            <ul class="list-unstyled">
+                                                <li>
+                                                    <span class="sale-info">
+                                                        今日下单<i class="fa fa-img-up"></i>
+                                                    </span>
+                                                    <span class="sale-num">
+                                                        @Day
+                                                    </span>
+                                                </li>
+                                                <li>
+                                                    <span class="sale-info">
+                                                        每周下单 <i class="fa fa-img-down"></i>
+                                                    </span>
+                                                    <span class="sale-num">
+                                                        @Week
+                                                    </span>
+                                                </li>
+                                                <li>
+                                                    <span class="sale-info">
+                                                        总计下单
+                                                    </span>
+                                                    <span class="sale-num">
+                                                        @Total
+                                                    </span>
+                                                </li>
+                                                <li>
+                                                    <span class="sale-info">
+                                                        剩余金额
+                                                    </span>
+                                                    <span class="sale-num">
+                                                        $@Html.Raw(user.Money)
+                                                    </span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end col-md-4-->
+                            </div>
+                            <!--end row-->
+                            <div class="tabbable tabbable-custom tabbable-custom-profile">
+                                <ul class="nav nav-tabs">
+                                    <li class="active">
+                                        <a href="#tab_1_11" data-toggle="tab">最新订单</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content">
+                                    <!--tab-pane-->
+                                    <div class="tab-pane active" id="tab_1_11">
+                                        <div class="tab-pane active" id="tab_1_1_1">
+                                            <div class="scroller" data-height="290px" data-always-visible="1" data-rail-visible1="1">
+                                                <ul class="feeds">
+                                                    @foreach (OrderModels temp in list)
+                                                    {
+                                                        ShopModels shop = HomeManager.GetShop(temp.Sid);
+                                                         <li>
+                                                            <div class="col1">
+                                                                <div class="cont">
+                                                                    <div class="cont-col1">
+                                                                        <div class="label label-success">
+                                                                            <i class="fa fa-truck"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="cont-col2">
+                                                                        <div class="desc">
+                                                                            商品名称：@shop.Name &nbsp;&nbsp;&nbsp;
+                                                                            订单号：@temp.Order &nbsp;&nbsp;&nbsp;
+                                                                            数量：@temp.Number &nbsp;&nbsp;&nbsp;
+                                                                            订单状态：
+                                                                             @if (temp.LogisticsState == 0)
+                                                                            {
+                                                                                @Html.Raw("未发货");
+                                                                            }
+                                                                            @if (temp.LogisticsState == 1)
+                                                                            {
+                                                                                @Html.Raw("配送中");
+                                                                            }
+                                                                            @if (temp.LogisticsState == 1)
+                                                                            {
+                                                                                @Html.Raw("已收货");
+                                                                            }&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                                            支付方式： 
+                                                                            @if (temp.PayMethod == 0)
+                                                                            {
+                                                                                @Html.Raw("货到付款");
+                                                                            }
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col2">
+                                                                <div class="date">
+                                                                    ￥@temp.Money
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--tab-pane-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--tab_1_2-->
+                <div class="tab-pane" id="tab_1_3">
+                    <div class="row profile-account">
+                        <div class="col-md-3">
+                            <ul class="ver-inline-menu tabbable margin-bottom-10">
+                                <li class="active">
+                                    <a data-toggle="tab" href="#tab_1-1">
+                                        <i class="fa fa-cog"></i> 个人信息
+                                    </a>
+                                    <span class="after">
+                                    </span>
+                                </li>
+                                <li>
+                                    <a data-toggle="tab" href="#tab_2-2"><i class="fa fa-lock"></i>更改密码</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="tab-content">
+                                <div id="tab_1-1" class="tab-pane active">
+                                    <div id="info">
+                                        <form action="/Data/SetData" id="SetData" method="post">
+                                            <div class="form-group">
+                                                <label class="control-label">用户名</label>
+                                                <input type="password" class="form-control" placeholder="@Html.Raw(user.UserName)" disabled="">
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label">MSN</label>
+                                                <input type="text" placeholder="MSN" class="form-control" name="MSN" maxlength="50" value="@Model.Msn" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label">电话号码</label>
+                                                <input type="text" placeholder="电话号码" class="form-control" name="tel" maxlength="15" value="@Model.Tel" />
+                                            </div>
+                                            <div class="form-group" data-toggle="distpicker">
+                                                <label class="control-label">所在地</label>
+                                                ;
+                                                <div class="form-group" style="overflow:hidden;" id="distpicker">
+                                                    <div class="CityChoice_form-group">
+                                                        <select class="CityChoice_form-control" data-province="@Model.province" name="province"></select>
+                                                    </div>
+                                                    <div class="CityChoice_form-group">
+                                                        <select class="CityChoice_form-control" data-city="@Model.city" name="city"></select>
+                                                    </div>
+                                                    <div class="CityChoice_form-group">
+                                                        <select class="CityChoice_form-control" data-district="@Model.district" name="district"></select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label">生日</label>
+                                                <div class="input-group input-small date-picker input-daterange" data-date="2014-01-01" data-date-format="yyyy-mm-dd">
+                                                    @if (@Model.Birthday == "")
+                                                    {
+                                                        <input type="text" class="form-control input-small" id="Time" value="请选择生日" name="Birthday">
+                                                    }
+                                                    else
+                                                    {
+                                                        <input type="text" class="form-control input-small" id="Time" value="@Model.Birthday" name="Birthday">
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label">感情状况</label>
+                                                <select class="form-control" id="Emotional" name="Emotional">
+                                                    <option value="0"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">保密</font></font></option>
+                                                    <option value="1"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">已婚</font></font></option>
+                                                    <option value="2"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">未婚</font></font></option>
+                                                    <option value="3"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">单身</font></font></option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label">兴趣</label>
+                                                <input type="text" placeholder="兴趣" class="form-control" name="Interest" maxlength="20" value="@Model.Interest" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label">个人简介</label>
+                                                <textarea class="form-control" rows="3" placeholder="个人简介" name="Describe">@Model.Describe</textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label" maxlength="20">个人网站</label>
+                                                <input type="text" placeholder="http://www.xxx.com" class="form-control" name="Website" value="@Model.Website" />
+                                            </div>
+                                            <div class="margiv-top-10">
+                                                <input type="submit" class="btn green" value="提交"></input>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div id="tab_2-2" class="tab-pane">
+                                    <div class="form-group">
+                                        <label class="control-label">新密码</label>
+                                        <input type="password" class="form-control" id="Password" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label">确认密码</label>
+                                        <input type="password" class="form-control" id="NewPassword" />
+                                    </div>
+                                    <div class="margin-top-10">
+                                        <a href="javascript:;" class="btn green" onclick="SetPass()">更改密码</a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <!--end col-md-9-->
+                    </div>
+                </div>
+                <!--end tab-pane-->
+            </div>
+        </div>
+        <!--END TABS-->
+    </div>
+</div>
+<!-- END PAGE CONTENT-->
+<!-- 日历控件 -->
+<script type="text/javascript" src="~/Scripts/assets/plugins/fuelux/js/spinner.min.js"></script>
+<script type="text/javascript" src="~/Scripts/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="~/Scripts/assets/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
+<script src="~/Scripts/assets/plugins/bootstrap-touchspin/bootstrap.touchspin.js" type="text/javascript"></script>
+<!-- 汉化日历控件 -->
+<script src="~/Scripts/js/jquery.ui.datepicker-zh-CN.js" type="text/javascript"></script>
+
+<script src="~/Scripts/assets/plugins/CityChoice/CityChoice_distpicker.js"></script>
+<script>
+    function SetUp() {
+        $(".nav-tabs li a").eq(1).click();
+    }
+    $(function () {
+        $("#Emotional").select2();
+        handleDatePickersT();
+        setClass("Setup", "Basic");
+        if (@Model.Emotional == 1)
+        {
+            $('#s2id_Emotional .select2-chosen').html("已婚");
+        }
+        if (@Model.Emotional == 2)
+        {
+            $('#s2id_Emotional .select2-chosen').html("未婚");
+        }
+        if (@Model.Emotional == 3)
+        {
+            $('#s2id_Emotional .select2-chosen').html("单身");
+        }
+        $('#Emotional').val("@Model.Emotional");
+        $("#SetData").submit(function () {
+            _show();
+            var url = $(this).attr('action');
+            var data = $(this).serialize();
+            var data_arr = $(this).serializeArray();
+
+            var MSN = data_arr[0].value;
+            if (MSN != '') {
+                if (MSN.search(/^([a-zA-Z0-9]+[_|_|.]?)*[a-zA-Z0-9]+@@([a-zA-Z0-9]+[_|_|.]?)*[a-zA-Z0-9]+\.(?:com|cn)$/) == -1) {
+                    $("#myModal2 .modal-body p").html("MSN格式错误");
+                    _hide();
+                    $("#msg1").trigger('click');
+                    return false;
+                }
+            }
+
+            var tel = data_arr[1].value;
+            if (tel != '') {
+                if (tel.search(/^(((13[0-9]{1})|(15[0-9]{1}))+\d{8})$/) == -1) {
+                    $("#myModal2 .modal-body p").html("手机号码格式错误");
+                    _hide();
+                    $("#msg1").trigger('click');
+                    return false;
+                }
+            }
+
+            var jsondata = undefined;
+            jsondata = $("#SetData").serializeObject();
+            jsondata = { json: JSON.stringify(jsondata) };
+
+            $.ajax({
+                type: "POST",
+                async: true,
+                dataType: 'json',
+                url: url,
+                data: jsondata,
+                success: function (data) {
+                    if (data == '1')
+                    {
+                        _hide();
+                        $("#myModal1 .modal-body p").html("个人资料修改成功");
+                        $("#msg").trigger('click');
+                    }
+                    else {
+                        _hide();
+                        $("#myModal2 .modal-body p").html("个人资料修改失败");
+                        $("#msg1").trigger('click');
+                    }
+                }
+            });
+            return false;
+        });
+    });
+    function SetPass() {
+        var arr = new Array();
+        MyConfirm("SetPassOk", arr, "确认修改密码吗？");
+    }
+    function SetPassOk() {
+        _show();
+        if ($("#Password").val() == '') {
+            $("#myModal2 .modal-body p").html("密码不能为空");
+            $("#msg1").click();
+        }
+        else {
+            if ($("#NewPassword").val() == '') {
+                $("#myModal2 .modal-body p").html("确认密码不能为空");
+                $("#msg1").click();
+            }
+            else {
+                if ($("#NewPassword").val() != $("#Password").val()) {
+                    $("#myModal2 .modal-body p").html("两次密码不相同");
+                    $("#msg1").click();
+                }
+                else {
+                    $.ajax({
+                        type: 'POST',
+                        url: "/Data/SetPass",
+                        data: { pass: $("#Password").val() },
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data == 1) {
+                                _hide();
+                                $("#myModal2 .modal-body p").html("修改密码成功");
+                                $("#myModal2 .modal-footer button").attr("onclick","LogOutClick()");
+                                $("#msg1").trigger('click');
+                            }
+                            else {
+                                _hide();
+                                $("#myModal2 .modal-body p").html("修改密码失败");
+                                $("#msg1").trigger('click');
+                            }
+                        }
+                    });
+                }
+            }
+        }
+    }
+
+    function LogOutClick() {
+        $("#LogOut").click();
+    }
+</script>

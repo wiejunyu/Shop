@@ -1,11 +1,10 @@
-﻿using WL.Cms.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using WL.Cms.Models;
 using WL.Infrastructure.Data;
-using System.Data;
 
 namespace WL.Cms.Manager
 {
@@ -17,13 +16,13 @@ namespace WL.Cms.Manager
         /// <param name="lang"></param>
         /// <param name="cid">0为获取所有</param>
         /// <returns></returns>
-        public static List<Article> GetArticleList(int lang, int cid)
+        public static List<ArticleModels> GetArticleList(int lang, int cid)
         {
-            List<Article> list = new List<Article>();
+            List<ArticleModels> list = new List<ArticleModels>();
             DynamicParameters param = new DynamicParameters();
             param.Add("@Lang", lang);
             string sql = "select * from Cms_Article where lang=@Lang";
-            list = new BaseDAL().GetList<Article>(sql, param);
+            list = new BaseDAL().GetList<ArticleModels>(sql, param);
             if (cid == 0)
             {
                 return list;
@@ -40,13 +39,13 @@ namespace WL.Cms.Manager
         /// <param name="lang"></param>
         /// <param name="cid">0为获取所有</param>
         /// <returns></returns>
-        public static List<ArticleCutting> GetArticleCuttingList(int lang, int cid)
+        public static List<ArticleCuttingModels> GetArticleCuttingList(int lang, int cid)
         {
-            List<ArticleCutting> list = new List<ArticleCutting>();
+            List<ArticleCuttingModels> list = new List<ArticleCuttingModels>();
             DynamicParameters param = new DynamicParameters();
             param.Add("@Lang", lang);
-            string sql = "select * from Cms_Article where lang=@Lang";
-            list = new BaseDAL().GetList<ArticleCutting>(sql, param);
+            string sql = "select * from Cms_Article where lang=@Lang ORDER BY updatetime DESC";
+            list = new BaseDAL().GetList<ArticleCuttingModels>(sql, param);
             if (cid == 0)
             {
                 return list;
@@ -67,31 +66,16 @@ namespace WL.Cms.Manager
             string str = null;
             DynamicParameters param = new DynamicParameters();
             param.Add("@cid", cid);
-            string sql = "select * from Category where id = @cid";
-            List<Columu> list = new BaseDAL().GetList<Columu>(sql, param);
-            if (list[0].parentid == 0)
-            {
-                str = "/" + list[0].catdir + "/" + aid + ".html";
-                param = new DynamicParameters();
-                param.Add("@aid", aid);
-                param.Add("@url", str);
-                sql = "UPDATE Cms_Article SET url = @url WHERE id = @aid";
-                return new BaseDAL().Update(sql, param);
-            }
-            else
-            {
-                param = new DynamicParameters();
-                param.Add("@cid", list[0].parentid);
-                sql = "select * from Cms_Category where id = @cid";
-                List<Columu> list1 = new BaseDAL().GetList<Columu>(sql, param);
-                str = "/" + list1[0].catdir + "/" + list[0].catdir + "/" + aid + ".html";
-
-                param = new DynamicParameters();
-                param.Add("@aid", aid);
-                param.Add("@url", str);
-                sql = "UPDATE Article SET url = @url WHERE id = @aid";
-                return new BaseDAL().Update(sql, param);
-            }
+            string sql = "select * from Cms_Category where id = @cid";
+            List<ColumuModels> list = new BaseDAL().GetList<ColumuModels>(sql, param);
+            sql = "select * from Cms_Category where id = (select MAX(id) from Category)";
+            List<ColumuModels> listMax = new BaseDAL().GetList<ColumuModels>(sql, param);
+            str = "/" + list[0].catdir + "/show/" + aid + ".html";
+            param = new DynamicParameters();
+            param.Add("@aid", aid);
+            param.Add("@url", str);
+            sql = "UPDATE Cms_Article SET url = @url WHERE id = @aid";
+            return new BaseDAL().Update(sql, param);
         }
 
         /// <summary>
@@ -99,7 +83,7 @@ namespace WL.Cms.Manager
         /// </summary>
         /// <param name="Article"></param>
         /// <returns></returns>
-        public static int AddArticle(Article al)
+        public static int AddArticle(ArticleModels al)
         {
             DynamicParameters param = new DynamicParameters();
             param.Add("@catid", al.catid);
@@ -118,16 +102,16 @@ namespace WL.Cms.Manager
             param.Add("@lang", al.lang);
             param.Add("@ID", dbType: DbType.Int32, direction: ParameterDirection.Output);
 
-            string sql = "INSERT INTO Article VALUES (@catid,@userid,@username,@title,@keywords,@description,@content,@thumb,@listorder,@url,@hits,@createtime,@updatetime,@lang);SELECT @ID=SCOPE_IDENTITY()";
+            string sql = "INSERT INTO Cms_Article VALUES (@catid,@userid,@username,@title,@keywords,@description,@content,@thumb,@listorder,@url,@hits,@createtime,@updatetime,@lang);SELECT @ID=SCOPE_IDENTITY()";
             return new BaseDAL().AddGetID(sql, param);
         }
 
         /// <summary>
-        /// 添加新文章
+        /// 更新文章
         /// </summary>
         /// <param name="Article"></param>
         /// <returns></returns>
-        public static bool EditArticle(Article al)
+        public static bool EditArticle(ArticleModels al)
         {
             DynamicParameters param = new DynamicParameters();
             param.Add("@id", al.id);
@@ -145,7 +129,7 @@ namespace WL.Cms.Manager
             param.Add("@updatetime", al.updatetime);
             param.Add("@lang", al.lang);
 
-            string sql = "UPDATE Article SET [catid]=@catid,[userid]=@userid,[username]=@username,[title]=@title,[keywords]=@keywords,[description]=@description,[content]=@content,[thumb]=@thumb,[listorder]=@listorder,[url]=@url,[hits]=@hits,[updatetime]=@updatetime,[lang]=@lang WHERE [id] = @id";
+            string sql = "UPDATE Cms_Article SET [catid]=@catid,[userid]=@userid,[username]=@username,[title]=@title,[keywords]=@keywords,[description]=@description,[content]=@content,[thumb]=@thumb,[listorder]=@listorder,[url]=@url,[hits]=@hits,[updatetime]=@updatetime,[lang]=@lang WHERE [id] = @id";
             return new BaseDAL().Add(sql, param);
         }
 
@@ -159,7 +143,7 @@ namespace WL.Cms.Manager
             DynamicParameters param = new DynamicParameters();
             param.Add("@id", aid);
 
-            string sql = "delete from Article where id = @id";
+            string sql = "delete from Cms_Article where id = @id";
             return new BaseDAL().Add(sql, param);
         }
 
@@ -168,12 +152,12 @@ namespace WL.Cms.Manager
         /// </summary>
         /// <param name="aid"></param>
         /// <returns></returns>
-        public static List<Article> GetArticle(int aid)
+        public static List<ArticleModels> GetArticle(int aid)
         {
             DynamicParameters param = new DynamicParameters();
             param.Add("@id", aid);
-            string sql = "select * from Article where id=@id";
-            return new BaseDAL().GetList<Article>(sql, param);
+            string sql = "select * from Cms_Article where id=@id";
+            return new BaseDAL().GetList<ArticleModels>(sql, param);
         }
 
         /// <summary>
@@ -181,13 +165,13 @@ namespace WL.Cms.Manager
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static List<Article> GetArticleImage(int id)
+        public static List<ArticleModels> GetArticleImage(int id)
         {
             DynamicParameters param = new DynamicParameters();
             param.Add("@Id", id);
 
-            string sql = "select [thumb] from Article where id=@id";
-            return new BaseDAL().GetList<Article>(sql, param);
+            string sql = "select [thumb] from Cms_Article where id=@id";
+            return new BaseDAL().GetList<ArticleModels>(sql, param);
         }
 
         /// <summary>
@@ -201,8 +185,38 @@ namespace WL.Cms.Manager
             DynamicParameters param = new DynamicParameters();
             param.Add("@aid", aid);
             param.Add("@cid", cid);
-            string sql = "UPDATE Article SET catid = @cid WHERE id = @aid";
+            string sql = "UPDATE Cms_Article SET catid = @cid WHERE id = @aid";
             return new BaseDAL().Update(sql, param);
+        }
+
+        /// <summary>
+        /// 按标题判断文章是否存在,存在true，不存在false
+        /// </summary>
+        /// <param name="title"></param>
+        /// <returns></returns>
+        public static bool GetArticleExistence(string title)
+        {
+            DynamicParameters param = new DynamicParameters();
+            param.Add("@title", title);
+            string sql = "Select * from Cms_Article WHERE title = @title";
+            if (new BaseDAL().Single<ArticleModels>(sql, param) == null)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// 栏目ID获取栏目名称
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static string IdGetCatname(int id)
+        {
+            DynamicParameters param = new DynamicParameters();
+            param.Add("@id", id);
+            string sql = "Select catname from Cms_Category WHERE id = @id";
+            return new BaseDAL().Single<string>(sql, param);
         }
     }
 }

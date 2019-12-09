@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/MainMaster.cshtml";
 }
 
-@using JH.Cms.Models
+@using WL.Cms.Models
 <link rel="stylesheet" type="text/css" href="~/Scripts/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.css">
 <script type="text/javascript" src="~/Scripts/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.js"></script>
 <div class="row">
@@ -50,10 +50,10 @@
                     <div class="col-md-9">
                         <select class="form-control" id="parentid" name="parentid">
                             <option value="0">作为一级栏目</option>
-                            @foreach (Columu temp in ViewData["Categorylist"] as List<Columu>)
-                {
-                    <option value="@temp.ID">@temp.catname</option>
-    }
+                            @foreach (ColumuModels temp in ViewData["Categorylist"] as List<ColumuModels>)
+                            {
+                                <option value="@temp.ID">@temp.catname</option>
+                            }
                         </select>
                     </div>
 

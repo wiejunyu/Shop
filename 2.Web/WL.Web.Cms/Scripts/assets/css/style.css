@@ -4078,3 +4078,10 @@ li {
 .form-horizontal .form-group {
     margin-right: 0px;
 }
+#Parameter span {
+    padding: 5px;
+    border: solid 1px;
+    margin-right: 10px;
+    display: inline-block;
+    margin-bottom: 10px;
+}

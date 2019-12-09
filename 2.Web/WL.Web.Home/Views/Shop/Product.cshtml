@@ -1,0 +1,448 @@
+﻿
+@{
+    ViewBag.Title = "商品详细";
+    Layout = "~/Views/Shared/ShopMaster.cshtml";
+}
+@model WL.Home.Models.ShopModels
+@using WL.Home.Models
+@using Newtonsoft.Json
+@{
+    UserModels user = ViewData["user"] as UserModels;
+}
+<link href="~/Scripts/assets/plugins/Images/smoothproducts.css" rel="stylesheet" />
+<link href="~/Scripts/assets/plugins/Images/default.css" rel="stylesheet" />
+<style>
+    .page img {
+        max-width: none;
+    }
+</style>
+<div class="g-wrapper detail-goods">
+    <div class="detail-goods-left">
+        @{
+            List<string> str = JsonConvert.DeserializeObject<List<string>>(@Model.HighImage);
+        }
+        <div style="text-align: center;height: 350px;padding-top: 100px;" id="load">
+            <img src="~/Image/loading.gif" style="width: 30%;" />
+        </div>
+        <div class="page" style="display:none">
+            <div class="sp-wrap">
+                @foreach (string temp in str)
+                {
+                    <a href="@temp"><img src="@temp" alt="@temp"></a>
+                }
+            </div>
+        </div>
+        <div class="detail-goods-right-collect">
+            <span class="m-top15">商品编号：<font class="J_goodNo">@Model.id</font></span>
+            <a href="javascript:;" class="J_collect " attr-type="0" attr-sellergoodsid="1129891">加入收藏</a>
+        </div>
+    </div>
+    <div class="detail-goods-right">
+        <h1 class="detail-goods-right-head ft22">
+            @Model.Name；@Model.Model
+        </h1>
+        <div class="detail_pro_dep ft14">
+
+        </div>
+        <div class="detail-goods-price m-top10">
+            <ul class="detail-header-list">
+                <li data-append="append">
+                    <span class="m-left20 a">售<font class="ft-tnr">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>价</span>
+                    <label class="ft24 a weight J_salePrice"><font class="ft18">¥</font>@System.Decimal.Round(Model.Trueprice,2)</label>
+                    <label class="b l weight ft12 J_marketPrice"><font class="ft12">¥</font>@System.Decimal.Round(Model.Price,2)</label>
+                </li>
+
+            </ul>
+        </div>
+        <div class="detail-goods-price back-no m-top10" style="background:none;">
+            <ul>
+                <li>
+                    <span class="m-left20 c">订<font class="ft-tnr">&nbsp;&nbsp;</font>货<font class="ft-tnr">&nbsp;&nbsp;</font>号</span>
+                    <label class="J_buyNo d">@Model.id</label>
+                </li>
+                <li>
+                    <span class="m-left20 c">商品型号</span>
+                    <label class="J_model d">@Model.Model</label>
+                </li>
+
+                <li>
+                    <span class="m-left20 c">备注</span>
+                    @if (Model.Remarks == "")
+                    {
+                        <label class="J_model d">暂无备注信息</label>
+                    }
+                    <label class="J_model d">@Model.Remarks</label>
+                </li>
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+        <div class="detail-goods-right-list m-top10 J_detailAttr"></div>
+        <div class="detail-goods-right-buy J_car_box">
+            <div class="detail-goods-onlybor fl">
+                <div class="detail-goods-right-error p-bottom30">
+                    <label class="a p-top15 m-left20">采购量</label>
+                    <div class="detail-goods-right-opera">
+                        <span class="J_minNum un-select ft24" style=" float: left;border-right: 1px solid #ccc;" onclick="deduct()">-</span>
+                        <input type="text" class="detail-goods-right-text ft16 J_goodNum" value="1" id="Number">
+                        <span class="J_addNum un-select ft24" style=" float: right;border-left: 1px solid #ccc;" onclick="add()">+</span>
+                        <span class="unbind" style="display: none"></span>
+                    </div>
+                    <label class="p-top15 p-left20 color999">个</label>
+                    <label class="error J_errors hide p-top10"></label>
+                </div>
+            </div>
+
+            <div class="J_buyBox">
+                <a href="javascript:;" class="buy ft16 J_buy" onclick="buy(@Model.id)">立即购买</a>
+                <a href="javascript:;" class="car J_car" onclick="AddShoppingCart(@Model.id)">加入购物车</a>
+            </div>
+
+            <div class="fre-ts">
+                友情提醒：产品图片仅供参考，不能作为您选型购买的依据！
+            </div>
+
+            <img src="https://image.vipmro.net/goodsImg/999999/50111011/10007cao/20161122/002a01!240240.jpg" style="display:none" class="J_flyImg">
+        </div>
+    </div>
+    <div class="detail-goods-brand">
+        <div class="detail-goods-brand-img center p-top20">
+            <a href="/s/b-96"><img src="https://image.vipmro.net//static/images/brand/logos/siemens.jpg" alt="西门子" title="西门子"></a>
+        </div>
+        <div class="detail-goods-brand-type m-left24 p-top10">
+            <span class="m-top5">
+                <img src="/image/p-type-1.png">
+                <label class="center">100%正品 </label>
+            </span>
+            <span class="m-top5">
+                <img src="/image/p-type-2.png">
+                <label class="center">品类齐全 </label>
+            </span>
+            <span class="m-top5">
+                <img src="/image/p-type-3.png">
+                <label class="center">库存充足 </label>
+            </span>
+            <span class="m-top5">
+                <img src="/image/p-type-4.png">
+                <label class="center">售后无忧 </label>
+            </span>
+        </div>
+        <div class="detail-goods-brand-chart fl m-top5">
+            <span class="item chart">在线咨询：<a class="advice zhiCustomBtn" href="javascript:void 0;">立即咨询</a></span>
+            <span class="item consult" style="width: 200%;">咨询热线：<label class="ft14 weight">400-049-6999</label></span>
+        </div>
+        <img src="/image/scode.jpg" class="scode">
+    </div>
+    <div class="clearfix"></div>
+</div>
+<div class="main-width m-top20">
+    <div class="detail-attrs-left">
+        <div class="J_hotBrand">
+        </div>
+
+        <div class="detail-attrs-left-box fl m-top5">
+            <div class="detail-attrs-left-head weight">销量排行榜</div>
+            <div class="detail-attrs-left-bot">
+                <ul class="J_hotGoods">
+                    @foreach (ShopModels temp in ViewData["list"] as List<ShopModels>)
+                    {
+                        <li>
+                            <a href="/shop/product.html?id=@temp.id" class="p-bottom20 p-top20" target="_blank">
+                                <img src="@temp.Image" alt="@temp.Name；@temp.Model" class="fl">
+                                <span class="a">@temp.Name；@temp.Model</span>
+                                <span class="b">型号：@temp.Model</span>
+                                <span class="c ft14 price_color weight">￥@temp.Trueprice</span>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="detail-attrs-right">
+        <div class="detail-attrs-right-head">
+            <span class="fl center ft14 a cursor J_Switch on" id="body1_span"><a href="javascript:void 0;">商品详情</a></span>
+            <span class="fl center ft14 b cursor J_Switch bor" id="body2_span"><a href="javascript:void 0;">品牌证书</a></span>
+        </div>
+        <div class="J_shows" style="display: block;" id="body1">
+
+            <ul>
+                @{
+                    List<ParameterModels> list = JsonConvert.DeserializeObject<List<ParameterModels>>(Model.Parameter);
+                }
+                @if (list != null)
+                {
+                    foreach (ParameterModels temp in list)
+                    {
+                        <li>
+                            <div>@temp.ParameterName</div>
+                            <div>@temp.ParameterData</div>
+                        </li>
+                    }
+                }
+            </ul>
+            <div class="detail-attrs-right-body J_body">
+                @Html.Raw(Model.Body)
+            </div>
+            <div class="detail-attrs-right-body">
+                <img src="/image/detail-pz.jpg" alt="@Model.Name；@Model.Model">
+            </div>
+        </div>
+
+        <div class="detail-record J_shows J_ppzs fl" style="display: none;" id="body2">
+            @Html.Raw(Model.Certificate)
+        </div>
+
+    </div>
+    <div class="clearfix"></div>
+</div>
+<div class="login_box" id="loginBefore" style="position:fixed;top:25%;left:30%;display:none;">
+    <dd id="uc_member" style="margin:0;">
+        <div id="_userlogin">
+            <div class="userlogin" id="info">
+                <form name="login" method="post" id="login" action="/login/userlogin.html">
+                    <div class="fb">
+                        <span>用户名:</span>
+                        <input type="text" name="username" size="20" class="ipt-txt1">
+                    </div>
+                    <div class="fb">
+                        <span>密码:</span>
+                        <input type="password" name="password" size="20" class="ipt-txt2">
+                    </div>
+
+                    <div class="fb">
+                        <span>验证码:</span>
+                        <input type="text" name="vdcode" size="8" class="ipt-txt3">
+                        <img id="loginImg" onclick="loginChangeCheckCode();" style="cursor:pointer;margin-left:0px;text-transform:uppercase;margin-top: 10px;" alt="看不清？点击更换" src="/Login/ShowValidateCode?id=0">
+                    </div>
+
+                    <div class="submit">
+                        <input type="submit" class="btn-1" value="登&nbsp;录">
+                        <button type="button" class="btn-1" style="margin-bottom: 10px;" onclick="LoginHide()">关&nbsp;闭</button>
+                        <a href="/login/register.html">注册帐号</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#">忘记密码?</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </dd>
+</div>
+<div class="image_AddCart">
+    <img src=""/>
+</div>
+<!--图片放大插件-->
+<script src="~/Scripts/assets/plugins/Images/jquery.min.js"></script>
+<script src="~/Scripts/assets/plugins/Images/smoothproducts.min.js"></script>
+<script>
+    //序列化form
+    $.fn.serializeObject = function () {
+        var o = {};
+        var a = this.serializeArray();
+
+        $.each(a, function () {
+            if (o[this.name]) {
+                if (!o[this.name].push) {
+                    o[this.name] = [o[this.name]];
+                }
+                o[this.name].push(this.value || '');
+            } else {
+                o[this.name] = this.value || '';
+            }
+        });
+        return o;
+    };
+</script>
+<script>
+    var id = 0;
+    var sid = 0;
+    var state = 0;
+    $(function () {
+        $("#loginImg").attr("src", "/Data/ShowValidateCode?id=" + id);
+        $("#Number").bind("keyup", function () {
+            $(this).val($(this).val().replace(/[\D]/g, ""));
+        });
+        $("#body1_span").click(function () {
+            $("#body1").show();
+            $("#body2").hide();
+            $("#body1_span").addClass("on");
+            $("#body2_span").removeClass("on");
+        });
+        $("#body2_span").click(function () {
+            $("#body1").hide();
+            $("#body2").show();
+            $("#body2_span").addClass("on");
+            $("#body1_span").removeClass("on");
+        });
+
+        $("#login").submit(function () {
+            _show();
+            var url = $(this).attr('action');
+            var data = $(this).serialize();
+
+            var data_arr = $(this).serializeArray();
+
+            if (data_arr[0].value == "") {
+                _hide();
+                message(true, "账号不能为空", "");
+                return false;
+            }
+            if (data_arr[1].value == "") {
+                _hide();
+                message(true, "密码不能为空", "");
+                return false;
+            }
+            if (data_arr[2].value == "") {
+                _hide();
+                message(true, "验证码不能为空", "");
+                return false;
+            }
+            var jsondata = undefined;
+            jsondata = $("#login").serializeObject();
+            jsondata = { json: JSON.stringify(jsondata) };
+            $.ajax({
+                type: "POST",
+                async: true,
+                dataType: 'json',
+                url: url,
+                data: jsondata,
+                success: function (json) {
+                    if (json.message == '0') {
+                        _hide();
+                        loginChangeCheckCode();
+                        message(json.error, "验证码错误", json.link);   //消息提示
+                    }
+                    else {
+                        if (json.error == false) {
+                            if (state == 0) {
+                                window.location = "/shop/shopok.html?id=" + sid + "&number=" + $("#Number").val();
+                            }
+                            else
+                            {
+                                $("#login_r").hide();
+                                $("#register_r").hide();
+                                $("#my").show();
+                                //获取购物车数目
+                                $.ajax({
+                                    type: "POST",
+                                    async: true,
+                                    dataType: 'json',
+                                    url: "/Data/GetShoppingCartCount",
+                                    success: function (json) {
+                                        $("#sidebarCartNum").html(json);
+                                    }
+                                });
+                                _hide();
+                                $("#loginBefore").hide();
+                                AddShoppingCart(@Model.id);
+                            }
+                        }
+                    }
+                }
+            });
+            return false;
+        });
+    });
+
+    function loginChangeCheckCode() {
+        id++;
+        $("#loginImg").attr("src", "/Data/ShowValidateCode?id=" + id);  //id=2
+    }
+
+    function buy(id) {
+        if (login()) {
+            window.location = "/shop/shopok.html?id=" + id + "&number=" + $("#Number").val();
+        }
+        else {
+            sid = id;
+            state = 0;
+            $("#loginBefore").show();
+        }
+    }
+    function login() {
+        var login = "";
+        $.ajax({
+            type: "POST",
+            async: true,
+            dataType: 'json',
+            url: "/Data/GetLogin",
+            success: function (json) {
+                login = json;
+            }
+        });
+        if (login == "false") {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+    function deduct() {
+        var N = $("#Number").val();
+        if (N > 0) {
+            N--;
+        }
+        $("#Number").val(N);
+    }
+    function add() {
+        var N = $("#Number").val();
+        if (N >= 0) {
+            N++;
+        }
+        $("#Number").val(N);
+    }
+    $(document).ready(function () {
+        $('.sp-wrap').smoothproducts();
+        $("#load").hide();
+        $(".page").show();
+    });
+    function LoginHide()
+    {
+        $('#loginBefore').hide();
+        return false;
+    }
+    function AddShoppingCart(id)
+    {
+        if (login()) {
+            $.ajax({
+                type: "POST",
+                async: true,
+                dataType: 'json',
+                url: "/Data/SetShoppingCart",
+                data: { sid: id, number:$("#Number").val()},
+                success: function (json) {
+                    if (json.error == "1") {
+                        $(".image_AddCart img").attr("src", $(".sp-current-big img").attr("src"));
+                        $(".image_AddCart").css("right", "");
+                        $(".image_AddCart").width($(".sp-current-big img").width());
+                        $(".image_AddCart").height($(".sp-current-big img").height());
+                        $(".image_AddCart").css("top", $(".sp-current-big img").offset().top - $(window).scrollTop() + "px");
+                        $(".image_AddCart").css("left", $(".sp-current-big img").offset().left + "px");
+                        $(".image_AddCart").stop(true).animate({
+                            height: "0px",
+                            width: "0px",
+                            right: "0px",
+                            top: "260px"
+                        });
+                        $(".image_AddCart").css("left", "");
+                        $("#sidebarCartNum").html(json.ShoppingCart);
+                    }
+                    else if (json.error == "2") {
+                        state = 1;
+                        $("#loginBefore").show();
+                    }
+                    else
+                    {
+                        message(true, "网络延迟，加入购物车失败，请重试！", "");
+                    }
+                }
+            });
+
+        }
+        else {
+            state = 1;
+            $("#loginBefore").show();
+        }
+
+        return false;
+    }
+</script>

@@ -7,6 +7,7 @@
 }
 @using WL.Home.Models
 @using WL.Infrastructure.Common
+@using WL.Home.Manager
 <!--banner-->
 <style>
 
@@ -109,7 +110,7 @@
                         @if (ViewData["username"].ToString() == "")
                         {
                             <div class="userlogin" id="info">
-                                <form name="login"  method="post" id="login" action="/Login/UserLogin" >
+                                <form name="login"  method="post" id="login" action="/Data/UserLogin" >
                                     <div class="fb">
                                         <span>用户名:</span>
                                         <input type="text" name="username" size="20" class="ipt-txt1">
@@ -126,41 +127,34 @@
                                     </div>
 
                                     <div class="submit">
-                                        <input type="submit" class="btn-1" value="登&nbsp;录"/>
-                                        <a href="/Login/Register">注册帐号</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="/Login/Forget">忘记密码?</a>
+                                        <input type="submit" class="btn-1" value="登&nbsp;录" style="    margin-bottom: 20px;"/>
+                                        <a href="/login/register.html">注册帐号</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#">忘记密码?</a>
                                     </div>
                                 </form>
                             </div>
                         }
                         else
                         {
+                            List<OrderModels> Order = HomeManager.GetOrder();
+                            Order = Order.Where(p => p.LogisticsState == 0).ToList();
                             <div class="login_bg">
-						        <a href="/member/index.php">
+						        <a href="/personal/personal.html">
                                 <img src="@ViewData["userportrait"].ToString()"></a>
 						        <h5><span class="greet">你好：</span><span>@ViewData["username"].ToString()</span>，欢迎登录</h5>
 						        <p>欢迎来到跨境物流链商城</p>
 					        </div>
                             <div class="login_list">
 						        <h5>
-							        <a href="/Personal/Index">进入个人中心</a>
+							        <a href="/personal/personal.html">进入个人中心</a>
 						        </h5>
 						        <p class="clearfix">
-							        <span>我的运单</span>
-							        <a href="/Personal/Index"><em>0</em></a>
+							        <span>我的订单</span>
+							        <a href="/personal/myorder.html"><em>@Order.Count</em></a>
 						        </p>
 						        <a href="javascript:void(0);" class="login_off" onclick="LogOut();">退出登录</a>
 					        </div>
                         }
                     </div>
-                    <!-- /userlogin -->
-                    <div class="latestlogin">
-                        <strong>最近登陆的会员</strong>
-                        <ul class="e7">
-                            <li><a href="http://yizhou2.gotoip11.com/www.cp-56.com/member/index.php?uid=%E9%9F%A6%E4%BF%8A%E5%AE%87" target="_blank">韦俊宇</a></li>
-                            <li><a href="http://yizhou2.gotoip11.com/www.cp-56.com/member/index.php?uid=%E7%BD%97%E9%9B%81" target="_blank">我爸叫我做国际物流</a></li>
-                        </ul>
-                    </div>
-                    <!-- /latestlogin -->
                 </dd>
             </div>
             <!--登陆结束-->
@@ -170,7 +164,7 @@
 <!--包裹搜索-->
 <div class="logistic_item_box zl_logistic_h index_search_bag">
     <div class="P_main">
-        <header><h>价格查询</h><figure id="attention1"><a href="javascript:void(0)"><img src="../image/attention.png"><font>注意事项</font></a></figure></header>
+        <header><h>价格查询</h><figure id="attention1"><a href="javascript:void(0)"><i class="fa fa-exclamation-circle" style="font-size:1.2em;"></i><font>注意事项</font></a></figure></header>
         <div class="P_main_a">
             <div class="P_main_1">
                 <span>请选择城市：</span>
@@ -229,9 +223,36 @@
         </div>
         <div class="spzs">
             <div class="sp">
-                <h1 style="border-bottom: solid 1px;"><font>工业用品</font><span><a href="http://yizhou2.gotoip11.com/shop/">立即下单</a></span></h1>
                 <ul>
-                    <li>
+                    @{
+                        List<ShopModels> shop = ViewData["HotShop"] as List<ShopModels>;
+                    }
+                    @if (shop.Count == 0)
+                    {
+                        <li>
+                            <a>
+                                <span><img src="~/Image/NotShop.jpg" style="height: 190px;"></span>
+                                <h1 style="font-size: 1.2em;">该栏目暂无商品<br/><i class="fa fa-rmb fa-fw"></i>0.00</h1>
+                            </a>
+                        </li>
+                        <li>
+                            <div class="floor-goods-right-goods-img">
+                                <img src="~/Image/NotShop.jpg" data-lazy="~/Image/NotShop.jpg" style="display: inline-block;">
+                            </div>
+                            <span class="fgrg-title"></span>
+                            <span class="fgrg-price"><font><i class="fa fa-rmb"></i>0.00</font></span>
+                        </li>
+                    }
+                    @foreach (ShopModels temp in shop)
+                    {
+                        <li>
+                            <a href="/Shop/Product?id=@temp.id">
+                                <span><img src="@temp.Image" style="height: 190px;"></span>
+                                <h1 style="font-size: 1.2em;">@temp.Name@temp.Model<br/><i class="fa fa-rmb fa-fw"></i>@temp.Trueprice</h1>
+                            </a>
+                        </li>
+                    }
+                    @*<li>
                         <a href="http://yizhou2.gotoip11.com/shop/">
                             <span><img src="../image/sp1.jpg"></span>
                             <h1>电气控制、电源及辅材</h1>
@@ -281,7 +302,7 @@
                             <span><img src="../image/sp8.jpg"></span>
                             <h1>其他品类</h1>
                         </a>
-                    </li>
+                    </li>*@
                 </ul>
             </div>
         </div>
@@ -301,7 +322,7 @@
             </p>
             <div class="clear"></div>
             <div class="Our_products_list clearfix">
-                <figure onclick="javascript:window.location.href='/Home/VietnamRoute'">
+                <figure onclick="javascript:window.location.href='/vietnamroute.html'">
                     <div class="Our_products_list_img">
                         <img src="../image/17-1P201153011O4.jpg" alt="越南专线">
                     </div>
@@ -310,14 +331,14 @@
                         <p>
                             双清包门到门，华东直达+目的地派送，运输时效4-7个工作日
                         </p>
-                        <p class="detail_btn">
-                            <a href="/Home/VietnamRoute" class="go_jt">
-                                查看详情
+                        <p class="detail_btn" >
+                            <a href="/vietnamroute.html">
+                                查看详情&nbsp;&nbsp;<i class="fa fa-arrow-right"></i>
                             </a>
                         </p>
                     </div>
                 </figure>
-                <figure onclick="javascript:window.location.href='/Home/LaosRoute'">
+                <figure onclick="javascript:window.location.href='/laosroute.html'">
                     <div class="Our_products_list_img">
                         <img src="../image/17-1P201160T5Z3.jpg" alt="老挝专线">
                     </div>
@@ -327,13 +348,13 @@
                             全国各地提高上门提货服务，中国内地-老挝全境多式联运，运输时效4-7个工作日
                         </p>
                         <p class="detail_btn">
-                            <a href="/Home/LaosRoute" class="go_jt">
-                                查看详情
+                            <a href="/laosroute.html">
+                                查看详情&nbsp;&nbsp;<i class="fa fa-arrow-right"></i>
                             </a>
                         </p>
                     </div>
                 </figure>
-                <figure onclick="javascript:window.location.href='/Home/ThailandRoute'">
+                <figure onclick="javascript:window.location.href='/thailandroute.html'">
                     <div class="Our_products_list_img">
                         <img src="../image/17-1P20116061H53.jpg" alt="泰国专线">
                     </div>
@@ -343,8 +364,8 @@
                             中国-泰国陆运双清关，送货上门，运输时效5-7个工作日
                         </p>
                         <p class="detail_btn">
-                            <a href="/Home/ThailandRoute" class="go_jt">
-                                查看详情
+                            <a href="/thailandroute.html">
+                                查看详情&nbsp;&nbsp;<i class="fa fa-arrow-right"></i>
                             </a>
                         </p>
                     </div>
@@ -367,7 +388,7 @@
                 {
                     <ul class="Latest_news_left clearfix">
                         <li class="clearfix">
-                            <a href="/Home/Article?aid=@temp.id">
+                            <a href="@Html.Raw("/article/" + temp.id + ".html")">
                                 <p class="noWrapEllipsis"><i></i>@temp.title</p>
                                 <p class="date_time">@Common.ConvertDate(temp.createtime.ToString()).ToString("yy-MM-dd")</p>
                             </a>
@@ -499,14 +520,15 @@
     </div>
 </section>
 <!--合作伙伴结束-->
+
 <script>
     var id = 0;
     function loginChangeCheckCode() {
         id++;
-        $("#loginImg").attr("src", "/Login/ShowValidateCode?id=" + id);  //id=2
+        $("#loginImg").attr("src", "/Data/ShowValidateCode?id=" + id);  //id=2
     }
     $(function () {
-        $("#loginImg").attr("src", "/Login/ShowValidateCode?id=" + id);
+        $("#loginImg").attr("src", "/Data/ShowValidateCode?id=" + id);
         $("#login").submit(function () {
             _show();
             var url = $(this).attr('action');
@@ -557,13 +579,13 @@
         _show();
         $.ajax({
             type: "POST",
-            url: "/Login/LogOut",
+            url: "/Data/LogOut",
             data: { },
             dataType: "json",
             success: function (data) {
                 if (data == 1)
                 {
-                    message(false, "退出成功", "/Home/Index");
+                    message(false, "退出成功", "/index.html");
                 }
                 _hide();
             }

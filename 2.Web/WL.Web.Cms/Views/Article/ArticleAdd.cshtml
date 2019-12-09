@@ -3,7 +3,7 @@
     ViewBag.Title = "CMS || 文章管理 - 添加文章";
     Layout = "~/Views/Shared/MainMaster.cshtml";
 }
-@using JH.Cms.Models
+@using WL.Cms.Models
 
 <link rel="stylesheet" type="text/css" href="~/Scripts/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.css">
 <script type="text/javascript" src="~/Scripts/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.js"></script>
@@ -28,6 +28,9 @@
     </div>
 </div>
 <div class="p-nav-top">
+    <ul class="p-nav-left">
+        <li><button type="button" class="btn red" onclick="AddArticle()">文章提交</button></li>
+    </ul>
     <ul class="p-nav-right">
         <li><button type="button" class="btn red" id="LangChinese">中文</button></li>
         <li><button type="button" class="btn red" id="LangTraditional">繁体</button></li>
@@ -35,6 +38,7 @@
         <li><button type="button" class="btn red" id="LangVietnam">越南语</button></li>
     </ul>
 </div>
+
 <div class="row">
     <div class="col-md-6" style="width:100%;">
         <div class="portlet green box">
@@ -59,8 +63,8 @@
                             <div class="col-md-6">
                                 <select class="form-control" id="catid" name="catid">
                                     @{
-                                        List<Columu> Flist = ViewData["listFather"] as List<Columu>;
-                                        List<Columu> Slist = ViewData["listSon"] as List<Columu>;
+                                        List<ColumuModels> Flist = ViewData["listFather"] as List<ColumuModels>;
+                                        List<ColumuModels> Slist = ViewData["listSon"] as List<ColumuModels>;
                                     }
                                     @if (Slist.Count == 0)
                                     {
@@ -68,11 +72,11 @@
                                     }
                                     else
                                     {
-                                        foreach (Columu temp in Flist)
+                                        foreach (ColumuModels temp in Flist)
                                         {
                                             <option value="@temp.ID" disabled=""> @temp.catname </option>
-                                            List<Columu> list = Slist.Where(p => p.parentid == temp.ID).ToList();
-                                            foreach (Columu temp1 in Slist)
+                                            List<ColumuModels> list = Slist.Where(p => p.parentid == temp.ID).ToList();
+                                            foreach (ColumuModels temp1 in Slist)
                                             {
                                                 if (temp1.parentid == temp.ID)
                                                 {
@@ -98,6 +102,8 @@
                             </label>
                             <div class="col-md-6">
                                 <input type="text" class="form-control" id="title" name="title" placeholder="标题">
+                                <span class="help-block" id="title_span">
+                                </span>
                             </div>
                         </div>
 
@@ -192,6 +198,27 @@
         </div>
     </div>
 </div>
+
+<div style="position:fixed;top:143px;left:245px;z-index: 9999;display:none;" id="AddArticle"><button type="button" class="btn red" onclick="AddArticle()">文章提交</button></div>
+<script>
+    $(function () {
+        $(window).scroll(function(){
+            var top = $(".p-nav-left button").offset().top;
+            var tops = $(document).scrollTop();
+            if(tops > top)
+            {
+                $("#AddArticle").show();
+            }
+            if(tops < top)
+            {
+                $("#AddArticle").hide();
+            }
+        });
+    });
+</script>
+
+
+
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>UE使用案例</title>
 <script type="text/javascript" charset="utf-8" src="~/Scripts/assets/plugins/ueditor/ueditor.config.js"></script>
@@ -240,8 +267,26 @@
             default:
                 break;
         }
+        $("#title").blur(function(){
+            $.ajax({
+                type: "post", //要用post方式
+                data: "{'title':'" + $("#title").val() + "'}",
+                url: "/Article/GetArticleExistence",//方法所在页面和方法名
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    if (data == 0) {
+                        $("#title_span").html("文章已存在");
+                    }
+                    else{
+                        $("#title_span").html("文章可添加");
+                    }
+                }
+            });
+        });
         $(".p-nav-right li button").eq(lang).removeClass("red");
         $(".p-nav-right li button").eq(lang).addClass("green");
+
         //中文语按钮
         $("#LangChinese").click(function () {
             _hide();
@@ -331,8 +376,8 @@
             success: function (data) {
                 if (data == "1")//返回的数据用data.d获取内容
                 {
-                    $("#myModal1 .modal-body p").html("成功添加文章");
-                    $("#msg").trigger('click');
+                    $("#myModal2 .modal-body p").html("成功添加文章");
+                    $("#msg1").trigger('click');
                 }
                 else {
                     $("#myModal1 .modal-body p").html("添加文章失败");
@@ -377,6 +422,26 @@
             </div>
             <div class="modal-footer">
                 <button data-dismiss="modal" class="btn green" onclick="_show();">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<a href="#myModal2" role="button" class="btn red" data-toggle="modal" style="display:none" id="msg1">Alert</a>
+<div id="myModal2" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="false" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title">提示</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    成功添加栏目
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button data-dismiss="modal" class="btn green" onclick="window.location.href='/Article/ArticleNew'">确认</button>
             </div>
         </div>
     </div>

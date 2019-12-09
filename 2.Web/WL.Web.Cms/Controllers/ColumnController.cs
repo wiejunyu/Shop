@@ -1,24 +1,23 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Newtonsoft.Json;
 using System.IO;
 using WL.Cms.Models;
 using WL.Cms.Manager;
+using Newtonsoft.Json;
 using WL.Infrastructure.Common;
 
 namespace WL.Web.Cms.Controllers
 {
     public class ColumnController : BaseController
     {
-        static public int lang = 1;
+        int lang = Convert.ToInt32(CookiesManager.GetCookies());
         // GET: Column
         public ActionResult ColumuAdd()
         {
-            List<Columu> list = new List<Columu>();
+            List<ColumuModels> list = new List<ColumuModels>();
             list = ColumuManager.GetFatherColumu(lang);
             ViewData["Categorylist"] = list;
             ViewData["lang"] = lang;
@@ -28,8 +27,8 @@ namespace WL.Web.Cms.Controllers
         //添加栏目语言切换
         public string ColumuAddLang(int langInt)
         {
-            lang = langInt;
-            List<Columu> list = new List<Columu>();
+            CookiesManager.SetCookies(langInt);
+            List<ColumuModels> list = new List<ColumuModels>();
             list = ColumuManager.GetFatherColumu(lang);
             return JsonConvert.SerializeObject(list);
         }
@@ -37,15 +36,8 @@ namespace WL.Web.Cms.Controllers
         //栏目管理语言切换
         public JsonResult ColumuManagementLangFather(int langInt)
         {
-            lang = langInt;
+            CookiesManager.SetCookies(langInt);
             return Json("1");
-        }
-        public string ColumuManagementLangSon(int langInt)
-        {
-            lang = langInt;
-            List<Columu> list = new List<Columu>();
-            list = ColumuManager.GetFatherColumu(lang);
-            return JsonConvert.SerializeObject(list);
         }
 
         /// <summary>
@@ -58,11 +50,14 @@ namespace WL.Web.Cms.Controllers
             int rel = -1;
             HttpPostedFileBase id_positive = Request.Files["id_positive"];
             string id_positive_url = "";
+
+            //获取缩略图
             if (id_positive != null && id_positive.ContentLength > 0)
             {
                 id_positive_url = Upload(id_positive);
             }
-            Columu cl = new Columu();
+
+            ColumuModels cl = new ColumuModels();
             cl.catname = Request.Form["catname"];
             cl.parentid = Convert.ToInt32(Request.Form["parentid"]);
             cl.moduleid = Convert.ToInt32(Request.Form["moduleid"]);
@@ -71,7 +66,7 @@ namespace WL.Web.Cms.Controllers
             cl.description = Request.Form["description"];
 
             //添加排序
-            List<Columu> list = new List<Columu>();
+            List<ColumuModels> list = new List<ColumuModels>();
             if (cl.parentid == 0)
             {
                 list = ColumuManager.GetFatherColumu(lang);
@@ -103,9 +98,9 @@ namespace WL.Web.Cms.Controllers
             cl.hits = Convert.ToInt32(Request.Form["hits"]);
             cl.image = id_positive_url;
 
-            //获取url并创建该文件夹，如果没有"/",自动添加
+            //获取url，如果没有"/",自动添加
             ColumuManager.CreateFolder(Request.Form["url"], cl, ColumuManager.GetColumu(lang));
-            //获取url并创建该文件夹，如果没有"/",自动添加
+            //获取url，如果没有"/",自动添加
             cl.lang = lang;
             cl.catdir = Request.Form["catdir"];
             cl.url = Request.Form["url"];
@@ -120,12 +115,13 @@ namespace WL.Web.Cms.Controllers
             return Json(rel);
         }
 
+        //栏目管理
         public ActionResult ColumuManagement()
         {
-            List<Columu> list = new List<Columu>();
+            List<ColumuModels> list = new List<ColumuModels>();
             list = ColumuManager.GetFatherColumu(lang);
             ViewData["listFather"] = list;
-            list = new List<Columu>();
+            list = new List<ColumuModels>();
             list = ColumuManager.GetSonColumu(lang);
             ViewData["listSon"] = list;
             ViewData["lang"] = lang;
@@ -139,7 +135,7 @@ namespace WL.Web.Cms.Controllers
         /// <returns></returns>
         public string IdGetColumu(int id)
         {
-            List<Columu> list = new List<Columu>();
+            List<ColumuModels> list = new List<ColumuModels>();
             list = ColumuManager.IdGetColumu(id);
             return JsonConvert.SerializeObject(list);
         }
@@ -160,11 +156,11 @@ namespace WL.Web.Cms.Controllers
             }
             else
             {
-                List<Columu> img = new List<Columu>();
+                List<ColumuModels> img = new List<ColumuModels>();
                 img = ColumuManager.GetColumuImage(Convert.ToInt32(Request.Form["id"]));
                 id_positive_url = img[0].image;
             }
-            Columu cl = new Columu();
+            ColumuModels cl = new ColumuModels();
             cl.ID = Convert.ToInt32(Request.Form["id"]);
             cl.catname = Request.Form["catname"];
             cl.parentid = Convert.ToInt32(Request.Form["parentid"]);
@@ -173,7 +169,7 @@ namespace WL.Web.Cms.Controllers
             cl.keywords = Request.Form["keywords"];
             cl.description = Request.Form["description"];
 
-            List<Columu> list = new List<Columu>();
+            List<ColumuModels> list = new List<ColumuModels>();
             if (cl.parentid == 0)
             {
                 list = ColumuManager.GetFatherColumu(lang);
@@ -190,9 +186,9 @@ namespace WL.Web.Cms.Controllers
             cl.hits = Convert.ToInt32(Request.Form["hits"]);
             cl.image = id_positive_url;
 
-            //获取url并创建该文件夹，如果没有"/",自动添加
+            //获取url，如果没有"/",自动添加
             ColumuManager.CreateFolder(Request.Form["url"], cl, ColumuManager.GetColumu(lang));
-            //获取url并创建该文件夹，如果没有"/",自动添加
+            //获取url，如果没有"/",自动添加
             cl.catdir = Request.Form["catdir"];
             cl.url = Request.Form["url"];
             cl.lang = lang;
@@ -214,13 +210,13 @@ namespace WL.Web.Cms.Controllers
         /// <returns></returns>
         public JsonResult DelColumu(int id)
         {
-            List<Columu> f = ColumuManager.IdGetColumu(id);
+            List<ColumuModels> f = ColumuManager.IdGetColumu(id);
             if (f[0].parentid == 0)
             {
-                List<Columu> s = ColumuManager.GetSonColumu(lang, id);
+                List<ColumuModels> s = ColumuManager.GetSonColumu(lang, id);
                 if (s.Count != 0)
                 {
-                    foreach (Columu temp in s)
+                    foreach (ColumuModels temp in s)
                     {
                         ColumuManager.DelColumu(temp.ID);
                         ColumuManager.DelColumuArticle(temp.ID);
@@ -232,9 +228,10 @@ namespace WL.Web.Cms.Controllers
             return Json("1");
         }
 
+        //外部链接添加
         public ActionResult LinkAdd()
         {
-            List<Columu> list = new List<Columu>();
+            List<ColumuModels> list = new List<ColumuModels>();
             list = ColumuManager.GetFatherColumu(lang);
             ViewData["Categorylist"] = list;
             ViewData["lang"] = lang;

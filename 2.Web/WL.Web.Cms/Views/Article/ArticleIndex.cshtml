@@ -3,7 +3,8 @@
     ViewBag.Title = "CMS || 文章管理 - 文章查看";
     Layout = "~/Views/Shared/MainMaster.cshtml";
 }
-@using JH.Cms.Models
+@model WL.Cms.Models.ColumuModels
+@using WL.Cms.Models
 <link rel="stylesheet" type="text/css" href="~/Scripts/assets/plugins/data-tables/DT_bootstrap.css" />
 <div class="row">
     <div class="col-md-12">
@@ -32,7 +33,7 @@
         <div class="portlet box grey">
             <div class="portlet-title">
                 <div class="caption">
-                    <i class="fa fa-globe"></i>文章查看
+                    <i class="fa fa-globe"></i>@Model.catname
                 </div>
                 <div class="tools">
                     <a href="javascript:;" class="collapse"></a>
@@ -47,6 +48,9 @@
                             </th>
                             <th>
                                 ID
+                            </th>
+                            <th>
+                                栏目
                             </th>
                             <th>
                                 标题
@@ -100,8 +104,8 @@
                         <div class="col-md-6">
                             <select class="form-control" id="catid" name="catid">
                                 @{
-                                    List<Columu> Flist = ViewData["listFather"] as List<Columu>;
-                                    List<Columu> Slist = ViewData["listSon"] as List<Columu>;
+                                    List<ColumuModels> Flist = ViewData["listFather"] as List<ColumuModels>;
+                                    List<ColumuModels> Slist = ViewData["listSon"] as List<ColumuModels>;
                                 }
                                 @if (Slist.Count == 0)
                                 {
@@ -109,11 +113,11 @@
                                 }
                                 else
                                 {
-                                    foreach (Columu temp in Flist)
+                                    foreach (ColumuModels temp in Flist)
                                     {
                                         <option value="@temp.ID" disabled=""> @temp.catname </option>
-                                        List<Columu> list = Slist.Where(p => p.parentid == temp.ID).ToList();
-                                        foreach (Columu temp1 in Slist)
+                                        List<ColumuModels> list = Slist.Where(p => p.parentid == temp.ID).ToList();
+                                        foreach (ColumuModels temp1 in Slist)
                                         {
                                             if (temp1.parentid == temp.ID)
                                             {
@@ -168,19 +172,24 @@
         //栏目默认选中
         var id = getQueryString('id');
 
-        editableTable1.init("sample_1", "/Article/GetArticleList?cid=" + id, true, true, [], 0, "desc", [
+        editableTable1.init("sample_1", "/Article/GetArticleList?cid=" + id, true, true, [], 6, "desc", [
                 {
                     "fnRender": function (obj) {
                         return '<input type="checkbox" class="checkboxes" data-type="' + obj.aData.id + '"/>';
                     }
                 },
                 { "mData": "id" },
-                { "mData": "title" },
+                {
+                    "fnRender": function (obj) {
+                        return "<a href='http://test.chengyunvip.com" + obj.aData.url + "' target='_blank'>" + obj.aData.title + "</a>";
+                    }
+                },
+                { "mData": "catname" },
                 { "mData": "hits" },
                 { "mData": "username" },
                 {
                     "fnRender": function (obj) {
-                        return UnixToDate(obj.aData.createtime);;
+                        return UnixToDate(obj.aData.createtime,true,8);
                      }
                 },
                 {
@@ -193,32 +202,6 @@
                 }
         ]);
     });
-
-
-    jQuery('#sample_1 .group-checkable').change(function () {
-        var set = jQuery(this).attr("data-set");
-        var checked = jQuery(this).is(":checked");
-        jQuery(set).each(function () {
-            if (checked) {
-                $(this).attr("checked", true);
-                $(this).parents('tr').addClass("active");
-            } else {
-                $(this).attr("checked", false);
-                $(this).parents('tr').removeClass("active");
-            }
-        });
-        jQuery.uniform.update(set);
-    });
-    function UnixToDate(timestamp) {
-        var date = new Date(timestamp * 1000);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
-        Y = date.getFullYear() + '-';
-        M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
-        D = date.getDate() + ' ';
-        h = date.getHours() + ':';
-        m = date.getMinutes() + ':';
-        s = date.getSeconds();
-        return Y + M + D + h + m + s;
-    }
     var aid = 0;
     function ArticleDelete(id) {
         aid = id;

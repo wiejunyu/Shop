@@ -645,7 +645,8 @@ var handleDatePickersT = function () {
         $('.date-picker').datepicker({
             rtl: App.isRTL(),
             language: 'zh-CN',
-            autoclose: true
+            autoclose: true,
+            startView: 'decade'
         });
         $('body').removeClass("modal-open"); // fix bug when inline picker is used in modal
     }

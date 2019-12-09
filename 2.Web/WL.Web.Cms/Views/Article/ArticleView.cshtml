@@ -3,8 +3,8 @@
     ViewBag.Title = "CMS || 文章管理 - 文章查看";
     Layout = "~/Views/Shared/MainMaster.cshtml";
 }
-@using JH.Cms.Models
-@using JH.Cms.Manager
+@using WL.Cms.Models
+@using WL.Cms.Manager
 <link href="~/Scripts/assets/plugins/fuelux/css/tree-metronic.css" rel="stylesheet" />
 <link href="~/Scripts/assets/plugins/fuelux/css/tree.css" rel="stylesheet" />
 <script src="~/Scripts/assets/plugins/fuelux/js/spinner.js"></script>
@@ -58,54 +58,55 @@
                             <div class="tree-folder-name"><font>所有栏目</font><span style="float:right;"><a href="/Article/ArticleIndex?id=0" class="Look" >查看所有文章</a></span><div class="tree-actions"></div></div>
                         </div>
                         <div class="tree-folder-content" id="cl">
-                            @foreach (Columu tempFather in ViewData["listFather"] as List<Columu>)
+                            @foreach (ColumuModels tempFather in ViewData["listFather"] as List<ColumuModels>)
                             {
-                                <div class="tree-folder" style="display: block;" onclick="javascript:void(0)">
-                                    <div class="tree-folder-header">
-                                        <i class="fa fa-folder"></i>
-                                        <div class="tree-folder-name">
-                                            <font>@tempFather.catname</font>
-                                            <span style="float:right;">
-                                                @{
-                                                    List<Columu> listColumu = ColumuManager.GetSonColumu(Convert.ToInt32(ViewData["lang"]), tempFather.ID);
-                                                    int count = 0;
-                                                    foreach (Columu temp in listColumu)
+                                List<ColumuModels> listColumu = ColumuManager.GetSonColumu(Convert.ToInt32(ViewData["lang"]), tempFather.ID);
+                                int count = 0;
+                                foreach (ColumuModels temp in listColumu)
+                                {
+                                    count += (ViewData["listArticle"] as List<ArticleModels>).Where(p => p.catid == temp.ID).Count();
+                                }
+                                if (count != 0)
+                                {
+                                    <div class="tree-folder" style="display: block;" onclick="javascript:void(0)">
+                                        <div class="tree-folder-header">
+                                            <i class="fa fa-folder"></i>
+                                            <div class="tree-folder-name">
+                                            
+                                                <font>@tempFather.catname| 文章数：@count</font>
+                                                <span style="float:right;"><a href="/Article/ArticleIndex?id=@tempFather.ID" class="Look">查看文章</a>
+                                                </span>
+                                                <div class="tree-actions"></div>
+                                            </div>
+                                        </div>
+                                        <div class="tree-folder-content">
+                                        </div>
+                                        <div class="tree-loader" style="display: none;">
+                                            <ul>
+                                                @foreach (ColumuModels tempSon in ViewData["listSon"] as List<ColumuModels>)
+                                                {
+                                                    if (tempSon.parentid == tempFather.ID)
                                                     {
-                                                        count += (ViewData["listArticle"] as List<Article>).Where(p => p.catid == temp.ID).Count();
+                                                        count = (ViewData["listArticle"] as List<ArticleModels>).Where(p => p.catid == @tempSon.ID).Count();
+                                                        if (count != 0)
+                                                        {
+                                                            <a href="/Article/ArticleIndex?id=@tempSon.ID">
+                                                                <li style="margin-bottom:20px;">
+                                                                    <p data-type="@tempSon.ID">
+                                                                        <font>@tempSon.catname| 文章数：@count</font>
+                                                                        <span style="float: right;">
+                                                                            查看文章
+                                                                        </span>
+                                                                    </p>
+                                                                </li>
+                                                            </a>
+                                                        }
                                                     }
                                                 }
-                                                文章数：@count
-                                                |<a href="/Article/ArticleIndex?id=@tempFather.ID" class="Look">查看文章</a>
-                                            </span>
-                                            <div class="tree-actions"></div>
+                                            </ul>
                                         </div>
                                     </div>
-                                    <div class="tree-folder-content">
-                                    </div>
-                                    <div class="tree-loader" style="display: none;">
-                                        <ul>
-                                            @foreach (Columu tempSon in ViewData["listSon"] as List<Columu>)
-                                            {
-                                                if (tempSon.parentid == tempFather.ID)
-                                                {
-                                                    <a href="/Article/ArticleIndex?id=@tempSon.ID">
-                                                        <li style="margin-bottom:20px;">
-                                                            <p data-type="@tempSon.ID">
-                                                                <font>@tempSon.catname</font>
-                                                                <span style="float: right;">
-                                                                    @{
-                                                                        count = (ViewData["listArticle"] as List<Article>).Where(p => p.catid == @tempSon.ID).Count();
-                                                                    }
-                                                                    文章数：@count|查看文章
-                                                                </span>
-                                                            </p>
-                                                        </li>
-                                                    </a>
-                                                }
-                                            }
-                                        </ul>
-                                    </div>
-                                </div>
+                                }
                             }
                         </div>
                     </div>

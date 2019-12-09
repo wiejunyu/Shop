@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using WL.Home.Models
+@{
+    SysconfigModels sysconfig = ViewData["Sysconfig"] as SysconfigModels;
+}
+<!DOCTYPE html>
 <!-- saved from url=(0038)http://yizhou2.gotoip11.com/index.html -->
 <html>
 <head>
@@ -24,6 +28,8 @@
     <link href="~/Content/revision.css" rel="stylesheet" />
     <link href="~/Content/reset.css" rel="stylesheet" />
     <link href="~/Content/css.css" rel="stylesheet" />
+    <link href="~/Content/animations.css" rel="stylesheet" />
+    <link href="~/Content/icon/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
 
     <script src="~/Scripts/jquery-1.11.0.min.js"></script>
     <script src="~/Scripts/hm.js"></script>
@@ -33,6 +39,7 @@
     <script src="~/Scripts/main.js"></script>
     <script src="~/Scripts/control.js"></script>
     <script src="~/Scripts/js.js"></script>
+
 
 </head>
 <body>
@@ -46,13 +53,13 @@
 
                             @if (ViewData["username"].ToString() == "")
                             {
-                                <a href="/" class="line_no">游客</a>
+                                <a href="/login/login.html" class="line_no">游客</a>
                             }
                             else
                             {
-                                <a href="/" class="line_no">@Html.Raw(ViewData["username"].ToString())</a>
+                                <a href="/personal/personal.html" class="line_no">@Html.Raw(ViewData["username"].ToString())</a>
                             }
-                            <font>，宇宙物流欢迎您！联系电话：</font><a href="javascript:void(0)" class="topbar_tel">15077144684</a></font>
+                            <font>，宇宙物流欢迎您！联系电话：</font><a href="javascript:void(0)" class="topbar_tel">@sysconfig.Tel</a></font>
                         </span>
                     </p>
                 </div>
@@ -62,13 +69,13 @@
                         {
                             <ul class="clearfix topbar_right_list">
                                 <li>
-                                    <a href="/Login/Login">
+                                    <a href="/login/login.html">
                                         <span>请登录</span>
                                     </a>
                                 </li>
                                 <li class="space"></li>
                                 <li>
-                                    <a href="/Login/Register">
+                                    <a href="/login/register.html">
                                         <span>免费注册</span>
                                     </a>
                                 </li>
@@ -84,7 +91,7 @@
                         {
                             <ul class="clearfix topbar_right_list">
                                 <li>
-                                    <a href="/Personal/Index">
+                                    <a href="/personal/personal.html">
                                         <span>进入会员中心</span>
                                     </a>
                                 </li>
@@ -107,7 +114,7 @@
                 <div class="navitem_left clearfix">
                     <p class="navitem_logo">
                         <a href="/">
-                            <img src="/image/logo.png" alt="logo">
+                            <img src="@sysconfig.Icon" alt="logo">
                         </a>
                     </p>
                 </div>
@@ -116,57 +123,46 @@
                     <ul class="clearfix">
                         <li class="drop_down">
                             <a href="/" title="首页">首页</a>
+                        </li>
+                        <li class="drop_down">
+                            <a href="/news.html" title="行业资讯">行业资讯</a>
+                        </li>
+                        <li class="drop_down">
+                            <a href="/route.html" title="物流项目">物流项目</a>
                             <div class="subnav">
+
+                                <a href="/route.html" title="东南亚专线">东南亚专线</a>
+
+                                <a href="/customs.html" title="报关报检">报关报检</a>
+
+                                <a href="/cfsdoor.html" title="双清关">双清关</a>
 
                             </div>
                         </li>
                         <li class="drop_down">
-                            <a href="/Home/News/" title="行业资讯">行业资讯</a>
+                            <a href="/purchase.html" title="供应链管理">供应链管理</a>
                             <div class="subnav">
+
+                                <a href="/purchase.html" title="采购">采购</a>
+
+                                <a href="/storage.html" title="仓储">仓储</a>
+
+                                <a href="/distribution.html" title="终端配送">终端配送</a>
 
                             </div>
                         </li>
                         <li class="drop_down">
-                            <a href="/Home/route/" title="物流项目">物流项目</a>
-                            <div class="subnav">
-
-                                <a href="/Home/route/" title="东南亚专线">东南亚专线</a>
-
-                                <a href="/Home/Customs/" title="报关报检">报关报检</a>
-
-                                <a href="/Home/CFS-DOOR/" title="双清关">双清关</a>
-
-                            </div>
+                            <a href="/about.html" title="关于我们">关于我们</a>
                         </li>
                         <li class="drop_down">
-                            <a href="/Home/Purchase/" title="供应链管理">供应链管理</a>
-                            <div class="subnav">
-
-                                <a href="/Home/Purchase/" title="采购">采购</a>
-
-                                <a href="/Home/Storage/" title="仓储">仓储</a>
-
-                                <a href="/Home/Distribution/" title="终端配送">终端配送</a>
-
-                            </div>
-                        </li>
-                        <li class="drop_down">
-                            <a href="/Home/About/" title="关于我们">关于我们</a>
-                            <div class="subnav">
-                            </div>
-                        </li>
-                        <li class="drop_down">
-                            <a href="/Home/Shop/" title="商品采购">商品采购</a>
-                            <div class="subnav">
-
-                            </div>
+                            <a href="/shop/shop.html" title="商品采购">商品采购</a>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
         <!--导航结束-->
-        @RenderBody();
+        @RenderBody()
         <!--foot-->
         <footer>
             <div class="wrapper">
@@ -174,30 +170,29 @@
                     <ul>
                         <li>
                             <a class="foot_logo" href="javascript:void(0);">
-                                <img src="/image/logo_white.png" alt="">
+                                <img src="@sysconfig.Icon" alt="">
                             </a>
                         </li>
                         <li>
-                            <a class="foot_icon" href="tel:13788682003">
-                                <img src="/image/phone.png" alt="">
-                                <span>13788682003</span>
+                            <a class="foot_icon" href="tel:@sysconfig.Tel">
+                                <span><i class="fa fa-phone fa-fw" style="font-size:1.2em;"></i>@sysconfig.Tel</span>
                             </a>
-                            <a class="foot_icon" href="https://www.facebook.com/profile.php?id=100024514969908&amp;fref=jewel">
-                                <span>facebook</span>
+                            <a class="foot_icon" href="@sysconfig.Facebook">
+                                <span><i class="fa fa-facebook-square fa-fw"></i>facebook</span>
                             </a>
                         </li>
                     </ul>
                     <ul>
                         <p class="foot_bottom">
-                            <span>南宁市高新区高科路8号南宁创客城电子产业园2号楼2层ZH161号</span>
-                            <span>桂ICP备18001712号</span>
+                            <span>@sysconfig.Address</span>
+                            <span>@sysconfig.Record</span>
                         </p>
                     </ul>
                 </div>
 
                 <div class="footer-ewm">
                     <a href="javascript:void(0);">
-                        <img src="/image/ewm.png" alt="二维码">
+                        <img src="@sysconfig.QR_code" alt="二维码">
                     </a>
                 </div>
             </div>

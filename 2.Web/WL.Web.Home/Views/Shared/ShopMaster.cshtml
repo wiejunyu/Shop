@@ -1,4 +1,7 @@
 ﻿@using WL.Home.Models
+@{
+    SysconfigModels sysconfig = ViewData["Sysconfig"] as SysconfigModels;
+}
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -13,15 +16,16 @@
     <link href="~/Content/swiper.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/Content/banner.css">
     <link rel="stylesheet" href="~/Content/index.css">
-    <link rel="stylesheet" href="~/Content/reset.css">
+    <link rel="stylesheet" href="~/Content/reset_shop.css">
     <link rel="stylesheet" href="~/Content/revision.css">
     <link rel="stylesheet" href="~/Content/laydate.css" id="layuicss-laydate">
-    <link rel="stylesheet" type="text/css" href="~/Content/cityselect.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/cityselect_shop.css">
     <link rel="stylesheet" href="~/Content/animations.css">
     <link href="~/Content/css.css" rel="stylesheet" />
     <link href="~/Content/cargo.css" rel="stylesheet" />
     <link href="~/Scripts/DistortedButtonEffects/normalize.css" rel="stylesheet" />
     <link href="~/Scripts/DistortedButtonEffects/main.css" rel="stylesheet" />
+    <link href="~/Content/icon/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
 
     <script src="~/Scripts/jquery-1.11.0.min.js"></script>
     <script src="~/Scripts/js.js"></script>
@@ -55,10 +59,20 @@
                             <img src="/image/logo.png" alt="logo">
                         </a>
                     </p>
-                    <p class="navitem_member" id="navitem_member" style="padding-top:3.5%;"><a href="/member/index.php">登录</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="/member/index_do.php?fmdo=user&dopost=regnew">注册账号</a></p>
+                    @{
+                        UserModels user = ViewData["user"] as UserModels;
+                    }
+                    @if (user == null)
+                    {
+                        <p class="navitem_member" id="navitem_member" style="padding-top:3.5%;"><a href="/login/login.html">登录</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="/Login/Register">注册账号</a></p>
+                    }
+                    else
+                    {
+                        <p class="navitem_member" id="navitem_member" style="padding-top:3.5%;"><a href="/personal/personal.html" class="line_no">@user.UserName</a><font>，宇宙物流欢迎您！联系电话：</font><a href="javascript:void(0)" class="topbar_tel">@sysconfig.Tel</a></p>
+                    }
                 </div>
                 <div class="navitem_right_shops" style="padding-top:1%;">
-                    <input class="mod-keywords top-select-sel-text J_t_searchOne" name="search" type="text" value="在这里搜索..." onfocus="if(this.value=='在这里搜索...'){this.value='';}" onblur="if(this.value==''){this.value='在这里搜索...';}" />
+                    <input class="mod-keywords top-select-sel-text J_t_searchOne" id="search" type="text" value="在这里搜索..." onfocus="if(this.value=='在这里搜索...'){this.value='';}" onblur="if(this.value==''){this.value='在这里搜索...';}" />
                     <button class="mod-search" type="button" onclick="search()" class="top-select-but ft-16 cursor">搜索</button>
                 </div>
 
@@ -66,6 +80,7 @@
             <div class="nav_shops">
                 <ul>
                     <li class="nav_shops_li">
+                        <img src="~/Image/menu.png" />
                         <h>全部商品分类</h>
                         <div class="nav-main">
                             <div class="nav-main-left">
@@ -76,11 +91,12 @@
                                         List<CategoryModels> categoryTwo = category.Where(p => p.Rank == 2).ToList();
                                         List<CategoryModels> categoryThree = category.Where(p => p.Rank == 3).ToList();
                                         List<CategoryModels> categoryFour = category.Where(p => p.Rank == 4).ToList();
+                                        List<CategoryModels> list = new List<CategoryModels>();
                                     }
                                     @foreach (CategoryModels tempOne in categoryOne)
                                     {
                                         <li class="b50" attr-type="2">
-                                            <a href="/Home/shop?id=@tempOne.id" class="a_show1">
+                                            <a href="/shop/list.html?id=@tempOne.id" class="a_show1">
                                                 <img src="@tempOne.Picture" attr-src="@tempOne.Picture">
                                                 @tempOne.Name
                                             </a>
@@ -88,41 +104,71 @@
                                                 <div class="get-height">
                                                     <!-- foreach data[]-->
                                                     <div class="J_cateBox">
-                                                        @foreach (CategoryModels tempTwo in categoryTwo)
+                                                        @{
+                                                            list = new List<CategoryModels>();
+                                                            list = categoryTwo.Where(p => p.Parentid == tempOne.id).ToList();
+                                                        }
+                                                        @if (list.Count != 0)
                                                         {
-                                                            if (tempTwo.Parentid == tempOne.id)
+                                                            foreach (CategoryModels tempTwo in categoryTwo)
                                                             {
-                                                                <div class="category-wrapper">
-                                                                    <div class="nav-main-type">
-                                                                        <span>
-                                                                            <a href="/Home/shop?id=@tempTwo.id" class="a_show">@tempTwo.Name</a>
-                                                                        </span>
-                                                                        <ul>
-                                                                            @foreach (CategoryModels tempThree in categoryThree)
-                                                                            {
-                                                                                if (tempThree.Parentid == tempTwo.id)
+                                                                if (tempTwo.Parentid == tempOne.id)
+                                                                {
+                                                                    <div class="category-wrapper">
+                                                                        <div class="nav-main-type">
+                                                                            <span>
+                                                                                <a href="/shop/list.html?id=@tempTwo.id" class="a_show">@tempTwo.Name</a>
+                                                                            </span>
+                                                                            <ul>
+                                                                                @{
+                                                                                    list = new List<CategoryModels>();
+                                                                                    list = categoryThree.Where(p => p.Parentid == tempTwo.id).ToList();
+                                                                                }
+                                                                                @if (list.Count != 0)
+                                                                                {
+                                                                                    foreach (CategoryModels tempThree in categoryThree)
+                                                                                    {
+                                                                                        if (tempThree.Parentid == tempTwo.id)
+                                                                                        {
+                                                                                            <li>
+                                                                                                |<a href="/shop/list.html?id=@tempThree.id" class="a_show">@tempThree.Name</a>
+                                                                                            </li>
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                                else
                                                                                 {
                                                                                     <li>
-                                                                                        |<a href="/Home/shop?id=@tempThree.id" class="a_show">@tempThree.Name</a>
+                                                                                        |<a href="#">该栏目暂无商品</a>
                                                                                     </li>
                                                                                 }
-                                                                            }
-
-                                                                        </ul>
+                                                                            </ul>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                                <div class="category-brands">
-                                                                    @foreach (CategoryModels tempFour in categoryFour)
-                                                                    {
-                                                                        if (tempFour.Parentid == tempTwo.id)
-                                                                        {
-                                                                            <a href="/Home/shop?id=@tempFour.id" class="a_show">
-                                                                                <img src="@tempFour.Picture">
-                                                                            </a>
-                                                                        }
-                                                                    }
-                                                                </div>
+
+                                                                }
                                                             }
+                                                            <div class="category-brands">
+                                                                @foreach (CategoryModels tempFour in categoryFour)
+                                                                {
+                                                                    if (tempFour.Parentid == tempOne.id)
+                                                                    {
+                                                                        <a href="@tempFour.Url" class="a_show">
+                                                                            <img src="@tempFour.Picture">
+                                                                        </a>
+                                                                    }
+                                                                }
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="category-wrapper">
+                                                                <div class="nav-main-type">
+                                                                    <span>
+                                                                        <a href="#" class="a_show">该栏目暂无商品</a>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
                                                         }
                                                     </div>
                                                 </div>
@@ -134,10 +180,17 @@
                         </div>
                     </li>
                     <li>
-                        <a href="/">首页</a>
+                        <a href="/shop/shop.html">首页</a>
                     </li>
                     <li>
-                        <a href="/member/index.php">会员登录</a>
+                        @if (user == null)
+                        {
+                            <a href="/login/login.html">会员登录</a>
+                        }
+                        else
+                        {
+                            <a href="javascript:void 0;" onclick="LogOut()">退出登录</a>
+                        }
                     </li>
                     <li>
                         <a href="/">退出商城</a>
@@ -214,7 +267,7 @@
             </div>
         </div>
         <!--banner结束-->
-        @RenderBody();
+        @RenderBody()
         <!--foot-->
         <footer>
             <div class="wrapper">
@@ -222,41 +275,137 @@
                     <ul>
                         <li>
                             <a class="foot_logo" href="javascript:void(0);">
-                                <img src="/image/logo_white.png" alt="">
+                                <img src="@sysconfig.Icon" alt="logo">
                             </a>
                         </li>
                         <li>
-                            <a class="foot_icon" href="tel:13788682003">
-                                <img src="/image/phone.png" alt="">
-                                <span>13788682003</span>
+                            <a class="foot_icon" href="tel:@sysconfig.Tel">
+                                <span><i class="fa fa-phone fa-fw" style="font-size:1.2em;"></i>@sysconfig.Tel</span>
                             </a>
-                            <a class="foot_icon" href="https://www.facebook.com/profile.php?id=100024514969908&fref=jewel">
-                                <span>facebook</span>
+                            <a class="foot_icon" href="@sysconfig.Facebook">
+                                <span><i class="fa fa-facebook-square fa-fw"></i>facebook</span>
                             </a>
                         </li>
                     </ul>
                     <ul>
                         <p class="foot_bottom">
-                            <span>南宁市高新区高科路8号南宁创客城电子产业园2号楼2层ZH161号</span>
-                            <span>桂ICP备18001712号</span>
+                            <span>@sysconfig.Address</span>
+                            <span>@sysconfig.Record</span>
                         </p>
                     </ul>
                 </div>
 
                 <div class="footer-ewm">
                     <a href="javascript:void(0);">
-                        <img src="/image/ewm.png" alt="二维码">
+                        <img src="@sysconfig.QR_code" alt="二维码">
                     </a>
                 </div>
             </div>
         </footer>
         <!--foot结束-->
     </div>
-    <iframe frameborder="0" id="if_form" scrolling="auto" style="width: 100%; height: 100%; position: fixed; left: 0px; top: 0px; z-index: 999; display: none;" src="/OrderGoods.aspx"></iframe>
-    <div class="div_close">
-        <a href="javascript:void(0);">关闭</a>
+    <!--右边侧栏-->
+    <div class="m-aside-tool">
+        <div class="aside-body">
+            <div class="tool-list">
+                @if (user == null)
+                { 
+                    <a href="/login/login.html" class="tool-btn" id="login_r">
+                        <div class="icon"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAA+0lEQVRIS+WTMU5CQRCGv7+wldCpB7DgAMbCWHEAkMKTWHgCC09iIXIAKkJBOIAFBwA7Aq3FmDX7En3ue/MUNpq41SYz838z/86KzEeZ9fknADM7Be6AbrR0DNxKWngWuxZF8RnQLomtgXMP0gTwCFxVdDqUNKiboglgAxxWiGwltf48ILtFYYPyPXLwN+uaenvuxd0t8gS8eC3AzDpAD7gAwv0oCr4Az8AUGEkK9+RJAszsDLgHLr0OY3wC3Eial/O/AMysDzwABw3Fi7RX4FrS08e6FGAJHH9TvEhfSTrxAPZD8fcySZ+aTk2QF7BL96na3/0H+5gm+wRveKpNGcLSzecAAAAASUVORK5CYII="></div>
+                        <p class="name">登录</p>
+                    </a>
+                    <a href="/login/register.html" class="tool-btn" id="register_r">
+                        <div class="icon"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABAElEQVRIS+WUvW0CQRCFvxeQYpEBBThwARYBIqIADAGVOHAFDqjEgW0KIEIEiAIIKMCQIUgdjLXojgDf3+7pBBITrbRz79t7+2ZFxaWK9blDgJk9Au9AP7J3BrxJ2iTZ7WVRJL4EGhdie6CTBPEFfALDlGB8SRpd7v0DmJm5JklJewegngI4Snq4eUCYRbEtaUMX2xV8yUUB7gClY5p1ySHPileKKgWY2RMwALqAWzcj4A5YAwtgKsmtz5U7aGb2DEyAXsE/mAOvklanecr6yMxegA+gVlA8bvsFxpK+8wA/QMtTPG7fSmrnAU7PRmi5+bkuIPTkXikqC8mN6c0D/gCkLG0Zy4+IYgAAAABJRU5ErkJggg=="></div>
+                        <p class="name">注册</p>
+                    </a>
+                    <a href="/personal/personal.html" class="tool-btn" id="my" style="display:none;">
+                        <div class="icon"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAA+0lEQVRIS+WTMU5CQRCGv7+wldCpB7DgAMbCWHEAkMKTWHgCC09iIXIAKkJBOIAFBwA7Aq3FmDX7En3ue/MUNpq41SYz838z/86KzEeZ9fknADM7Be6AbrR0DNxKWngWuxZF8RnQLomtgXMP0gTwCFxVdDqUNKiboglgAxxWiGwltf48ILtFYYPyPXLwN+uaenvuxd0t8gS8eC3AzDpAD7gAwv0oCr4Az8AUGEkK9+RJAszsDLgHLr0OY3wC3Eial/O/AMysDzwABw3Fi7RX4FrS08e6FGAJHH9TvEhfSTrxAPZD8fcySZ+aTk2QF7BL96na3/0H+5gm+wRveKpNGcLSzecAAAAASUVORK5CYII="></div>
+                        <p class="name">我的</p>
+                    </a>
+                }
+                else
+                {
+                    <a href="/login/login.html" class="tool-btn" id="login_r" style="display:none;">
+                        <div class="icon"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAA+0lEQVRIS+WTMU5CQRCGv7+wldCpB7DgAMbCWHEAkMKTWHgCC09iIXIAKkJBOIAFBwA7Aq3FmDX7En3ue/MUNpq41SYz838z/86KzEeZ9fknADM7Be6AbrR0DNxKWngWuxZF8RnQLomtgXMP0gTwCFxVdDqUNKiboglgAxxWiGwltf48ILtFYYPyPXLwN+uaenvuxd0t8gS8eC3AzDpAD7gAwv0oCr4Az8AUGEkK9+RJAszsDLgHLr0OY3wC3Eial/O/AMysDzwABw3Fi7RX4FrS08e6FGAJHH9TvEhfSTrxAPZD8fcySZ+aTk2QF7BL96na3/0H+5gm+wRveKpNGcLSzecAAAAASUVORK5CYII="></div>
+                        <p class="name">登录</p>
+                    </a>
+                    <a href="/login/register.html" class="tool-btn" id="register_r" style="display:none;">
+                        <div class="icon"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABAElEQVRIS+WUvW0CQRCFvxeQYpEBBThwARYBIqIADAGVOHAFDqjEgW0KIEIEiAIIKMCQIUgdjLXojgDf3+7pBBITrbRz79t7+2ZFxaWK9blDgJk9Au9AP7J3BrxJ2iTZ7WVRJL4EGhdie6CTBPEFfALDlGB8SRpd7v0DmJm5JklJewegngI4Snq4eUCYRbEtaUMX2xV8yUUB7gClY5p1ySHPileKKgWY2RMwALqAWzcj4A5YAwtgKsmtz5U7aGb2DEyAXsE/mAOvklanecr6yMxegA+gVlA8bvsFxpK+8wA/QMtTPG7fSmrnAU7PRmi5+bkuIPTkXikqC8mN6c0D/gCkLG0Zy4+IYgAAAABJRU5ErkJggg=="></div>
+                        <p class="name">注册</p>
+                    </a>
+                    <a href="/personal/personal.html" class="tool-btn" id="my">
+                        <div class="icon"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAA+0lEQVRIS+WTMU5CQRCGv7+wldCpB7DgAMbCWHEAkMKTWHgCC09iIXIAKkJBOIAFBwA7Aq3FmDX7En3ue/MUNpq41SYz838z/86KzEeZ9fknADM7Be6AbrR0DNxKWngWuxZF8RnQLomtgXMP0gTwCFxVdDqUNKiboglgAxxWiGwltf48ILtFYYPyPXLwN+uaenvuxd0t8gS8eC3AzDpAD7gAwv0oCr4Az8AUGEkK9+RJAszsDLgHLr0OY3wC3Eial/O/AMysDzwABw3Fi7RX4FrS08e6FGAJHH9TvEhfSTrxAPZD8fcySZ+aTk2QF7BL96na3/0H+5gm+wRveKpNGcLSzecAAAAASUVORK5CYII="></div>
+                        <p class="name">我的</p>
+                    </a>
+                }
+                <a href="javascript:void 0;" class="tool-btn zhiCustomBtn">
+                    <div class="icon"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAB30lEQVRIS62WT2jPcRjHX++FEa2UQjjQUtvFxYH7LgpHrjIx1GYRcZELaWRb+RtrV47bahd3Di4uRJJaS0opkWbLW4++v/Xdd7/v7/P7fe1zfZ7n/Xo+n57v+/mKxLHdCZwEDgA7svQZYBp4JOlDIwk1Cto+BdwB1pXk/QIGJT0s0ykF2D4GjAENmwAMHJc0Xg9St9j2VuA9sCH1hFn8B7Bb0udifhkgnuVck+K1tGFJg0mA7TZgFtjSIiC63y7pT75u2Q1sdwFvWhSvpXdLepsCHAGeVgQclfQsBTgN3KsIOCPpfgpwHrhVEXBB0u0U4DHQWxHwRNKJUoDtjmyCmp3/Yh/xPWyT9L0WWDJFmTU8qNh9rawvbx1FwAtg338CXkrav+wGtncB4Ywp70nxw5s6JX2MxEUx22ENYRErccJhh4uACeDQSqgDk5IOFwGxRDYDr4G9FUGvgD3AF0n/llP+ieaBa8Bv4GZFwCVgDXBV0uoi4ApwA9gJvANWtQhZiJ0AfAIuS7q+BJAXsz0C9LcIGJU0UKwpWzjtwBTQ0yTkOXBQ0lwSYHstcBHoA2J1NnNi2YQDDEmKH4HFU2/hxKjeBTYBcZP4cKKzn8C3rHIjsD6Lh0bEvwJnJU3mAX8BDayQGfq9js0AAAAASUVORK5CYII="></div>
+                    <p class="name">咨询</p>
+                </a>
+                <a href="/shop/shoppingcart.html" class="tool-btn">
+                    <div class="icon"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABOklEQVRIS8WVMS9EQRSFv6PgN0gsGo1o6BRqlBToJX4AlY5GJdkef4CGStSi0UgUEg0REqVKIhJx5cmQ3fdm9s3se8vU555vzr13MqLHRz325xtgZtYC2pa0VRfYB3gBRiS91gFpa5GZnQMzFY0vJP165AHzwGlFwI2kiR+PwpDN7AqYrABZkHTSCbAEHHYJaGtP5uFL0AfcAmOJkGwTpyVdttZ534GZrQIHiYAjScv5mhCgH7gDhiIh78C4pPsogHt8O8BmJKApad2nDSUYcHMYLQF8uLVekfSWAtgAdoFrYErSZ2SSgiyU4BkYBBYlHXdr7l1T1/9HoJFqLKlw4VCCOWAvFRINSL15J30owSyw7wrXJJ35TMysVBcCPGR/gjN9kjQcAJTq/g1QGt1tW6nubz79Orcm7/UF09B3GX4P+gMAAAAASUVORK5CYII="></div>
+                    <p class="name">购<br>物<br>车</p>
+                    <div class="sign" id="sidebarCartNum">@ViewBag.ShoppingCart</div>
+                </a>
+            </div>
+        </div>
+        <div class="aside-bottom">
+            <div class="tool-list">
+                <a href="/buyer/likestore" class="tool-btn">
+                    <div class="icon"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABnklEQVRIS7WUMUtcQRSFvwMWNioWahEJaC/YJIX/QLA0sVLSRUnqGNBUKqi1S7JdSKrElIL/IEVsBHuFkBSJRVCbFMKRK/Nk8+LumyfuNDMwd+43d849I7o81OX81ALYfhwXkvQt92J1AR8SYOHeAbaHge8p8UNJv3Mg2RXYXgHWU9JVSRv3BrDdA5wAoynpD2BM0mUVJKsC27PAbinZE0lf7gSw3Q/Emw+lOZ7nUSnZARDPFFqcxizpvAy8qcD2MvAiJe2tulmb/b8J1pC0dd1xRaDtWG8Cr+6YvDi2DbyW5H8ALaDnwA4QwtYZIfhLSc3WQ7eKbHsa+AT0ZRIugDlJ+201KG/YngT2gAcVkJ/AjKTD2+I6tqntqOJpBeCzpLl2MVWAMFRlBZIKA/7HaQuwPQYcZ2owLimcXgswD1z/nmlEl7xN66VSly1I+lgX8A6Ilo3xNUxYCJkaoAFMpf2mpMW6gCNgBAiHvy+M0+KXeN5nQDj2l6SJbIDtgfTPvJH0p5MOtgeBNWBF0lm2DzLFrQzL+q4rs3QI6DrgCnZqexnec2G7AAAAAElFTkSuQmCC"></div>
+                </a>
+                <a href="javascript:void 0;" class="tool-btn show-btn">
+                    <div class="icon"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAiUlEQVRIS9WU2w6AMAhDx/9/NGYmmIU5boJTX2U7NGsLrfiD4vvbBUBE1GAAcM57Zt8H0JajGtqYK7DMTgoshzhQWmYJGC+RFGjq9gHK3kCy6rdtqoUs+v9fVdHfiNs2tSpMgEiSpWQ/DtqqXWnRfYBokrmd09tUBXiq4s41qTZ1AaJVoJ0rr4oD0ZcIKOUH640AAAAASUVORK5CYII="></div>
+                    <div class="show-content">
+                        <img src="/image/sm.png" style="max-width:inherit">
+                    </div>
+                </a>
+                <a href="#" class="tool-btn">
+                    <div class="icon"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAA4ElEQVRIS+2UMa5BURRF11aYgUYt+ZXGIPyWxEyEmpgMjT8DA2AaOg21xPl58p5w8c4hkZC49claZ+/73hUvPnoxn6/Abfi9KjKzDtCUNHFXzwfCCXL4DKgCI0njiCQkSOAFNyRxBQl8B2yARm5xJaWCG/A2sAYWwE9EcldgZl1gmneebd6WtMygZlaPSm4KyuDFBUQlV4II/BHJhSCBb4HfopZ7n6SX5CR4Bh5JchSYWQVYAS0gtHmaKEnyB/QkHc4T1IA50PdqceoaAENJ+2zO/dEiz0HZzFfgNvj5Ff0DHQ5qGXxFnSQAAAAASUVORK5CYII="></div>
+                    <p class="name">顶部</p>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="portlet-body">
+        <div style="text-align: center;" id="loading" class="display-none">
+            <div style="margin:0 auto">
+                <img src="~/Image/loading.gif" /><br />
+                <label>Loading...</label>
+            </div>
+        </div>
+    </div>
+    <div class="msg" id="msg" style="display:none" onclick="closeTime();">
+        <header>
+            <h3>消息提示</h3>
+        </header>
+        <section>
+            <p>消息提示内容</p>
+            <h4>点击关闭提示消息</h4>
+        </section>
     </div>
     <script>
+        function search()
+        {
+            if ($("#search").val() == "")
+                return false;
+            window.location = "/shop/search.html?str=" + $("#search").val();
+        }
+        function LogOut() {
+            _show();
+            $.ajax({
+                type: "POST",
+                url: "/Data/LogOut",
+                data: {},
+                dataType: "json",
+                success: function (data) {
+                    if (data == 1) {
+                        location.reload();
+                    }
+                    _hide();
+                }
+            });
+        };
     </script>
 </body>
 </html>

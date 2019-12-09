@@ -1,18 +1,15 @@
-﻿//using GGAPI.Report.Filters;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Newtonsoft.Json;
-using WL.Web.Cms.Filters;
 using WL.Cms.Manager;
-using WL.Web.Cms.Controllers;
 using WL.Cms.Models;
 using WL.Infrastructure.Common;
+using WL.Web.Cms.Filters;
 
-namespace WL.Web.Report.Controllers
+namespace WL.Web.Cms.Controllers
 {
     public class UserController : BaseController
     {

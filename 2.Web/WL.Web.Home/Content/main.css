@@ -55,7 +55,7 @@
 
 .button--1, .button--1 .button__bg {
   -webkit-font-smoothing: antialiased;
-  background-color: #b00014;
+  background-color: #1d2088;
   border: none;
   display: inline-block;
   font-family: 'Montserrat', sans-serif;
@@ -129,7 +129,7 @@
     width: 25px;
     height: 25px;
     border-radius: 15px;
-    background: #b00014;
+    background: #1d2088;
     -webkit-transition: background-color 0.1s ease-out;
     -moz-transition: background-color 0.1s ease-out;
     transition: background-color 0.1s ease-out; }

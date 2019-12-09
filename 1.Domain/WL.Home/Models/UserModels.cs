@@ -60,7 +60,7 @@ namespace WL.Home.Models
         //电话
         public string Tel { get; set; }
         //生日
-        public DateTime Birthday { get; set; }
+        public string Birthday { get; set; }
         //情感状况
         public int Emotional { get; set; }
         //兴趣
@@ -80,7 +80,7 @@ namespace WL.Home.Models
         {
             Msn = "";
             Tel = "";
-            Birthday = DateTime.Now;
+            Birthday = "";
             Emotional = 0;
             Interest = "";
             Describe = "";

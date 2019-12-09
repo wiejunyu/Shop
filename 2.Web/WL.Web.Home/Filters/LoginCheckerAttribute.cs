@@ -37,14 +37,20 @@ namespace WL.Web.Home.Filters
                             HttpContext.Current.Session["user"] = user;
                             filterContext.Controller.ViewBag.username = user.UserName;
                             filterContext.Controller.ViewBag.userportrait = user.Portrait;
+                            filterContext.Controller.ViewBag.Sysconfig = SysconfigManager.GetSysconfig();
                         }
                     }
+                }
+                else
+                {
+                    filterContext.Controller.ViewBag.Sysconfig = SysconfigManager.GetSysconfig();
                 }
             }
             else
             {
                 filterContext.Controller.ViewBag.username = user.UserName;
                 filterContext.Controller.ViewBag.userportrait = user.Portrait;
+                filterContext.Controller.ViewBag.Sysconfig = SysconfigManager.GetSysconfig();
             }
         }  
     }

@@ -1,9 +1,9 @@
-﻿using WL.Cms.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WL.Cms.Models;
 using WL.Infrastructure.Data;
 
 namespace WL.Cms.Manager
@@ -17,7 +17,7 @@ namespace WL.Cms.Manager
         /// <returns></returns>
         public static List<LoggerModels> GetLoggerModelsList(string action,string userName,string st,string et)
         {
-            string sql = "Select * from Cms_Logger where Time between @st and @et";
+            string sql = "Select * from CMS_Logger where Time between @st and @et";
             if(action != "-1")
             {
                 sql += " and Action=@Action";
@@ -48,7 +48,7 @@ namespace WL.Cms.Manager
         {
             DynamicParameters param = new DynamicParameters();
             param.Add("@ID", id);
-            string sql = "Select * from Cms_Logger where ID=@ID";
+            string sql = "Select * from CMS_Logger where ID=@ID";
             return new BaseDAL().Single<LoggerModels>(sql, param);
         }
         /// <summary>
@@ -59,7 +59,7 @@ namespace WL.Cms.Manager
         public static bool AddLoggerModels(LoggerModels temp)
         {
             #region sql
-            StringBuilder sb = new StringBuilder("Insert into Cms_Logger (");
+            StringBuilder sb = new StringBuilder("Insert into CMS_Logger (");
             sb.Append("[View],Action,Description,Remark,UserName,Time,IP)");
             sb.Append(" values (");
             sb.Append("@View,@Action,@Description,@Remark,@UserName,@Time,@IP)");
@@ -84,7 +84,7 @@ namespace WL.Cms.Manager
         /// <returns></returns>
         public static List<string> GetLoggerAction()
         {
-            string sql = "Select Action from Cms_Logger group by Action";
+            string sql = "Select Action from CMS_Logger group by Action";
             return new BaseDAL().GetList<string>(sql, null);
         }
         #endregion

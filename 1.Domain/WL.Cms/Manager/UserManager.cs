@@ -1,9 +1,9 @@
-﻿using WL.Cms.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WL.Cms.Models;
 using WL.Infrastructure.Data;
 
 namespace WL.Cms.Manager
@@ -20,7 +20,7 @@ namespace WL.Cms.Manager
         {
             DynamicParameters param = new DynamicParameters();
             param.Add("@UserName", login);
-            string sql = "Select * from UserInfo where UserName=@UserName";
+            string sql = "Select * from CMS_UserInfo where UserName=@UserName";
             return new BaseDAL().Single<UserInfo>(sql, param);
         }
         /// <summary>
@@ -31,7 +31,7 @@ namespace WL.Cms.Manager
         public static bool UpdateUser(UserInfo user)
         {
             #region sql
-            StringBuilder sb = new StringBuilder("Update UserInfo set UserName=@UserName,");
+            StringBuilder sb = new StringBuilder("Update CMS_UserInfo set UserName=@UserName,");
             if (!string.IsNullOrEmpty(user.PassWord))
                 sb.Append("PassWord=@PassWord,");
             sb.Append("Permission=@Permission,Leader=@Leader,Remark=@Remark,CreateTime=@CreateTime,LoginTime=@LoginTime,IP=@IP");
@@ -63,7 +63,7 @@ namespace WL.Cms.Manager
         public static bool AddUser(UserInfo user)
         {
             #region sql
-            StringBuilder sb = new StringBuilder("Insert into UserInfo (");
+            StringBuilder sb = new StringBuilder("Insert into CMS_UserInfo (");
             sb.Append("UserName,PassWord,Permission,Leader,Remark,CreateTime,LoginTime,IP)");
             sb.Append(" values (");
             sb.Append("@UserName,@PassWord,@Permission,@Leader,@Remark,@CreateTime,@LoginTime,@IP)");
@@ -92,7 +92,7 @@ namespace WL.Cms.Manager
         {
             DynamicParameters param = new DynamicParameters();
             param.Add("@UserName", login);
-            string sql = "Delete UserInfo where UserName=@UserName";
+            string sql = "Delete CMS_UserInfo where UserName=@UserName";
 
             return new BaseDAL().Delete(sql, param);
         }
@@ -102,7 +102,7 @@ namespace WL.Cms.Manager
         /// <returns></returns>
         public static List<UserInfo> GetUserList()
         {
-            string sql = "Select * from UserInfo";
+            string sql = "Select * from CMS_UserInfo";
             List<UserInfo> list = new BaseDAL().GetList<UserInfo>(sql, null);
             return list;
         }
@@ -114,7 +114,7 @@ namespace WL.Cms.Manager
         {
             DynamicParameters param = new DynamicParameters();
             param.Add("@Permission", permission);
-            string sql = "Select * from UserInfo where Permission=@Permission";
+            string sql = "Select * from CMS_UserInfo where Permission=@Permission";
             List<UserInfo> list = new BaseDAL().GetList<UserInfo>(sql, param);
             return list;
         }

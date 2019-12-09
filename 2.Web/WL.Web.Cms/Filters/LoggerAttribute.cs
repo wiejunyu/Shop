@@ -90,7 +90,7 @@ namespace WL.Web.Cms.Filters
                     log.Description = des;
                     log.Remark = content;
                     log.UserName = user.UserName;
-                    string ip = Common.IPAddress;
+                    string ip = Common.GetUserIp();
                     log.IP = ip;
                     LoggerManager.AddLoggerModels(log);
                 }

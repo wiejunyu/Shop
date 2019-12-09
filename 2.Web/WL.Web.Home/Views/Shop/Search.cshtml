@@ -1,0 +1,95 @@
+﻿@{
+    ViewBag.Title = "商品列表";
+    ViewBag.Description = "【跨境物流链】专注越南专线,泰国专线,老挝专线柬埔寨专线,工业品采购,五金采购,跨境国际陆运,越南工业品采购越南跨境购,路运,送货到门,包清关,货到付款等增值服务";
+    ViewBag.Keywords = "越南专线-泰国专线-老挝专线-柬埔寨专线-工业品采购-五金采购-跨境国际陆运-越南工业品采购-越南跨境购";
+    Layout = "~/Views/Shared/ShopMaster.cshtml";
+}
+@using WL.Home.Models
+@model PagedList.IPagedList<WL.Home.Models.ShopModels>
+@using PagedList.Mvc;
+<div class="main-width J_emptyGood m-top20 g-clearfix">
+    <div class="list-main-type">
+        <!-- classname=> h_on:选中项； -->
+        <a href="search.html?str=@ViewData["str"]" class="list-order-d cursor center h_on">默认排序</a>
+        <a href="search.html?str=@ViewData["str"]&sort=1" class="list-order-l cursor  up ">销量</a>
+        <a href="search.html?str=@ViewData["str"]&sort=2" class="list-order-l cursor up down ">价格</a>
+        <div class="list-main-total J_t_html">
+            @{
+                int allshop = Model.Count;
+            }
+            <span style="line-height: 34px;">共 @allshop 件相关商品</span>
+            @{
+                int next = 0; int pre = 0;
+            }
+            @if (Model.PageNumber > 1)
+            {
+                pre = Model.PageNumber;
+                pre = --pre;
+                <a href="search.html?str=@ViewData["str"]&page=@pre">
+                    &lt;
+                    上一页
+                </a>
+            }
+            @if (Model.PageNumber < Model.PageCount)
+            {
+                next = Model.PageNumber;
+                next = ++next;
+                <a href="search.html?str=@ViewData["str"]&page=@next">
+                    下一页
+                    &gt;
+                </a>
+            }
+        </div>
+        @*<div class="pagination-container-top">
+                @Html.PagedListPager(Model, page => Url.Action("List", new { page }))
+            </div>*@
+    </div>
+</div>
+<div class="main-width list-main J_emptyGood">
+    <div class="list-main-box J_list J_car_box">
+        <ul class="m-searchgoods-list g-clearfix" id="goodsList">
+            @foreach (var temp in Model)
+            {
+                <li>
+                    <div class="m-goodslist-item">
+                        <div class="goods-header">
+                            <a class="pic" href="/shop/product.html?id=@temp.id" target="_blank">
+                                <img src="@temp.Image" alt="@temp.Name.Replace("<font style='color: red;'>","").Replace("</font>","")@temp.Model" data-lazy="@temp.Image" class="J_flyImg" style="display: inline-block;">
+                            </a>
+                            <div class="handle">
+                                <a class="advice zhiCustomBtn" href="javascript:void 0;">立即咨询</a>
+                                <span class="liner"></span>
+                                <a href="javascript:void 0;" class="J_collect collect " attr-type="0" attr-sellergoodsid="993782">加入收藏</a>
+                            </div>
+                        </div>
+                        <div class="goods-body">
+                            <p class="price">¥ @System.Decimal.Round(@temp.Trueprice, 2)</p>
+                            <p class="title">
+                                <a href="/product/993782" title="@temp.Name.Replace("<font style='color: red;'>","").Replace("</font>","")@temp.Model" target="_blank">@Html.Raw(temp.Name)@temp.Model</a>
+                            </p>
+                            <p>型号：@temp.Model</p>
+                            <p>订货号：@temp.id</p>
+                            <div class="activity">
+                            </div>
+                        </div>
+                        <div class="goods-fixed">
+                            <span class="count-btn J_minNum">-</span>
+                            <input type="text" class="count-input J_goodNum" value="1">
+                            <span class="count-btn J_addNum">+</span>
+                            <a href="javascript:void 0;" class="shopcart J_car">加入购物车</a>
+                        </div>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+    <div class="pagination-container-middle">
+        每页 @Model.PageSize 条记录，共 @Model.PageCount 页，当前第 @Model.PageNumber 页
+    </div>
+    <div class="pagination-container-bottom">
+        @Html.PagedListPager(Model, page => Url.Action("list.html", new { page }))
+    </div>
+    <div class="clearfix"></div>
+</div>
+
+

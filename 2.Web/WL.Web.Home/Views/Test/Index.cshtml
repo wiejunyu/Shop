@@ -1,0 +1,132 @@
+﻿@model PagedList.IPagedList<WL.Home.Models.OrderModels>
+@using PagedList.Mvc;
+@using WL.Home.Models
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <style type="text/css">
+        ul.pagination {
+            margin: 0;
+        }
+
+        .pagination li {
+            list-style-type: none;
+            float: left;
+            min-width: 15px;
+        }
+    </style>
+</head>
+<body>
+    <table>
+        <tbody class="head">
+            <tr>
+                <td style="width:45%;">
+                    宝贝
+                </td>
+                <td style="width:10%;">
+                    单价
+                </td>
+                <td style="width:5%;">
+                    数量
+                </td>
+                <td style="width:10%;">
+                    商品操作
+                </td>
+                <td style="width:10%;">
+                    实付款
+                </td>
+                <td style="width:10%;">
+                    交易状态
+                </td>
+                <td>
+                    交易操作
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    @foreach (var item in Model)
+    {
+
+        <table>
+            <tbody class="head">
+                <tr>
+                    <td class="align">
+                        <label>
+                            <span>
+                                <input type="checkbox">
+                            </span>
+                            <span>@Html.DisplayFor(modelItem => item.Date)</span>
+                        </label>
+                    </td>
+                    <td>
+                        <label>
+                            <span>订单号: @Html.DisplayFor(modelItem => item.Order)</span>
+                        </label>
+                    </td>
+                    <td>
+                        <label>
+                            <span>
+                                <a href="#">@Html.DisplayFor(modelItem => item.Sid)</a>
+                            </span>
+                        </label>
+                    </td>
+                    <td class="right">
+                        <label>
+                            <a href="#"><i class="fa  fa-trash-o"></i></a>
+                        </label>
+                    </td>
+                </tr>
+            </tbody>
+            <tbody>
+                <tr>
+                    <td class="align" style="width:45%;">
+                        <div class="img">
+                            <a href="#" target="_blank">
+                                <img src="https://img.alicdn.com/bao/uploaded/i2/153409156/TB2H1AYorGYBuNjy0FoXXciBFXa_!!153409156.jpg_80x80.jpg">
+                            </a>
+                        </div>
+                        <div>
+                            <span>@Html.DisplayFor(modelItem => item.Sid)</span><br />
+                            <span>计量单位：@Html.DisplayFor(modelItem => item.Id) 型号：@Html.DisplayFor(modelItem => item.Id)</span>
+                            <span></span>
+                        </div>
+                    </td>
+                    <td style="width:10%;">
+                        <del class="ec">
+                            <span>￥</span>
+                            <span>@Html.DisplayFor(modelItem => item.Id)</span>
+                        </del>
+                        <br />
+                        <span>￥@Html.DisplayFor(modelItem => item.Id)</span>
+                    </td>
+                    <td style="width:5%;">
+                        <span>@Html.DisplayFor(modelItem => item.Number)</span>
+                    </td>
+                    <td style="width:10%;">
+                        <span><a href="#">申请售后</a></span>
+                    </td>
+                    <td style="width:10%;">
+                        <span>￥@Html.DisplayFor(modelItem => item.Price)</span><br />
+                        <span class="ec">(含运费：￥@Html.DisplayFor(modelItem => item.Freight))</span>
+                    </td>
+                    <td style="width:10%;">
+                        <span><a href="#">交易成功</a></span><br />
+                        <span><a href="#">订单详情</a></span><br />
+                        <span><a href="#">查看物流</a></span><br />
+                    </td>
+                    <td style="width:10%;">
+                        <input type="button" class="btn green" onclick="edit()" value="修改">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    }
+    每页 @Model.PageSize 条记录，共 @Model.PageCount 页，当前第 @Model.PageNumber 页
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+</body>
+</html>

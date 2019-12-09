@@ -4,7 +4,7 @@ var radioControl = new Object();
 var ifLoaded = false;
 var editableTable1 = new Object();
 
-editableTable.init = function (tableId, getUrl, ifFilter, ifLengthChange, sortTargets, sortColums, sort, colums, param)
+editableTable.init = function (tableId, getUrl, ifFilter, ifLengthChange, sortTargets, sortColums, sort , colums, param)
 {
     param = formatParam(param);
     $('#' + tableId).dataTable({
@@ -75,6 +75,25 @@ editableTable.init = function (tableId, getUrl, ifFilter, ifLengthChange, sortTa
     });
 }
 
+jQuery('#sample_1 tbody tr .checkboxes').change(function () {
+    $(this).parents('tr').toggleClass("active");
+});
+//AJAX异步重新加载数据
+editableTable.reload = function (tableId, getUrl) {
+    if (getUrl)
+        $("#" + tableId).dataTable().fnReloadAjax(getUrl);
+    else
+        $("#" + tableId).dataTable().fnReloadAjax();
+}
+//过滤表格内容
+editableTable.filter = function (tableId, filterStr, column) {
+    if (column)
+        $("#" + tableId).dataTable().fnFilter(filterStr, column);
+    else
+        $("#" + tableId).dataTable().fnFilter(filterStr);
+}
+
+
 editableTable1.init = function (tableId, getUrl, ifFilter, ifLengthChange, sortTargets, sortColums, sort, colums, param) {
     param = formatParam(param);
     $('#' + tableId).dataTable({
@@ -91,7 +110,7 @@ editableTable1.init = function (tableId, getUrl, ifFilter, ifLengthChange, sortT
 
         "bInfo": param.bInfo,
 
-        "bStateSave": true,
+        "bStateSave": false,
 
         "aaSorting": [[sortColums, sort]],
         //"sScrollXInner":"disabled",
@@ -107,7 +126,7 @@ editableTable1.init = function (tableId, getUrl, ifFilter, ifLengthChange, sortT
         },
         "aoColumnDefs": [{
             "bSortable": false,
-            "aTargets": [0,6],
+            "aTargets": [0, 7],
         },
         {
             "sDefaultContent": '', "aTargets": ['_all']
@@ -143,12 +162,9 @@ editableTable1.init = function (tableId, getUrl, ifFilter, ifLengthChange, sortT
         showSearchInput: false
     });
 }
-
-jQuery('#sample_1 tbody tr .checkboxes').change(function () {
-    $(this).parents('tr').toggleClass("active");
-});
 //AJAX异步重新加载数据
-editableTable.reload = function (tableId, getUrl) {
+editableTable1.reload = function (tableId, getUrl) {
+    
     if (getUrl)
         $("#" + tableId).dataTable().fnReloadAjax(getUrl);
     else
@@ -156,12 +172,13 @@ editableTable.reload = function (tableId, getUrl) {
 }
 
 //过滤表格内容
-editableTable.filter = function (tableId, filterStr, column) {
+editableTable1.filter = function (tableId, filterStr, column) {
     if (column)
         $("#" + tableId).dataTable().fnFilter(filterStr, column);
     else
         $("#" + tableId).dataTable().fnFilter(filterStr);
 }
+
 function defaultServerData(sSource, aoData, fnCallback, fnUserCallBack, tableId) {
     if ($("#" + tableId + "_filter input") == "")
         aoData.sSearch = "";
@@ -1266,20 +1283,50 @@ function setClass(a, b) {
 }
 
 function UnixToDate(unixTime, isFull, timeZone) {
-    if (typeof (timeZone) == 'number')
-    {
+    if (typeof (timeZone) == 'number') {
         unixTime = parseInt(unixTime) + parseInt(timeZone) * 60 * 60;
     }
     var time = new Date(unixTime * 1000);
     var ymdhis = "";
-    ymdhis += time.getUTCFullYear() + "-";
-    ymdhis += (time.getUTCMonth()+1) + "-";
-    ymdhis += time.getUTCDate();
-    if (isFull === true)
-    {
-        ymdhis += " " + time.getUTCHours() + ":";
-        ymdhis += time.getUTCMinutes() + ":";
-        ymdhis += time.getUTCSeconds();
+    var Y = time.getUTCFullYear();
+    var M = (time.getUTCMonth() + 1);
+    var D = time.getUTCDate();
+    var H = time.getUTCHours();
+    var M1 = time.getUTCMinutes();
+    var S = time.getUTCSeconds();
+
+    ymdhis += Y + "-";
+    if (M.toString().length == 1) {
+        ymdhis += ("0" + M + "-");
+    }
+    else {
+        ymdhis += M + "-";
+    }
+    if (D.toString().length == 1) {
+        ymdhis += ("0" + D);
+    }
+    else {
+        ymdhis += D;
+    }
+    if (isFull === true) {
+        if (H.toString().length == 1) {
+            ymdhis += " 0" + H + ":";
+        }
+        else {
+            ymdhis += " " + H + ":";
+        }
+        if (M1.toString().length == 1) {
+            ymdhis += ("0" + M1 + ":");
+        }
+        else {
+            ymdhis += M1 + ":";
+        }
+        if (S.toString().length == 1) {
+            ymdhis += "0" + S;
+        }
+        else {
+            ymdhis += S;
+        }
     }
     return ymdhis;
 }

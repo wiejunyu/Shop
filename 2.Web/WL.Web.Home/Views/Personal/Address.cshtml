@@ -1,0 +1,442 @@
+﻿
+@{
+    ViewBag.Title = "收货地址";
+    Layout = "~/Views/Shared/PersonalMaster.cshtml";
+}
+@using WL.Home.Models
+@{
+    List<AddressModels> list = ViewData["list"] as List<AddressModels>;
+}
+<link href="~/Scripts/assets/plugins/CityChoice/CityChoice_bootstrap.css" rel="stylesheet" />
+<div class="theme-panel hidden-xs hidden-sm">
+    <div class="toggler">
+    </div>
+    <div class="toggler-close">
+    </div>
+    <div class="theme-options">
+        <div class="theme-option theme-colors clearfix">
+            <span>
+                主题颜色
+            </span>
+            <ul>
+                <li class="color-black current color-default" data-style="default">
+                </li>
+                <li class="color-blue" data-style="blue">
+                </li>
+                <li class="color-brown" data-style="brown">
+                </li>
+                <li class="color-purple" data-style="purple">
+                </li>
+                <li class="color-grey" data-style="grey">
+                </li>
+                <li class="color-white color-light" data-style="light">
+                </li>
+            </ul>
+        </div>
+        <div class="theme-option">
+            <span>
+                布局
+            </span>
+            <select class="layout-option form-control input-small">
+                <option value="fluid" selected="selected">fluid</option>
+                <option value="boxed">boxed</option>
+            </select>
+        </div>
+        <div class="theme-option">
+            <span>
+                头部
+            </span>
+            <select class="header-option form-control input-small">
+                <option value="fixed" selected="selected">Fixed</option>
+                <option value="default">Default</option>
+            </select>
+        </div>
+        <div class="theme-option">
+            <span>
+                侧边栏
+            </span>
+            <select class="sidebar-option form-control input-small">
+                <option value="fixed">Fixed</option>
+                <option value="default" selected="selected">Default</option>
+            </select>
+        </div>
+        <div class="theme-option">
+            <span>
+                面包屑
+            </span>
+            <select class="sidebar-pos-option form-control input-small">
+                <option value="left" selected="selected">左边</option>
+                <option value="right">右边</option>
+            </select>
+        </div>
+        <div class="theme-option">
+            <span>
+                底部
+            </span>
+            <select class="footer-option form-control input-small">
+                <option value="fixed">Fixed</option>
+                <option value="default" selected="selected">Default</option>
+            </select>
+        </div>
+    </div>
+</div>
+<!-- END STYLE CUSTOMIZER -->
+<!-- BEGIN PAGE HEADER-->
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h3 class="page-title">
+            用户资料 <small>设置收货地址</small>
+        </h3>
+        <ul class="page-breadcrumb breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="/personal/myorder.html">个人中心</a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <a href="/personal/personal.html">个人管理</a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <a href="#">
+                    收货地址
+                </a>
+            </li>
+        </ul>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>
+<!-- END PAGE HEADER-->
+<!-- BEGIN PAGE CONTENT-->
+<div class="row profile">
+    <div class="col-md-12">
+        <form method="post" id="SetAddress" action="/Data/SetAddress">
+            <!--BEGIN TABS-->
+            <label class="control-label">新增收获地址</label>
+            <div style="width:100%;border-bottom:solid 1px #808080;"></div>
+            <div class="form-group address" data-toggle="distpicker">
+                <div class="form-group">
+                    <div class="CityChoice_form-group"><select class="CityChoice_form-control" data-province="选择省" name="province"></select></div>
+                    <div class="CityChoice_form-group"><select class="CityChoice_form-control" data-city="选择市" name="city"></select></div>
+                    <div class="CityChoice_form-group"><select class="CityChoice_form-control" data-district="选择区" name="district"></select></div>
+                </div>
+                <div class="form-group">
+                    <input type="text" placeholder="详细地址" class="form-control" value="" name="address" style="width:50%">
+                    <input type="text" placeholder="姓名" class="form-control" value="" name="name" style="width:20%">
+                    <input type="text" placeholder="联系电话" class="form-control" value="" name="tel" style="width:30%">
+                </div>
+                <input type="submit" class="btn green" value="添加" />
+            </div>
+        </form>
+        <input type="hidden" value="@list.Count" id="count" />
+        <!--END TABS-->
+    </div>
+    <div class="col-md-12">
+        <!--BEGIN TABS-->
+        <label class="control-label">收获地址</label>
+        <div style="width:100%;border-bottom:solid 1px #808080;"></div>
+        <div id="address">
+            @if (list != null)
+            {
+                foreach (AddressModels temp in list)
+                {
+                    string address = temp.province + temp.city + temp.district + temp.address;
+
+                    <div class="form-group address" data-toggle="distpicker" id="@temp.date">
+                        <div class="l">
+                            <input type="button" class="btn green" onclick="edit(@temp.date)" value="修改" />
+                            <input type="button" class="btn green" onclick="choice(@temp.date)" value="设置默认" />
+                            <input type="button" class="btn red" onclick="del(@temp.date)" value="删除" />
+                        </div>
+                        <div class="form-group" style="width:100%;">
+                            <label class="control-label" style="margin-right:20px;">姓名:@temp.name</label>
+                            <label class="control-label" style="margin-right:20px;">地址:@address</label>
+                            <label class="control-label" style="margin-right:20px;">电话:@temp.tel</label>
+                            @if (temp.Choice)
+                            {
+                                <label class="control-label">默认地址</label>
+                            }
+                        </div>
+                        <i data-type="@temp.province" id="province"></i>
+                        <i data-type="@temp.city" id="city"></i>
+                        <i data-type="@temp.district" id="district"></i>
+                        <i data-type="@temp.address" id="address"></i>
+                        <i data-type="@temp.name" id="name"></i>
+                        <i data-type="@temp.tel" id="tel"></i>
+                    </div>
+                }
+            }
+        </div>
+        <!--END TABS-->
+    </div>
+</div>
+<div class="row profile rowfixed" id="edit" style="background: #666;padding:1%;opacity:0.95;">
+    <div class="col-md-12">
+        <form method="post" id="EditAddress" action="/Data/EditAddress">
+            <!--BEGIN TABS-->
+            <label class="control-label">修改收货地址</label>
+            <div style="width:100%;border-bottom:solid 1px #808080;"></div>
+            <div class="form-group address">
+                <div class="form-group" style="width:45%;" id="distpickerEdit">
+                    <div class="CityChoice_form-group"><select class="CityChoice_form-control" name="province"></select></div>
+                    <div class="CityChoice_form-group"><select class="CityChoice_form-control" name="city"></select></div>
+                    <div class="CityChoice_form-group"><select class="CityChoice_form-control" name="district"></select></div>
+                </div>
+                <div class="form-group">
+                    <input type="text" placeholder="详细地址" class="form-control" value="" name="address" style="width:50%">
+                    <input type="text" placeholder="姓名" class="form-control" value="" name="name" style="width:20%">
+                    <input type="text" placeholder="联系电话" class="form-control" value="" name="tel" style="width:30%">
+                </div>
+                <input type="hidden" value="" name="date" />
+                <input type="submit" class="btn green" value="修改" style="margin-left: 1%;"/>
+                <input type="button" class="btn red" value="返回" style="margin-left: 1%;" id="edit_btn"/>
+            </div>
+        </form>
+        <!--END TABS-->
+    </div>
+</div>
+<script src="~/Scripts/assets/plugins/CityChoice/CityChoice_distpicker.js"></script>
+<script>
+    setClass("Setup", "Address");
+    $(function () {
+        $("#edit_btn").click(function () {
+            $("#edit").animate({ top: "-12%", width: "35%" });
+            $("#edit input[name='date']").val("");;
+            $("#distpickerEdit").distpicker({
+                province: "",
+                city: "",
+                district: ""
+            });
+            $("#edit input[name='address']").val("");
+            $("#edit input[name='name']").val("");
+            $("#edit input[name='tel']").val("")
+        });
+        $("#EditAddress").submit(function () {
+            _show();
+            var url = $(this).attr('action');
+            var data = $(this).serialize();
+
+            var data_arr = $(this).serializeArray();
+
+            if (data_arr[0].value == "") {
+                $("#myModal2 .modal-body p").html("省、自治区不能为空");
+                _hide();
+                $("#msg1").trigger('click');
+                return false;
+            }
+            if (data_arr[1].value == "") {
+                $("#myModal2 .modal-body p").html("城市不能为空");
+                _hide();
+                $("#msg1").trigger('click');
+                return false;
+            }
+            if (data_arr[2].value == "") {
+                $("#myModal2 .modal-body p").html("县区不能为空");
+                _hide();
+                $("#msg1").trigger('click');
+                return false;
+            }
+            if (data_arr[3].value == "") {
+                $("#myModal2 .modal-body p").html("详细地址不能为空");
+                _hide();
+                $("#msg1").trigger('click');
+                return false;
+            }
+            if (data_arr[4].value == "") {
+                $("#myModal2 .modal-body p").html("名称不能为空");
+                _hide();
+                $("#msg1").trigger('click');
+                return false;
+            }
+            var tel = data_arr[5].value;
+            if (tel == "") {
+                $("#myModal2 .modal-body p").html("电话不能为空");
+                _hide();
+                $("#msg1").trigger('click');
+                return false;
+            }
+            else if (tel.search(/^(((13[0-9]{1})|(15[0-9]{1}))+\d{8})$/) == -1) {
+                $("#myModal2 .modal-body p").html("手机号码格式错误");
+                _hide();
+                $("#msg1").trigger('click');
+                return false;
+            }
+            if ($("#count").val() >= 5) {
+                $("#myModal2 .modal-body p").html("最多只能添加五个收货地址");
+                _hide();
+                $("#msg1").trigger('click');
+                return false;
+            }
+            var jsondata = undefined;
+            jsondata = $("#EditAddress").serializeObject();
+            jsondata = { json: JSON.stringify(jsondata) };
+            $.ajax({
+                type: "POST",
+                async: true,
+                dataType: 'json',
+                url: url,
+                data: jsondata,
+                success: function (data) {
+                    if (data == '1') {
+                        _hide();
+                        $("#myModal1 .modal-body p").html("收货地址修改成功");
+                        $("#msg").trigger('click');
+                    }
+                    else {
+                        _hide();
+                        $("#myModal2 .modal-body p").html("收货地址修改失败");
+                        $("#msg1").trigger('click');
+                    }
+                }
+            });
+            return false;
+        });
+        
+        $("#SetAddress").submit(function () {
+            _show();
+            var url = $(this).attr('action');
+            var data = $(this).serialize();
+
+            var data_arr = $(this).serializeArray();
+
+            if (data_arr[0].value == "") {
+                $("#myModal2 .modal-body p").html("省、自治区不能为空");
+                _hide();
+                $("#msg1").trigger('click');
+                return false;
+            }
+            if (data_arr[1].value == "") {
+                $("#myModal2 .modal-body p").html("城市不能为空");
+                _hide();
+                $("#msg1").trigger('click');
+                return false;
+            }
+            if (data_arr[2].value == "") {
+                $("#myModal2 .modal-body p").html("县区不能为空");
+                _hide();
+                $("#msg1").trigger('click');
+                return false;
+            }
+            if (data_arr[3].value == "") {
+                $("#myModal2 .modal-body p").html("详细地址不能为空");
+                _hide();
+                $("#msg1").trigger('click');
+                return false;
+            }
+            if (data_arr[4].value == "") {
+                $("#myModal2 .modal-body p").html("名称不能为空");
+                _hide();
+                $("#msg1").trigger('click');
+                return false;
+            }
+            var tel = data_arr[5].value;
+            if (tel == "") {
+                $("#myModal2 .modal-body p").html("电话不能为空");
+                _hide();
+                $("#msg1").trigger('click');
+                return false;
+            }
+            else if (tel.search(/^(((13[0-9]{1})|(15[0-9]{1}))+\d{8})$/) == -1) {
+                $("#myModal2 .modal-body p").html("手机号码格式错误");
+                _hide();
+                $("#msg1").trigger('click');
+                return false;
+            }
+            if ($("#count").val() >= 5) {
+                $("#myModal2 .modal-body p").html("最多只能添加五个收货地址");
+                _hide();
+                $("#msg1").trigger('click');
+                return false;
+            }
+            var jsondata = undefined;
+            jsondata = $("#SetAddress").serializeObject();
+            jsondata = { json: JSON.stringify(jsondata) };
+            $.ajax({
+                type: "POST",
+                async: true,
+                dataType: 'json',
+                url: url,
+                data: jsondata,
+                success: function (data) {
+                    if (data == '1') {
+                        _hide();
+                        $("#myModal1 .modal-body p").html("收货地址添加成功");
+                        $("#msg").trigger('click');
+                    }
+                    else {
+                        _hide();
+                        $("#myModal2 .modal-body p").html("收货地址添加失败");
+                        $("#msg1").trigger('click');
+                    }
+                }
+            });
+            return false;
+        });
+    });
+    function del(id) {
+        var arr = new Array();
+        arr[0] = id;
+        MyConfirm("delok", arr,"确认要删除信息吗?");
+    }
+    function delok(id) {
+        $.ajax({
+            type: 'POST',
+            url: "/Data/DelAddress",
+            data: { date: id },
+            dataType: 'json',
+            success: function (data) {
+                if (data == 1) {
+                    _hide();
+                    $("#myModal1 .modal-body p").html("删除收货地址成功");
+                    $("#msg").trigger('click');
+                }
+                else {
+                    _hide();
+                    $("#myModal2 .modal-body p").html("删除收货地址失败");
+                    $("#msg1").trigger('click');
+                }
+            }
+        });
+    }
+    function edit(date) {
+        $("#edit").animate({ top: "30%", width: "83%" });
+        $("#edit input[name='date']").val(date);;
+        $("#distpickerEdit").distpicker({
+            province: $("#" + date + " #province").data("type"),
+            city: $("#" + date + " #city").data("type"),
+            district: $("#" + date + " #district").data("type")
+        });
+        $("#edit input[name='address']").val($("#" + date + " #address").data("type"));
+        $("#edit input[name='name']").val($("#" + date + " #name").data("type"));
+        $("#edit input[name='tel']").val($("#" + date + " #tel").data("type"))
+    }
+    
+    function choice(date)
+    {
+        var arr = new Array();
+        arr[0] = date;
+        MyConfirm("choiceok", arr,"确认要设置默认吗？");
+    }
+    function choiceok(date)
+    {
+        $.ajax({
+            type: 'POST',
+            url: "/Data/Choice",
+            data: { date: date },
+            dataType: 'json',
+            success: function (data) {
+                if (data == 1) {
+                    _hide();
+                    $("#myModal1 .modal-body p").html("设置默认收货地址成功");
+                    $("#msg").trigger('click');
+                }
+                else {
+                    _hide();
+                    $("#myModal2 .modal-body p").html("设置默认收货地址失败");
+                    $("#msg1").trigger('click');
+                }
+            }
+        });
+    }
+</script>

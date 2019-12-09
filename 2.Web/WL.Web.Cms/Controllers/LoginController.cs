@@ -32,9 +32,9 @@ namespace WL.Web.Cms.Controllers
             UserInfo user = UserManager.GetUserInfo(userName);
             if (user != null)
             {
-                if (user.PassWord == pwd)
+                if (user.PassWord == pwd.ToLower())
                 {
-                    string ip = Common.IPAddress;
+                    string ip = Common.GetUserIp();
                     user.IP = ip;
                     user.LoginTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                     UserManager.UpdateUser(user);

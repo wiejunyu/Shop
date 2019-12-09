@@ -23,9 +23,6 @@
     }
 }
 @{
-    ViewBag.Title = "";
-    ViewBag.Description = "";
-    ViewBag.Keywords = "";
     Layout = "~/Views/Shared/MainMaster.cshtml";
 }
 
@@ -34,7 +31,7 @@
         <div class="Notice_box news_msg_box">
             <hgroup>
                 <h3>@Model.title</h3>
-                <h4>@Common.ConvertDate(@Model.createtime.ToString())&nbsp;&nbsp; &nbsp;&nbsp;来源：宇宙物流</h4>
+                <h4>@Common.ConvertDate(Model.createtime.ToString())&nbsp;&nbsp; &nbsp;&nbsp;来源：宇宙物流</h4>
                 <h5></h5>
             </hgroup>
             <div class="news_msg_info">
@@ -48,10 +45,10 @@
                 else
                 {
                     <div class="fl">
-                        上一篇：<a href="/Home/Article?aid=@pre">
+                        上一篇：<a href="@Html.Raw("/article/" + pre + ".html")">
                             @foreach (ArticleModels temp in list as List<ArticleModels>)
                             {
-                                if (temp.id == @pre)
+                                if (temp.id == pre)
                                 {
                                     @temp.title
                                 }
@@ -66,10 +63,10 @@
                 else
                 {
                     <div class="fr">
-                        下一篇：<a href="/Home/Article?aid=@next">
+                        下一篇：<a href="@Html.Raw("/article/" + next + ".html")">
                             @foreach (ArticleModels temp in list as List<ArticleModels>)
                             {
-                                if (temp.id == @next)
+                                if (temp.id == next)
                                 {
                                     @temp.title
                                 }

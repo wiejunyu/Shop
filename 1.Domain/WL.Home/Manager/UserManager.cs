@@ -179,7 +179,7 @@ namespace WL.Home.Manager
         {
             DynamicParameters param = new DynamicParameters();
             param.Add("@id",id);
-            string sql = "INSERT INTO [UserDetails] VALUES (@id,null,null,null,null,null,null,null,null)";
+            string sql = "INSERT INTO [UserDetails] VALUES (@id,null,null,null,null,null,null,null,null,null,null)";
             return new BaseDAL().Add(sql, param);
         }
 

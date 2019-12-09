@@ -1,12 +1,11 @@
-﻿using WL.Cms.Models;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using WL.Cms.Models;
 using WL.Infrastructure.Data;
 
 namespace WL.Cms.Manager
@@ -19,10 +18,10 @@ namespace WL.Cms.Manager
         /// </summary>
         /// <param name="lang">语言类型1、中文 2、英文 3、粤语 6、越南语</param>
         /// <returns></returns>
-        public static List<Columu> GetColumu(int lang)
+        public static List<ColumuModels> GetColumu(int lang)
         {
-            string sql = "select * from Category where lang = " + lang.ToString() + " ORDER BY listorder";
-            return new BaseDAL().GetList<Columu>(sql, null);
+            string sql = "select * from Cms_Category where lang = " + lang.ToString() + " ORDER BY listorder";
+            return new BaseDAL().GetList<ColumuModels>(sql, null);
         }
 
         /// <summary>
@@ -30,9 +29,9 @@ namespace WL.Cms.Manager
         /// </summary>
         /// <param name="lang">语言类型1、中文 2、英文 3、粤语 6、越南语</param>
         /// <returns></returns>
-        public static List<Columu> GetFatherColumu(int lang)
+        public static List<ColumuModels> GetFatherColumu(int lang)
         {
-            List<Columu> list = new List<Columu>();
+            List<ColumuModels> list = new List<ColumuModels>();
             list = ColumuManager.GetColumu(lang);
 
             return list.Where(u => u.parentid == 0).ToList();
@@ -43,9 +42,9 @@ namespace WL.Cms.Manager
         /// </summary>
         /// <param name="lang">语言类型1、中文 2、英文 3、粤语 6、越南语</param>
         /// <returns></returns>
-        public static List<Columu> GetSonColumu(int lang)
+        public static List<ColumuModels> GetSonColumu(int lang)
         {
-            List<Columu> list = new List<Columu>();
+            List<ColumuModels> list = new List<ColumuModels>();
             list = ColumuManager.GetColumu(lang);
             return list.Where(u => u.parentid != 0).ToList();
         }
@@ -56,9 +55,9 @@ namespace WL.Cms.Manager
         /// <param name="lang">语言类型1、中文 2、英文 3、粤语 6、越南语</param>
         /// <param name="mid">模型id</param>
         /// <returns></returns>
-        public static List<Columu> GetMidColumu(int lang, int mid)
+        public static List<ColumuModels> GetMidColumu(int lang,int mid)
         {
-            List<Columu> list = new List<Columu>();
+            List<ColumuModels> list = new List<ColumuModels>();
             list = ColumuManager.GetColumu(lang);
             return list.Where(u => u.moduleid == mid).ToList();
         }
@@ -69,9 +68,9 @@ namespace WL.Cms.Manager
         /// <param name="lang">语言类型1、中文 2、英文 3、粤语 6、越南语</param>
         /// <param name="id">父栏目id</param>
         /// <returns></returns>
-        public static List<Columu> GetSonColumu(int lang, int id)
+        public static List<ColumuModels> GetSonColumu(int lang,int id)
         {
-            List<Columu> list = new List<Columu>();
+            List<ColumuModels> list = new List<ColumuModels>();
             list = ColumuManager.GetColumu(lang);
             return list.Where(u => u.parentid == id).ToList();
         }
@@ -81,7 +80,7 @@ namespace WL.Cms.Manager
         /// </summary>
         /// <param name="Columu"></param>
         /// <returns></returns>
-        public static bool AddColumu(Columu cl)
+        public static bool AddColumu(ColumuModels cl)
         {
             DynamicParameters param = new DynamicParameters();
             param.Add("@Catname", cl.catname);
@@ -97,7 +96,7 @@ namespace WL.Cms.Manager
             param.Add("@Lang", cl.lang);
             param.Add("@Catdir", cl.catdir);
 
-            string sql = "INSERT INTO Category VALUES (@Catname,@Parentid,@Moduleid,@Title,@Keywords,@Description,@Listorder,@Hits,@Image,@Url,@Lang,@Catdir)";
+            string sql = "INSERT INTO Cms_Category VALUES (@Catname,@Parentid,@Moduleid,@Title,@Keywords,@Description,@Listorder,@Hits,@Image,@Url,@Lang,@Catdir)";
             return new BaseDAL().Add(sql, param);
         }
 
@@ -106,12 +105,12 @@ namespace WL.Cms.Manager
         /// </summary>
         /// <param name="list"></param>
         /// <returns></returns>
-        public static List<Columu> IdGetColumu(int id)
+        public static List<ColumuModels> IdGetColumu(int id)
         {
             DynamicParameters param = new DynamicParameters();
             param.Add("@id", id);
-            string sql = "select * from Category where id=@id";
-            return new BaseDAL().GetList<Columu>(sql, param);
+            string sql = "select * from Cms_Category where id=@id";
+            return new BaseDAL().GetList<ColumuModels>(sql, param);
         }
 
         /// <summary>
@@ -119,7 +118,7 @@ namespace WL.Cms.Manager
         /// </summary>
         /// <param name="Columu"></param>
         /// <returns></returns>
-        public static bool EditColumu(Columu cl)
+        public static bool EditColumu(ColumuModels cl)
         {
             DynamicParameters param = new DynamicParameters();
             param.Add("@Id", cl.ID);
@@ -136,7 +135,7 @@ namespace WL.Cms.Manager
             param.Add("@Lang", cl.lang.ToString());
             param.Add("@Catdir", cl.catdir);
 
-            string sql = "UPDATE Category SET [catname]=@Catname,[parentid]=@Parentid,[moduleid]=@Moduleid,[title]=@Title,[keywords]=@Keywords,[description]=@Description,[listorder]=@Listorder,[hits]=@Hits,[image]=@Image,[url]=@Url,[lang]=@Lang,[catdir]=@Catdir WHERE [id] = @ID";
+            string sql = "UPDATE Cms_Category SET [catname]=@Catname,[parentid]=@Parentid,[moduleid]=@Moduleid,[title]=@Title,[keywords]=@Keywords,[description]=@Description,[listorder]=@Listorder,[hits]=@Hits,[image]=@Image,[url]=@Url,[lang]=@Lang,[catdir]=@Catdir WHERE [id] = @ID";
             return new BaseDAL().Add(sql, param);
         }
 
@@ -150,7 +149,7 @@ namespace WL.Cms.Manager
             DynamicParameters param = new DynamicParameters();
             param.Add("@Id", id);
 
-            string sql = "DELETE FROM Category WHERE id = @ID";
+            string sql = "DELETE FROM Cms_Category WHERE id = @ID";
             return new BaseDAL().Add(sql, param);
         }
 
@@ -164,7 +163,7 @@ namespace WL.Cms.Manager
             DynamicParameters param = new DynamicParameters();
             param.Add("@Id", id);
 
-            string sql = "DELETE FROM Article WHERE catid = @ID";
+            string sql = "DELETE FROM Cms_Article WHERE catid = @ID";
             return new BaseDAL().Add(sql, param);
         }
 
@@ -173,22 +172,22 @@ namespace WL.Cms.Manager
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static List<Columu> GetColumuImage(int id)
+        public static List<ColumuModels> GetColumuImage(int id)
         {
             DynamicParameters param = new DynamicParameters();
             param.Add("@Id", id);
 
-            string sql = "select [image] from Category where id=@id";
-            return new BaseDAL().GetList<Columu>(sql, param);
+            string sql = "select [image] from Cms_Category where id=@id";
+            return new BaseDAL().GetList<ColumuModels>(sql, param);
         }
 
         /// <summary>
-        /// 创建栏目文件夹
+        /// 获取栏目URL
         /// </summary>
         /// <param name="strUrl">栏目名称</param>
         /// <param name="parentid">父栏目路径</param>
         /// <returns></returns>
-        public static string CreateFolder(string strUrl, Columu cl, List<Columu> list)
+        public static string CreateFolder(string strUrl, ColumuModels cl, List<ColumuModels> list)
         {
             string strNow = HttpRuntime.AppDomainAppPath.ToString();
             if (cl.moduleid != 0)
@@ -197,8 +196,6 @@ namespace WL.Cms.Manager
                 {
                     cl.url = "/" + strUrl + "/";
                     strUrl = strNow + strUrl;
-                    //DirectoryInfo directoryInfo = new DirectoryInfo(strUrl);
-                    //directoryInfo.Create();
                     return cl.url;
                 }
                 else
@@ -208,16 +205,12 @@ namespace WL.Cms.Manager
                     {
                         cl.url = "/" + strUrl + "/";
                         strUrl = strNow + strUrl;
-                        //DirectoryInfo directoryInfo = new DirectoryInfo(strUrl);
-                        //directoryInfo.Create();
                     }
                     else
                     {
                         cl.url = strFatherUrl + strUrl + "/";
                         strUrl = (strFatherUrl.Substring(1, strFatherUrl.Length - 1)).Replace("/", "\\") + strUrl;
                         strUrl = strNow + strUrl;
-                        //DirectoryInfo directoryInfo = new DirectoryInfo(strUrl);
-                        //directoryInfo.Create();
                     }
                     return cl.url;
                 }
@@ -238,7 +231,7 @@ namespace WL.Cms.Manager
             DynamicParameters param = new DynamicParameters();
             param.Add("@id", id);
 
-            string sql = "select [parentid] from Category where id=@id";
+            string sql = "select [parentid] from Cms_Category where id=@id";
             List<int> list = new List<int>();
             list = new BaseDAL().GetList<int>(sql, param);
             if (list[0] == 0)
@@ -249,6 +242,19 @@ namespace WL.Cms.Manager
             {
                 return false;
             }
+        }
+
+        /// <summary>
+        /// 按栏目catdir获取栏目
+        /// </summary>
+        /// <param name="Catdir"></param>
+        /// <returns></returns>
+        public static ColumuModels CatdirGetColumu(string catdir)
+        {
+            DynamicParameters param = new DynamicParameters();
+            param.Add("@catdir", catdir);
+            string sql = "select * from Cms_Category where catdir=@catdir";
+            return new BaseDAL().Single<ColumuModels>(sql, param);
         }
 
     }

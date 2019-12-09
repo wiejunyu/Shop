@@ -1,14 +1,415 @@
-﻿
+﻿@model PagedList.IPagedList<WL.Home.Models.OrderModels>
+@using PagedList.Mvc;
+@using WL.Home.Models
+@using WL.Home.Manager
 @{
     ViewBag.Title = "订单管理";
     Layout = "~/Views/Shared/PersonalMaster.cshtml";
 }
+@using Newtonsoft.Json
 
+<!-- BEGIN STYLE CUSTOMIZER -->
+<div class="theme-panel hidden-xs hidden-sm">
+    <div class="toggler">
+    </div>
+    <div class="toggler-close">
+    </div>
+    <div class="theme-options">
+        <div class="theme-option theme-colors clearfix">
+            <span>
+                主题颜色
+            </span>
+            <ul>
+                <li class="color-black current color-default" data-style="default">
+                </li>
+                <li class="color-blue" data-style="blue">
+                </li>
+                <li class="color-brown" data-style="brown">
+                </li>
+                <li class="color-purple" data-style="purple">
+                </li>
+                <li class="color-grey" data-style="grey">
+                </li>
+                <li class="color-white color-light" data-style="light">
+                </li>
+            </ul>
+        </div>
+        <div class="theme-option">
+            <span>
+                布局
+            </span>
+            <select class="layout-option form-control input-small">
+                <option value="fluid" selected="selected">fluid</option>
+                <option value="boxed">boxed</option>
+            </select>
+        </div>
+        <div class="theme-option">
+            <span>
+                头部
+            </span>
+            <select class="header-option form-control input-small">
+                <option value="fixed" selected="selected">Fixed</option>
+                <option value="default">Default</option>
+            </select>
+        </div>
+        <div class="theme-option">
+            <span>
+                侧边栏
+            </span>
+            <select class="sidebar-option form-control input-small">
+                <option value="fixed">Fixed</option>
+                <option value="default" selected="selected">Default</option>
+            </select>
+        </div>
+        <div class="theme-option">
+            <span>
+                面包屑
+            </span>
+            <select class="sidebar-pos-option form-control input-small">
+                <option value="left" selected="selected">左边</option>
+                <option value="right">右边</option>
+            </select>
+        </div>
+        <div class="theme-option">
+            <span>
+                底部
+            </span>
+            <select class="footer-option form-control input-small">
+                <option value="fixed">Fixed</option>
+                <option value="default" selected="selected">Default</option>
+            </select>
+        </div>
+    </div>
+</div>
+<!-- END STYLE CUSTOMIZER -->
+<!-- BEGIN PAGE HEADER-->
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h3 class="page-title">
+            订单管理 <small>我的订单</small>
+        </h3>
+        <ul class="page-breadcrumb breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="/personal/myorder.html">个人中心</a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <a href="/personal/myorder.html">订单管理</a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <a href="#">
+                    我的订单
+                </a>
+            </li>
+        </ul>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>
+<!-- END PAGE HEADER-->
+<div class="row profile">
+    <div class="col-md-12">
+        <div class="portlet box grey">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-globe"></i>订单列表
+                </div>
+                <div class="tools">
+                    <a href="javascript:;" class="collapse"></a>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="orderHead">
+                    <table>
+                        <tbody class="head">
+                            <tr>
+                                <td style="width:45%;">
+                                    <input type="checkbox" id="AllOrder">
+                                    宝贝
+                                </td>
+                                <td style="width:10%;">
+                                    单价
+                                </td>
+                                <td style="width:5%;">
+                                    数量
+                                </td>
+                                <td style="width:10%;">
+                                    商品操作
+                                </td>
+                                <td style="width:10%;">
+                                    实付款
+                                </td>
+                                <td style="width:10%;">
+                                    <select class="form-control" id="PayState">
+                                        <option value="All"> 所有交易 </option>
+                                        <option value="True"> 交易成功 </option>
+                                        <option value="False"> 交易失败 </option>
+                                    </select>
+                                </td>
+                                <td>
+                                    交易操作
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="portlet-body">
+                @Html.PagedListPager(Model, page => Url.Action("MyOrder", new { page }))
+                <div class="r"><input type="button" class="btn green" onclick="DelOrderList()" value="批量删除"></div>
+                <form id="DelOrderList">
+                    <div class="order">
+                        @foreach (var item in Model)
+                        {
+                            if (item.ShoppingCart == false)
+                            {
+                                ShopModels shop = HomeManager.GetShop(Convert.ToInt32(item.Sid));
+                                <table>
+                                    <tbody class="head">
+                                        <tr>
+                                            <td class="align">
+                                                <label>
+                                                    <span>
+                                                        <input type="checkbox" data-type="@item.Order" class="checkboxes">
+                                                    </span>
+                                                    <span>@item.Date.ToString("yyyy-MM-dd")</span>
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <label>
+                                                    <span>订单号: @item.Order</span>
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <label>
+                                                    <span>
+                                                        <a href="#">宇宙商城</a>
+                                                    </span>
+                                                </label>
+                                            </td>
+                                            <td class="right">
+                                                <label>
+                                                    <a href="#"><i class="fa  fa-trash-o"></i></a>
+                                                </label>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody>
+                                        <tr>
+                                            <td class="align" style="width:45%;">
+                                                <div class="img">
+                                                    <a href="#" target="_blank">
+                                                        <img src="@shop.Image">
+                                                    </a>
+                                                </div>
+                                                <div>
+                                                    <span>@shop.Name</span><br />
+                                                    <span>型号：@shop.Model</span><br />
+                                                    <span>规格：@shop.Units</span><br />
+                                                    <span>品牌：@shop.Brand</span><br />
+                                                    @if (item.PayMethod == 0)
+                                                    {
+                                                        <span>货到付款</span>
+                                                    }
+                                                </div>
+                                            </td>
+                                            <td style="width:10%;">
+                                                <del class="ec">
+                                                    <span>￥</span>
+                                                    <span>@shop.Price.ToString("f2")</span>
+                                                </del>
+                                                <br />
+                                                <span>￥@shop.Trueprice.ToString("f2")</span>
+                                            </td>
+                                            <td style="width:5%;">
+                                                <span>@item.Number</span>
+                                            </td>
+                                            <td style="width:10%;">
+                                                <span><a href="#">申请售后</a></span>
+                                            </td>
+                                            <td style="width:10%;">
+                                                <span>￥@item.Money.ToString("f2")</span><br />
+                                                <span class="ec">(含运费：￥@item.Freight.ToString("f2"))</span>
+                                            </td>
+                                            <td style="width:10%;">
+                                                @if (item.PayState)
+                                                {
+                                                    <span><a href="javascript:void(0);">交易成功</a></span><br />
+                                                }
+                                                else
+                                                {
+                                                    <span><a href="javascript:void(0);">未付款</a></span><br />
+                                                }
+                                                <span><a href="javascript:void(0);">订单详情</a></span><br />
+                                                <span><a href="javascript:void(0);">查看物流</a></span><br />
+                                            </td>
+                                            <td style="width:10%;">
+                                                <input type="button" class="btn green" onclick="edit()" value="修改">
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            }
+                            else
+                            {
+                                <table>
+                                    <tbody class="head">
+                                        <tr>
+                                            <td class="align">
+                                                <label>
+                                                    <span>
+                                                        <input type="checkbox" data-type="@item.Order" class="checkboxes">
+                                                    </span>
+                                                    <span>@item.Date.ToString("yyyy-MM-dd")</span>
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <label>
+                                                    <span>订单号: @item.Order</span>
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <label>
+                                                    <span>
+                                                        <a href="#">宇宙商城</a>
+                                                    </span>
+                                                </label>
+                                            </td>
+                                            <td class="right">
+                                                <label>
+                                                    <a href="#"><i class="fa  fa-trash-o"></i></a>
+                                                </label>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody>
+                                         @{
+                                             List<ShopModels> list = JsonConvert.DeserializeObject<List<ShopModels>>(item.MultipleSid);
+                                         }
+                                        @foreach (ShopModels temp in list)
+                                        {
+                                            ShopModels shop = HomeManager.GetShop(Convert.ToInt32(item.Sid));
+                                            <tr>
+                                                <td class="align" style="width:45%;">
+                                                    <div class="img">
+                                                        <a href="#" target="_blank">
+                                                            <img src="@shop.Image">
+                                                        </a>
+                                                    </div>
+                                                    <div>
+                                                        <span>@shop.Name</span><br />
+                                                        <span>型号：@shop.Model</span><br />
+                                                        <span>规格：@shop.Units</span><br />
+                                                        <span>品牌：@shop.Brand</span><br />
+                                                        @if (item.PayMethod == 0)
+                                                        {
+                                                            <span>货到付款</span>
+                                                        }
+                                                    </div>
+                                                </td>
+                                                <td style="width:10%;">
+                                                    <del class="ec">
+                                                        <span>￥</span>
+                                                        <span>@shop.Price</span>
+                                                    </del>
+                                                    <br />
+                                                    <span>￥@shop.Trueprice</span>
+                                                </td>
+                                                <td style="width:5%;">
+                                                    <span>@item.Number</span>
+                                                </td>
+                                                <td style="width:10%;">
+                                                    <span><a href="#">申请售后</a></span>
+                                                </td>
+                                                <td style="width:10%;">
+                                                    <span>￥@item.Money</span><br />
+                                                    <span class="ec">(含运费：￥@item.Freight)</span>
+                                                </td>
+                                                <td style="width:10%;">
+                                                    @if (item.PayState)
+                                                    {
+                                                        <span><a href="javascript:void(0);">交易成功</a></span><br />
+                                                    }
+                                                    else
+                                                    {
+                                                        <span><a href="javascript:void(0);">未付款</a></span><br />
+                                                    }
+                                                    <span><a href="javascript:void(0);">订单详情</a></span><br />
+                                                    <span><a href="javascript:void(0);">查看物流</a></span><br />
+                                                </td>
+                                                <td style="width:10%;">
+                                                    <input type="button" class="btn green" onclick="edit()" value="修改">
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            }
+                        }
+                        每页 @Model.PageSize 条记录，共 @Model.PageCount 页，当前第 @Model.PageNumber 页
+                        @Html.PagedListPager(Model, page => Url.Action("MyOrder", new { page }))
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
     $(function () {
         setClass("Order", "MyOrder");
+        $("#PayState").select2();
+        $("#PayState").attr("value", 'True');
+        var state = '@ViewData["state"]';
+        $("#PayState").attr("value",state);
+        $(".select2-chosen").html("交易状态");
+        $("#PayState").change(function () {
+            console.log($(this).find("option:selected").val());
+            window.location.href = "/personal/myorder.html?state=" + $(this).find("option:selected").val();
+        });
+        $("#AllOrder").click(function () {
+            $("input[type='checkbox']").attr("checked", "true");
+            $("input[type='checkbox']").parent().css("background-position","-76px -260px");
+        });
     });
+    function DelOrderList() {
+        MyConfirm("DelOrderListOk", null, "确认删除所选吗？");
+    }
+    function DelOrderListOk() {
+        var myArray = new Array()
+        var $Move = $('.checkboxes');
+        $Move.each(function () {
+            var $this = $(this);
+            if ($this.is(':checked')) {
+                myArray.push($this.data('type'));
+            }
+        });
+        var json = JSON.stringify(myArray);
+        console.log(json);
+        $.ajax({
+            type: "POST",
+            async: true,
+            dataType: 'json',
+            url: "/Data/DelOrderList",
+            data: { json : json},
+            success: function (data) {
+                if (data == 1) {
+                    _hide();
+                    $("#myModal1 .modal-body p").html("批量删除成功");
+                    $("#msg").trigger('click');
+                }
+                else {
+                    _hide();
+                    $("#myModal2 .modal-body p").html("部分订单批量删除失败");
+                    $("#msg1").trigger('click');
+                }
+            }
+        });
+    }
 </script>
+
+
 
 

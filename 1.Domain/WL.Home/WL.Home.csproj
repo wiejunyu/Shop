@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
@@ -41,19 +44,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Manager\AddressManager.cs" />
     <Compile Include="Manager\HomeManager.cs" />
     <Compile Include="Manager\LoggerManager.cs" />
     <Compile Include="Manager\LoginManager.cs" />
+    <Compile Include="Manager\SysconfigManager.cs" />
     <Compile Include="Manager\TestManager.cs" />
     <Compile Include="Manager\UserManager.cs" />
+    <Compile Include="Models\AddressModels.cs" />
     <Compile Include="Models\ArticleModels.cs" />
     <Compile Include="Models\CategoryModels.cs" />
     <Compile Include="Models\CodeModels.cs" />
+    <Compile Include="Models\ColumuModels.cs" />
     <Compile Include="Models\LoggerModels.cs" />
     <Compile Include="Models\LoginModels.cs" />
     <Compile Include="Models\PasswordModels.cs" />
     <Compile Include="Models\RegisterModels.cs" />
     <Compile Include="Models\ShopModels.cs" />
+    <Compile Include="Models\SysconfigModels.cs" />
     <Compile Include="Models\TestModels.cs" />
     <Compile Include="Models\UserModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -66,6 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
