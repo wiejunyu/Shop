@@ -1,0 +1,225 @@
+﻿<!DOCTYPE html>
+<!-- saved from url=(0038)http://yizhou2.gotoip11.com/index.html -->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-cache">
+
+    <title>@ViewBag.title</title>
+    <meta name="description" content="@ViewBag.Description">
+    <meta name="keywords" content="@ViewBag.Keywords">
+
+    <link href="~/Content/swiper.min.css" rel="stylesheet" />
+    <link href="~/Content/normalize.css" rel="stylesheet" />
+    <link href="~/Content/main.css" rel="stylesheet" />
+    <link href="~/Content/laydate.css" rel="stylesheet" />
+    <link href="~/Content/index.css" rel="stylesheet" />
+    <link href="~/Content/cityselect.css" rel="stylesheet" />
+    <link href="~/Content/cargo.css" rel="stylesheet" />
+    <link href="~/Content/banner.css" rel="stylesheet" />
+    <link href="~/Content/animations.css" rel="stylesheet" />
+    <link href="~/Content/revision.css" rel="stylesheet" />
+    <link href="~/Content/reset.css" rel="stylesheet" />
+    <link href="~/Content/css.css" rel="stylesheet" />
+
+    <script src="~/Scripts/jquery-1.11.0.min.js"></script>
+    <script src="~/Scripts/hm.js"></script>
+    <script src="~/Scripts/dedeajax2.js"></script>
+    <script src="~/Scripts/pic_scroll.js"></script>
+    <script src="~/Scripts/TweenMax.min.js"></script>
+    <script src="~/Scripts/main.js"></script>
+    <script src="~/Scripts/control.js"></script>
+    <script src="~/Scripts/js.js"></script>
+
+</head>
+<body>
+    <div class="page">
+        <!--头部-->
+        <header class="topbar OE_head">
+            <div class=" wrapper clearfix">
+                <div class="topbar_left">
+                    <p>
+                        <span>
+
+                            @if (ViewData["username"].ToString() == "")
+                            {
+                                <a href="/" class="line_no">游客</a>
+                            }
+                            else
+                            {
+                                <a href="/" class="line_no">@Html.Raw(ViewData["username"].ToString())</a>
+                            }
+                            <font>，宇宙物流欢迎您！联系电话：</font><a href="javascript:void(0)" class="topbar_tel">15077144684</a></font>
+                        </span>
+                    </p>
+                </div>
+                <div class="topbar_right clearfix OE_topbar_right">
+                    @{
+                        if (ViewData["username"].ToString() == "")
+                        {
+                            <ul class="clearfix topbar_right_list">
+                                <li>
+                                    <a href="/Login/Login">
+                                        <span>请登录</span>
+                                    </a>
+                                </li>
+                                <li class="space"></li>
+                                <li>
+                                    <a href="/Login/Register">
+                                        <span>免费注册</span>
+                                    </a>
+                                </li>
+                                <li class="space"></li>
+                                <li>
+                                    <a href="#">
+                                        <span>立即下单</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        }
+                        else
+                        {
+                            <ul class="clearfix topbar_right_list">
+                                <li>
+                                    <a href="/Personal/Index">
+                                        <span>进入会员中心</span>
+                                    </a>
+                                </li>
+                                <li class="space"></li>
+                                <li>
+                                    <a href="#">
+                                        <span>立即下单</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        }
+                    }
+                </div>
+            </div>
+        </header>
+        <!--头部结束-->
+        <!--导航-->
+        <nav class="navitem">
+            <div class="wrapper clearfix">
+                <div class="navitem_left clearfix">
+                    <p class="navitem_logo">
+                        <a href="/">
+                            <img src="/image/logo.png" alt="logo">
+                        </a>
+                    </p>
+                </div>
+                <div class="language" id="language"><a href="javascript:void(0);"><h1>English</h1></a></div>
+                <div class="navitem_right OE_navitem_right">
+                    <ul class="clearfix">
+                        <li class="drop_down">
+                            <a href="/" title="首页">首页</a>
+                            <div class="subnav">
+
+                            </div>
+                        </li>
+                        <li class="drop_down">
+                            <a href="/Home/News/" title="行业资讯">行业资讯</a>
+                            <div class="subnav">
+
+                            </div>
+                        </li>
+                        <li class="drop_down">
+                            <a href="/Home/route/" title="物流项目">物流项目</a>
+                            <div class="subnav">
+
+                                <a href="/Home/route/" title="东南亚专线">东南亚专线</a>
+
+                                <a href="/Home/Customs/" title="报关报检">报关报检</a>
+
+                                <a href="/Home/CFS-DOOR/" title="双清关">双清关</a>
+
+                            </div>
+                        </li>
+                        <li class="drop_down">
+                            <a href="/Home/Purchase/" title="供应链管理">供应链管理</a>
+                            <div class="subnav">
+
+                                <a href="/Home/Purchase/" title="采购">采购</a>
+
+                                <a href="/Home/Storage/" title="仓储">仓储</a>
+
+                                <a href="/Home/Distribution/" title="终端配送">终端配送</a>
+
+                            </div>
+                        </li>
+                        <li class="drop_down">
+                            <a href="/Home/About/" title="关于我们">关于我们</a>
+                            <div class="subnav">
+                            </div>
+                        </li>
+                        <li class="drop_down">
+                            <a href="/Home/Shop/" title="商品采购">商品采购</a>
+                            <div class="subnav">
+
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!--导航结束-->
+        @RenderBody();
+        <!--foot-->
+        <footer>
+            <div class="wrapper">
+                <div class="footer-info">
+                    <ul>
+                        <li>
+                            <a class="foot_logo" href="javascript:void(0);">
+                                <img src="/image/logo_white.png" alt="">
+                            </a>
+                        </li>
+                        <li>
+                            <a class="foot_icon" href="tel:13788682003">
+                                <img src="/image/phone.png" alt="">
+                                <span>13788682003</span>
+                            </a>
+                            <a class="foot_icon" href="https://www.facebook.com/profile.php?id=100024514969908&amp;fref=jewel">
+                                <span>facebook</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul>
+                        <p class="foot_bottom">
+                            <span>南宁市高新区高科路8号南宁创客城电子产业园2号楼2层ZH161号</span>
+                            <span>桂ICP备18001712号</span>
+                        </p>
+                    </ul>
+                </div>
+
+                <div class="footer-ewm">
+                    <a href="javascript:void(0);">
+                        <img src="/image/ewm.png" alt="二维码">
+                    </a>
+                </div>
+            </div>
+        </footer>
+        <!--foot结束-->
+    </div>
+    <div class="portlet-body">
+        <div style="text-align: center;" id="loading" class="display-none">
+            <div style="margin:0 auto">
+                <img src="~/Image/loading.gif" /><br />
+                <label>Loading...</label>
+            </div>
+        </div>
+    </div>
+    <div class="msg" id="msg" style="display:none" onclick="closeTime();">
+        <header>
+            <h3>消息提示</h3>
+        </header>
+        <section>
+            <p>消息提示内容</p>
+            <h4>点击关闭提示消息</h4>
+        </section>
+    </div>
+</body>
+</html>

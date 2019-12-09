@@ -1,0 +1,572 @@
+﻿
+@{
+    ViewBag.Title = "越南专线|越南跨境购|越南工业品采购|跨境物流链";
+    ViewBag.Description = "【跨境物流链】专注越南专线,泰国专线,老挝专线柬埔寨专线,工业品采购,五金采购,跨境国际陆运,越南工业品采购越南跨境购,路运,送货到门,包清关,货到付款等增值服务";
+    ViewBag.Keywords = "越南专线|越南跨境购|越南工业品采购|跨境物流链";
+    Layout = "~/Views/Shared/MainMaster.cshtml";
+}
+@using WL.Home.Models
+@using WL.Infrastructure.Common
+<!--banner-->
+<style>
+
+    .swiper-container {
+        width: 100%;
+        height: 100%;
+    }
+</style>
+<div class="page_banner">
+    <div class="tp-banner-container clearfix">
+        <div class="tp-banner">
+            <div class="tp-banner-container clearfix">
+                <div class="tp-banner">
+                    <ul>
+                        <li data-transition="slideleft" data-slotamount="14" style="display: block; z-index: 43; right: -100%; left: 0px;">
+                            <img src="../image/index_banner1.jpg">
+                            <div style="display: none;" class="tp-caption ad-info-txt slider-text-title sft str fadeout animated fadeInDown go" data-easing="easeOutCubic" data-start="800" data-speed="300">
+                                智能生成最佳物流方案
+                            </div>
+                            <div class="tp-caption ad-details lfr stb stl  fadeout slow fadeInLeft go" data-x="20" data-y="200" data-speed="500" data-start="1500" data-easing="easeOutExpo" style="display: none;">
+                                <p>提高<span>20%</span>物流效率</p>
+                                <p>一键推荐最便宜、最快速、最安全的跨境物流线路</p>
+                            </div>
+                        </li>
+                        <li data-transition="slideleft" data-slotamount="7" data-masterspeed="300" style="display: block; z-index: 44; left: 0px; right: 0px;">
+                            <img src="../image/index_banner2.jpg" alt="darkblurbg" data-fullwidthcentering="on">
+                            <div class="tp-caption ad-info-txt animated fadeInDown go" data-x="20" data-y="150" data-speed="300" data-start="800" data-easing="easeOutCubic" style="display: block;">
+                                全程跟踪物流轨迹
+                            </div>
+                            <div class="tp-caption ad-details lfr stb stl  fadeout slow fadeInLeft go" data-x="20" data-y="200" data-speed="500" data-start="1500" data-easing="easeOutExpo" style="display: block;">
+                                <p>降低<span>50%</span>人工成本</p>
+                                <p>物流变化主动通知：<span>短信+微信+邮箱</span></p>
+                            </div>
+                        </li>
+                        <li data-transition="slideleft" data-masterspeed="600" style="display: block; z-index: 42; right: -100%; left: 0px;">
+                            <img src="../image/index_banner3.jpg" alt="darkblurbg">
+                            <div class="tp-caption ad-info-txt slider-text-title sft str fadeout animated fadeInDown go" data-x="20" data-y="150" data-speed="300" data-start="800" data-easing="easeOutCubic" style="display: none;">
+                                智能集运
+                            </div>
+                            <div class="tp-caption ad-details lfr stb stl  fadeout slow fadeInLeft go" data-x="20" data-y="200" data-speed="500" data-start="1500" data-easing="easeOutExpo" style="display: none;">
+                                <p>节省<span>20%</span>物流成本</p>
+                                <p>集小单成大单，让中小企业享受大客户折扣</p>
+                            </div>
+                        </li>
+                        <li data-transition="slideleft" data-masterspeed="900" style="display: block; z-index: 42; right: -100%; left: 0px;">
+                            <img src="../image/index_banner4.jpg" alt="darkblurbg">
+                            <div class="tp-caption ad-info-txt slider-text-title sft str fadeout animated fadeInDown go" data-x="20" data-y="150" data-speed="300" data-start="800" data-easing="easeOutCubic" style="display: none;">
+                                海外仓
+                            </div>
+                            <div class="tp-caption ad-details lfr stb stl fadeout slow fadeInLeft go" data-x="20" data-y="200" data-speed="500" data-start="1500" data-easing="easeOutExpo" style="display: none;">
+                                <p>越南、老挝、柬埔寨、泰国、缅甸 链接<span>32个</span>合作渠道</p>
+                                <p><span>200多个</span>海外合作伙伴</p>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="tp-bannertimer" style="width: 11.7167%; overflow: hidden; display: block;"></div>
+                    <div style="position: absolute; top: 350px; margin-top: -20px; left: 20px; z-index: 300" class="tp-leftarrow tparrows default"></div>
+                    <div style="position: absolute; top: 350px; margin-top: -20px; right: 20px; z-index: 300" class="tp-rightarrow tparrows default"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--banner结束-->
+    <!--登陆-->
+    <div class="wrapper clearfix">
+        <!--开眼滚动消息-->
+        <div class="OpenEyes" id="noticsListDiv">
+            <div class="OpenEyes_img">
+                <a href="javascript:void(0);">
+                    <img src="../image/news_gg.png" alt="">
+                    <span>最新公告</span>
+                </a>
+            </div>
+            <div class="OpenEyes_info">
+                <div id="news_wrap" class="news-wrap">
+                    <ul id="news_cont" style="margin-top: 0px;">
+                        @{
+                            List<ArticleModels> listTwo = ViewData["Article"] as List<ArticleModels>;
+                            listTwo = listTwo.Take(2).ToList();
+                         }
+                        @foreach (ArticleModels temp in listTwo)
+                        {
+                            <li class="noWrapEllipsis">
+                                <a href="/Home/Article?aid=@temp.id" class="clearfix">
+                                    <span class="noWrapEllipsis">@temp.title</span>
+                                    <em>@Common.ConvertDate(temp.createtime.ToString()).ToString("yy-MM-dd")</em>
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!--开眼滚动消息结束-->
+        <div class="wrapper clearfix" id="loginDiv">
+            <!--登陆-->
+            <div class="login_box" id="loginBefore">
+                <dd id="uc_member">
+                    <div id="_userlogin">
+                        @if (ViewData["username"].ToString() == "")
+                        {
+                            <div class="userlogin" id="info">
+                                <form name="login"  method="post" id="login" action="/Login/UserLogin" >
+                                    <div class="fb">
+                                        <span>用户名:</span>
+                                        <input type="text" name="username" size="20" class="ipt-txt1">
+                                    </div>
+                                    <div class="fb">
+                                        <span>密码:</span>
+                                        <input type="password" name="password" size="20" class="ipt-txt2">
+                                    </div>
+
+                                    <div class="fb">
+                                        <span>验证码:</span>
+                                        <input type="text" name="vdcode" size="8" class="ipt-txt3">
+                                        <img id="loginImg"  onclick="loginChangeCheckCode();" style="cursor:pointer;margin-left:0px;text-transform:uppercase;margin-top: 10px;" alt="看不清？点击更换"  src="">
+                                    </div>
+
+                                    <div class="submit">
+                                        <input type="submit" class="btn-1" value="登&nbsp;录"/>
+                                        <a href="/Login/Register">注册帐号</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="/Login/Forget">忘记密码?</a>
+                                    </div>
+                                </form>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="login_bg">
+						        <a href="/member/index.php">
+                                <img src="@ViewData["userportrait"].ToString()"></a>
+						        <h5><span class="greet">你好：</span><span>@ViewData["username"].ToString()</span>，欢迎登录</h5>
+						        <p>欢迎来到跨境物流链商城</p>
+					        </div>
+                            <div class="login_list">
+						        <h5>
+							        <a href="/Personal/Index">进入个人中心</a>
+						        </h5>
+						        <p class="clearfix">
+							        <span>我的运单</span>
+							        <a href="/Personal/Index"><em>0</em></a>
+						        </p>
+						        <a href="javascript:void(0);" class="login_off" onclick="LogOut();">退出登录</a>
+					        </div>
+                        }
+                    </div>
+                    <!-- /userlogin -->
+                    <div class="latestlogin">
+                        <strong>最近登陆的会员</strong>
+                        <ul class="e7">
+                            <li><a href="http://yizhou2.gotoip11.com/www.cp-56.com/member/index.php?uid=%E9%9F%A6%E4%BF%8A%E5%AE%87" target="_blank">韦俊宇</a></li>
+                            <li><a href="http://yizhou2.gotoip11.com/www.cp-56.com/member/index.php?uid=%E7%BD%97%E9%9B%81" target="_blank">我爸叫我做国际物流</a></li>
+                        </ul>
+                    </div>
+                    <!-- /latestlogin -->
+                </dd>
+            </div>
+            <!--登陆结束-->
+        </div>
+    </div>
+</div>
+<!--包裹搜索-->
+<div class="logistic_item_box zl_logistic_h index_search_bag">
+    <div class="P_main">
+        <header><h>价格查询</h><figure id="attention1"><a href="javascript:void(0)"><img src="../image/attention.png"><font>注意事项</font></a></figure></header>
+        <div class="P_main_a">
+            <div class="P_main_1">
+                <span>请选择城市：</span>
+                <select name="ddl_country" id="ddl_country">
+                    <option value="请选择">请选择</option>
+                    <option value="越南">越南</option>
+                    <option value="老挝">老挝</option>
+                    <option value="泰国">泰国</option>
+                    <option value="柬埔寨">柬埔寨</option>
+                    <option value="缅甸">缅甸</option>
+                </select>
+                <select name="ddl_city1" id="ddl_city1">
+                    <option value="请选择">请选择</option>
+                </select>
+                <select name="ddl_city2" id="ddl_city2"></select>
+
+            </div>
+            <div class="P_main_2"><span>请输入货物公斤：</span><input id="tb_goodsKg" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,&#39;&#39;)}else{this.value=this.value.replace(/\D/g,&#39;&#39;)}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,&#39;&#39;)}else{this.value=this.value.replace(/\D/g,&#39;&#39;)}"><span>&nbsp;KG</span></div>
+            <div class="P_main_3">
+                <button id="component-1" class="button button--1">
+                    <font>确认</font>
+                    <span class="button__container">
+                        <span class="circle top-left" style="transform: matrix(0.7071, -0.7071, 0.7071, 0.7071, 0, 0);"></span>
+                        <span class="circle top-left" style="transform: matrix(0.7071, -0.7071, 0.7071, 0.7071, 0, 0);"></span>
+                        <span class="circle top-left" style="transform: matrix(0.7071, -0.7071, 0.7071, 0.7071, 0, 0);"></span>
+                        <span class="button__bg"></span>
+                        <span class="circle bottom-right" style="transform: matrix(0.7071, -0.7071, 0.7071, 0.7071, 0, 0);"></span>
+                        <span class="circle bottom-right" style="transform: matrix(0.7071, -0.7071, 0.7071, 0.7071, 0, 0);"></span>
+                        <span class="circle bottom-right" style="transform: matrix(0.7071, -0.7071, 0.7071, 0.7071, 0, 0);"></span>
+                    </span>
+                </button>
+            </div>
+        </div>
+        <div class="P_main_b">
+            <h1><span>价格：$</span><span id="result">0</span>.00</h1>
+        </div>
+    </div>
+    <div class="attention">
+        <p>1、交货须知：星期一至星期五(6:00AM-21:PM)，星期日(6:00AM-21:PM)；</p>
+        <p>2、此报价是DOOR TO DOOR服务，但不包含叉车费用以及其他非运价费用；</p>
+        <p>3、发货时请务必提供当票货物清单一份；</p>
+        <p>4、非国贸运输材积比均为200KG/CBM，单件超70KG，三围之和超330CM（1长+2（宽+高）≥330CM）需加收20%通关费用；</p>
+        <p>5、普通报价不能转运以下物品：粉末类/液体/电子产品/电子元器件等高价物品及越南海关禁止进口的各类物品；</p>
+        <p>6、国贸运输材积比为4000，为保障运输质量，国贸运输客户应采用标准卡板（ 1.1m*1.1m*1.6m或1.2m*1.0m*1.6m）载运；</p>
+        <p>7、非国贸运输无法提供不能清关以及相应票据；</p>
+        <p>8、未保价的货物受损，灭失的以货损比列分摊的运费最高3倍为限赔偿，文件性物件损坏或灭失每票最高赔偿额度为RMB100元；</p>
+    </div>
+</div>
+<!--包裹搜索结束-->
+<!--商品展示-->
+<section class="index_tgb">
+    <div class="commodityDisplay">
+        <div class="tltle_bar">
+            <h3>商品展示</h3>
+            <i></i>
+        </div>
+        <div class="spzs">
+            <div class="sp">
+                <h1 style="border-bottom: solid 1px;"><font>工业用品</font><span><a href="http://yizhou2.gotoip11.com/shop/">立即下单</a></span></h1>
+                <ul>
+                    <li>
+                        <a href="http://yizhou2.gotoip11.com/shop/">
+                            <span><img src="../image/sp1.jpg"></span>
+                            <h1>电气控制、电源及辅材</h1>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://yizhou2.gotoip11.com/shop/">
+                            <span><img src="../image/sp2.jpg"></span>
+                            <h1>轴承、气动及机械部件</h1>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://yizhou2.gotoip11.com/shop/">
+                            <span><img src="../image/sp3.jpg"></span>
+                            <h1>中、小型PLC及自动化</h1>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://yizhou2.gotoip11.com/shop/">
+                            <span><img src="../image/sp4.jpg"></span>
+                            <h1>个人防护、安防等用品</h1><br <="" a="">
+                        </a>
+                    </li>
+                    <a href="http://yizhou2.gotoip11.com/shop/">
+                    </a>
+                    <li>
+                        <a href="http://yizhou2.gotoip11.com/shop/">
+                        </a><a href="http://yizhou2.gotoip11.com/shop/">
+                            <span><img src="../image/sp5.jpg"></span>
+                            <h1>测量、卡表等仪器设备</h1>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://yizhou2.gotoip11.com/shop/">
+                            <span><img src="../image/sp6.jpg"></span>
+                            <h1>胶粘、胶带、模具磨料</h1>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://yizhou2.gotoip11.com/shop/">
+                            <span><img src="../image/sp7.jpg"></span>
+                            <h1>扳手、钳夹及工具耗材</h1>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://yizhou2.gotoip11.com/shop/">
+                            <span><img src="../image/sp8.jpg"></span>
+                            <h1>其他品类</h1>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+<!--商品展示结束-->
+<!--我们的产品-->
+<section>
+    <div class="Our_products_box">
+        <div class="wrapper clearfix">
+            <div class="tltle_bar">
+                <h3>国际陆运专线——报关——报检——集拼——双清</h3>
+                <i></i>
+            </div>
+            <p class="more_product clearfix">
+                <a href="/Home/route/">更多产品</a>
+            </p>
+            <div class="clear"></div>
+            <div class="Our_products_list clearfix">
+                <figure onclick="javascript:window.location.href='/Home/VietnamRoute'">
+                    <div class="Our_products_list_img">
+                        <img src="../image/17-1P201153011O4.jpg" alt="越南专线">
+                    </div>
+                    <div class="Our_products_list_info">
+                        <h3>越南专线</h3>
+                        <p>
+                            双清包门到门，华东直达+目的地派送，运输时效4-7个工作日
+                        </p>
+                        <p class="detail_btn">
+                            <a href="/Home/VietnamRoute" class="go_jt">
+                                查看详情
+                            </a>
+                        </p>
+                    </div>
+                </figure>
+                <figure onclick="javascript:window.location.href='/Home/LaosRoute'">
+                    <div class="Our_products_list_img">
+                        <img src="../image/17-1P201160T5Z3.jpg" alt="老挝专线">
+                    </div>
+                    <div class="Our_products_list_info">
+                        <h3>老挝专线</h3>
+                        <p>
+                            全国各地提高上门提货服务，中国内地-老挝全境多式联运，运输时效4-7个工作日
+                        </p>
+                        <p class="detail_btn">
+                            <a href="/Home/LaosRoute" class="go_jt">
+                                查看详情
+                            </a>
+                        </p>
+                    </div>
+                </figure>
+                <figure onclick="javascript:window.location.href='/Home/ThailandRoute'">
+                    <div class="Our_products_list_img">
+                        <img src="../image/17-1P20116061H53.jpg" alt="泰国专线">
+                    </div>
+                    <div class="Our_products_list_info">
+                        <h3>泰国专线</h3>
+                        <p>
+                            中国-泰国陆运双清关，送货上门，运输时效5-7个工作日
+                        </p>
+                        <p class="detail_btn">
+                            <a href="/Home/ThailandRoute" class="go_jt">
+                                查看详情
+                            </a>
+                        </p>
+                    </div>
+                </figure>
+            </div>
+        </div>
+    </div>
+</section>
+<!--我们的产品结束-->
+<!--发展-->
+<section>
+    <div class="growth_box news_box_modify OE_news_bg">
+        <div class="wrapper clearfix" id="tableList">
+            <div class="tltle_bar">
+                <h3>行业资讯</h3>
+                <i></i>
+            </div>
+            <div class="Latest_news clearfix">
+                @foreach (ArticleModels temp in ViewData["Article"] as List<ArticleModels>)
+                {
+                    <ul class="Latest_news_left clearfix">
+                        <li class="clearfix">
+                            <a href="/Home/Article?aid=@temp.id">
+                                <p class="noWrapEllipsis"><i></i>@temp.title</p>
+                                <p class="date_time">@Common.ConvertDate(temp.createtime.ToString()).ToString("yy-MM-dd")</p>
+                            </a>
+                        </li>
+                    </ul>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+<!--发展结束-->
+<!--合作伙伴-->
+<section>
+    <div class="partner_box partner_box_modify pad_0">
+        <div class="wrapper clearfix">
+            <div class="tltle_bar">
+                <h3>合作伙伴</h3>
+                <i></i>
+            </div>
+            <div class="partner_item_left">
+                <figure class="partner_item_list partner_item_dz">
+                    <h4>电子口岸</h4>
+                    <ul class="clearfix" id="hzhb">
+                        <li>
+                            <a href="http://www.gxeport.gov.cn/">
+                                <img src="../image/dzka_logo.png" alt="">
+                                <span>南宁电子口岸</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://www.gzeport.com/">
+                                <img src="../image/dzka_logo.png" alt="">
+                                <span>广州电子口岸</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://www.eport.sh.cn/">
+                                <img src="../image/dzka_logo.png" alt="">
+                                <span>上海电子口岸</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://www.yneport.gov.cn/">
+                                <img src="../image/dzka_logo.png" alt="">
+                                <span>昆明电子口岸</span>
+                            </a>
+                        </li>
+                    </ul>
+                </figure>
+            </div>
+            <div class="partner_item_right">
+                <figure class="partner_pt">
+                    <h4>电商平台</h4>
+                    <ul class="clearfix">
+                        <li class="itemone">
+                            <a href="http://www.vipmro.com/">
+                                <img src="../image/dz_logo.jpg" alt="logo">
+                            </a>
+                        </li>
+                        <li class="itemone">
+                            <a href="https://www.logistics.dhl/">
+                                <img src="../image/dz_logo1.jpg" alt="logo">
+                            </a>
+                        </li>
+                        <li class="itemone">
+                            <a href="http://www.ems.com.cn/">
+                                <img src="../image/dz_logo2.jpg" alt="logo">
+                            </a>
+                        </li>
+                        <li class="itemone">
+                            <a href="https://www.fedex.com/cn/index.html">
+                                <img src="../image/dz_logo3.jpg" alt="logo">
+                            </a>
+                        </li>
+                        <li class="itemone">
+                            <a href="http://www.kuronekoyamato.co.jp/">
+                                <img src="../image/dz_logo4.jpg" alt="logo">
+                            </a>
+                        </li>
+                        <li class="itemone">
+                            <a href="https://www.chrobinson.com/%22">
+                                <img src="../image/dz_logo5.jpg" alt="logo">
+                            </a>
+                        </li>
+                        <li class="itemone">
+                            <a href="http://www.haituotong.com/">
+                                <img src="../image/dz_logo6.jpg" alt="logo">
+                            </a>
+                        </li>
+                        <li class="itemone">
+                            <a href="http://www.tongtool.com/">
+                                <img src="../image/dz_logo7.jpg" alt="logo">
+                            </a>
+                        </li>
+                        <li class="itemone">
+                            <a href="https://yue.52wmb.com/">
+                                <img src="../image/dz_logo8.jpg" alt="logo">
+                            </a>
+                        </li>
+                        <li class="itemone">
+                            <a href="https://www.usps.com/">
+                                <img src="../image/dz_logo9.jpg" alt="logo">
+                            </a>
+                        </li>
+                        <li class="itemone">
+                            <a href="https://www.dhgate.com/">
+                                <img src="../image/dz_logo10.jpg" alt="logo">
+                            </a>
+                        </li>
+                        <li class="itemone">
+                            <a href="https://www.aliexpress.com/">
+                                <img src="../image/dz_logo11.jpg" alt="logo">
+                            </a>
+                        </li>
+                        <li class="itemone">
+                            <a href="https://www.ebay.com/">
+                                <img src="../image/dz_logo12.jpg" alt="logo">
+                            </a>
+                        </li>
+                        <li class="itemone">
+                            <a href="https://www.wish.com/">
+                                <img src="../image/dz_logo13.jpg" alt="logo">
+                            </a>
+                        </li>
+                    </ul>
+                </figure>
+            </div>
+        </div>
+    </div>
+</section>
+<!--合作伙伴结束-->
+<script>
+    var id = 0;
+    function loginChangeCheckCode() {
+        id++;
+        $("#loginImg").attr("src", "/Login/ShowValidateCode?id=" + id);  //id=2
+    }
+    $(function () {
+        $("#loginImg").attr("src", "/Login/ShowValidateCode?id=" + id);
+        $("#login").submit(function () {
+            _show();
+            var url = $(this).attr('action');
+            var data = $(this).serialize();
+
+            var data_arr = $(this).serializeArray();
+
+            if (data_arr[0].value == "") {
+                _hide();
+                message(true, "账号不能为空", "");
+                return false;
+            }
+            if (data_arr[1].value == "") {
+                _hide();
+                message(true, "密码不能为空", "");
+                return false;
+            }
+            if (data_arr[2].value == "") {
+                _hide();
+                message(true, "验证码不能为空", "");
+                return false;
+            }
+            var jsondata = undefined;
+            jsondata = $("#login").serializeObject();
+            jsondata = { json: JSON.stringify(jsondata) };
+            $.ajax({
+                type: "POST",
+                async: true,
+                dataType: 'json',
+                url: url,
+                data: jsondata,
+                success: function (json) {
+                    if (json.message == '0') {
+                        _hide();
+                        loginChangeCheckCode();
+                        message(json.error, "验证码错误", json.link);   //消息提示
+                    }
+                    else {
+                        _hide();
+                        message(json.error, json.message, json.link);   //消息提示
+                    }
+                }
+            });
+            return false;
+        });
+    });
+    function LogOut() {
+        _show();
+        $.ajax({
+            type: "POST",
+            url: "/Login/LogOut",
+            data: { },
+            dataType: "json",
+            success: function (data) {
+                if (data == 1)
+                {
+                    message(false, "退出成功", "/Home/Index");
+                }
+                _hide();
+            }
+        });
+    };
+</script>

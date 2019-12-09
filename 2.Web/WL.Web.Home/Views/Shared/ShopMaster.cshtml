@@ -1,0 +1,262 @@
+﻿@using WL.Home.Models
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-cache">
+
+    <title>@ViewBag.title</title>
+    <meta name="keywords" content="@ViewBag.Description" />
+    <meta name="description" content="@ViewBag.Keywords" />
+
+    <link href="~/Content/swiper.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/Content/banner.css">
+    <link rel="stylesheet" href="~/Content/index.css">
+    <link rel="stylesheet" href="~/Content/reset.css">
+    <link rel="stylesheet" href="~/Content/revision.css">
+    <link rel="stylesheet" href="~/Content/laydate.css" id="layuicss-laydate">
+    <link rel="stylesheet" type="text/css" href="~/Content/cityselect.css">
+    <link rel="stylesheet" href="~/Content/animations.css">
+    <link href="~/Content/css.css" rel="stylesheet" />
+    <link href="~/Content/cargo.css" rel="stylesheet" />
+    <link href="~/Scripts/DistortedButtonEffects/normalize.css" rel="stylesheet" />
+    <link href="~/Scripts/DistortedButtonEffects/main.css" rel="stylesheet" />
+
+    <script src="~/Scripts/jquery-1.11.0.min.js"></script>
+    <script src="~/Scripts/js.js"></script>
+
+    <script>
+        $(function () {
+            $(".a_show").click(function () {
+                $(".page").hide();
+                $("#if_form").show();
+                $(".div_close").show();
+            });
+            $(".div_close").click(function () {
+                $("#if_form").hide();
+                $(".div_close").hide();
+                $(".page").show();
+            });
+            var x = $('.nav_shops').offset().left;
+            $('.nav-main').css('left', x);
+
+        });
+    </script>
+</head>
+<body>
+    <div class="page">
+        <!--导航-->
+        <nav class="navitem_shops">
+            <div class="wrapper_shops" style="overflow:hidden;padding:1%;">
+                <div class="navitem_left_shops">
+                    <p class="navitem_logo">
+                        <a href="#">
+                            <img src="/image/logo.png" alt="logo">
+                        </a>
+                    </p>
+                    <p class="navitem_member" id="navitem_member" style="padding-top:3.5%;"><a href="/member/index.php">登录</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="/member/index_do.php?fmdo=user&dopost=regnew">注册账号</a></p>
+                </div>
+                <div class="navitem_right_shops" style="padding-top:1%;">
+                    <input class="mod-keywords top-select-sel-text J_t_searchOne" name="search" type="text" value="在这里搜索..." onfocus="if(this.value=='在这里搜索...'){this.value='';}" onblur="if(this.value==''){this.value='在这里搜索...';}" />
+                    <button class="mod-search" type="button" onclick="search()" class="top-select-but ft-16 cursor">搜索</button>
+                </div>
+
+            </div>
+            <div class="nav_shops">
+                <ul>
+                    <li class="nav_shops_li">
+                        <h>全部商品分类</h>
+                        <div class="nav-main">
+                            <div class="nav-main-left">
+                                <ul>
+                                    @{
+                                        List<CategoryModels> category = ViewData["category"] as List<CategoryModels>;
+                                        List<CategoryModels> categoryOne = category.Where(p => p.Rank == 1).ToList();
+                                        List<CategoryModels> categoryTwo = category.Where(p => p.Rank == 2).ToList();
+                                        List<CategoryModels> categoryThree = category.Where(p => p.Rank == 3).ToList();
+                                        List<CategoryModels> categoryFour = category.Where(p => p.Rank == 4).ToList();
+                                    }
+                                    @foreach (CategoryModels tempOne in categoryOne)
+                                    {
+                                        <li class="b50" attr-type="2">
+                                            <a href="/Home/shop?id=@tempOne.id" class="a_show1">
+                                                <img src="@tempOne.Picture" attr-src="@tempOne.Picture">
+                                                @tempOne.Name
+                                            </a>
+                                            <div class="nav-main-right">
+                                                <div class="get-height">
+                                                    <!-- foreach data[]-->
+                                                    <div class="J_cateBox">
+                                                        @foreach (CategoryModels tempTwo in categoryTwo)
+                                                        {
+                                                            if (tempTwo.Parentid == tempOne.id)
+                                                            {
+                                                                <div class="category-wrapper">
+                                                                    <div class="nav-main-type">
+                                                                        <span>
+                                                                            <a href="/Home/shop?id=@tempTwo.id" class="a_show">@tempTwo.Name</a>
+                                                                        </span>
+                                                                        <ul>
+                                                                            @foreach (CategoryModels tempThree in categoryThree)
+                                                                            {
+                                                                                if (tempThree.Parentid == tempTwo.id)
+                                                                                {
+                                                                                    <li>
+                                                                                        |<a href="/Home/shop?id=@tempThree.id" class="a_show">@tempThree.Name</a>
+                                                                                    </li>
+                                                                                }
+                                                                            }
+
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="category-brands">
+                                                                    @foreach (CategoryModels tempFour in categoryFour)
+                                                                    {
+                                                                        if (tempFour.Parentid == tempTwo.id)
+                                                                        {
+                                                                            <a href="/Home/shop?id=@tempFour.id" class="a_show">
+                                                                                <img src="@tempFour.Picture">
+                                                                            </a>
+                                                                        }
+                                                                    }
+                                                                </div>
+                                                            }
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    <li>
+                        <a href="/member/index.php">会员登录</a>
+                    </li>
+                    <li>
+                        <a href="/">退出商城</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <!--导航结束-->
+        <!--banner-->
+        <style>
+            .swiper-container {
+                width: 100%;
+                height: 100%;
+            }
+        </style>
+        <div class="page_banner">
+            <div class="tp-banner-container clearfix">
+                <div class="tp-banner">
+                    <div class="tp-banner-container clearfix">
+                        <div class="tp-banner">
+                            <ul>
+                                <li data-transition="slideleft" data-slotamount="14" style="display: block; z-index: 44; right: 0px; left: 0px;">
+                                    <img src="/image/index_banner1.jpg">
+                                    <div style="display: block;" class="tp-caption ad-info-txt slider-text-title sft str fadeout animated fadeInDown go" data-easing="easeOutCubic" data-start="800" data-speed="300">
+                                        智能生成最佳物流方案
+                                    </div>
+                                    <div class="tp-caption ad-details lfr stb stl  fadeout slow fadeInLeft go" data-x="20" data-y="200" data-speed="500" data-start="1500" data-easing="easeOutExpo" style="display: block;">
+                                        <p>提高<span>20%</span>物流效率</p>
+                                        <p>一键推荐最便宜、最快速、最安全的跨境物流线路</p>
+                                    </div>
+
+                                </li>
+                                <li data-transition="slideleft" data-slotamount="7" data-masterspeed="300" style="display: block; z-index: 42; left: 0px; right: -100%;">
+                                    <img src="/image/index_banner2.jpg" alt="darkblurbg" data-fullwidthcentering="on">
+                                    <div class="tp-caption ad-info-txt animated fadeInDown go" data-x="20" data-y="150" data-speed="300" data-start="800" data-easing="easeOutCubic" style="display: none;">
+                                        全程跟踪物流轨迹
+                                    </div>
+                                    <div class="tp-caption ad-details lfr stb stl  fadeout slow fadeInLeft go" data-x="20" data-y="200" data-speed="500" data-start="1500" data-easing="easeOutExpo" style="display: none;">
+                                        <p>降低<span>50%</span>人工成本</p>
+                                        <p>物流变化主动通知：<span>短信+微信+邮箱</span></p>
+                                    </div>
+
+                                </li>
+                                <li data-transition="slideleft" data-masterspeed="600" style="display: block; z-index: 42; right: -100%; left: 0px;">
+                                    <img src="/image/index_banner3.jpg" alt="darkblurbg">
+                                    <div class="tp-caption ad-info-txt slider-text-title sft str fadeout animated fadeInDown go" data-x="20" data-y="150" data-speed="300" data-start="800" data-easing="easeOutCubic" style="display: none;">
+                                        智能集运
+                                    </div>
+                                    <div class="tp-caption ad-details lfr stb stl  fadeout slow fadeInLeft go" data-x="20" data-y="200" data-speed="500" data-start="1500" data-easing="easeOutExpo" style="display: none;">
+                                        <p>节省<span>20%</span>物流成本</p>
+                                        <p>集小单成大单，让中小企业享受大客户折扣</p>
+                                    </div>
+
+                                </li>
+                                <li data-transition="slideleft" data-masterspeed="900" style="display: block; z-index: 43; right: -100%; left: 0px;">
+                                    <img src="/image/index_banner4.jpg" alt="darkblurbg">
+                                    <div class="tp-caption ad-info-txt slider-text-title sft str fadeout animated fadeInDown go" data-x="20" data-y="150" data-speed="300" data-start="800" data-easing="easeOutCubic" style="display: none;">
+                                        海外仓
+                                    </div>
+                                    <div class="tp-caption ad-details lfr stb stl fadeout slow fadeInLeft go" data-x="20" data-y="200" data-speed="500" data-start="1500" data-easing="easeOutExpo" style="display: none;">
+                                        <p>越南、老挝、柬埔寨、泰国、缅甸 链接<span>32个</span>合作渠道</p>
+                                        <p><span>200多个</span>海外合作伙伴</p>
+
+                                    </div>
+
+                                </li>
+                            </ul>
+                            <div class="tp-bannertimer" style="width: 59.2%; overflow: hidden;"></div>
+                            <div style="position: absolute; top: 350px; margin-top: -20px; left: 20px; z-index: 300" class="tp-leftarrow tparrows default"></div>
+                            <div style="position: absolute; top: 350px; margin-top: -20px; right: 20px; z-index: 300" class="tp-rightarrow tparrows default"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--banner结束-->
+        @RenderBody();
+        <!--foot-->
+        <footer>
+            <div class="wrapper">
+                <div class="footer-info">
+                    <ul>
+                        <li>
+                            <a class="foot_logo" href="javascript:void(0);">
+                                <img src="/image/logo_white.png" alt="">
+                            </a>
+                        </li>
+                        <li>
+                            <a class="foot_icon" href="tel:13788682003">
+                                <img src="/image/phone.png" alt="">
+                                <span>13788682003</span>
+                            </a>
+                            <a class="foot_icon" href="https://www.facebook.com/profile.php?id=100024514969908&fref=jewel">
+                                <span>facebook</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul>
+                        <p class="foot_bottom">
+                            <span>南宁市高新区高科路8号南宁创客城电子产业园2号楼2层ZH161号</span>
+                            <span>桂ICP备18001712号</span>
+                        </p>
+                    </ul>
+                </div>
+
+                <div class="footer-ewm">
+                    <a href="javascript:void(0);">
+                        <img src="/image/ewm.png" alt="二维码">
+                    </a>
+                </div>
+            </div>
+        </footer>
+        <!--foot结束-->
+    </div>
+    <iframe frameborder="0" id="if_form" scrolling="auto" style="width: 100%; height: 100%; position: fixed; left: 0px; top: 0px; z-index: 999; display: none;" src="/OrderGoods.aspx"></iframe>
+    <div class="div_close">
+        <a href="javascript:void(0);">关闭</a>
+    </div>
+    <script>
+    </script>
+</body>
+</html>

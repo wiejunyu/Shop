@@ -1,0 +1,196 @@
+﻿
+@{
+    ViewBag.Title = "CMS || 查看账号";
+    Layout = "~/Views/Shared/MainMaster.cshtml";
+}
+@using JH.Cms.Models
+<link rel="stylesheet" type="text/css" href="~/Scripts/assets/plugins/data-tables/DT_bootstrap.css" />
+
+<!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+<!-- /.modal -->
+<!-- END SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+<!-- BEGIN STYLE CUSTOMIZER -->
+<!-- BEGIN PAGE HEADER-->
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <ul class="page-breadcrumb breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="/Home/Index">首页</a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li><a href="/User/UserList">用户管理</a><i class="fa fa-angle-right"></i></li>
+            <li class="active">查看账号</li>
+            @{
+                List<Menu> d = ViewData["Menulist"] as List<Menu>;
+                List<Menu> btn = ViewData["Btnlist"] as List<Menu>;
+                var mid = d.SingleOrDefault(u => u.Action == "UserList");
+                var add = btn.SingleOrDefault(u => u.Action == "Add" && u.Pid == mid.ID);
+                var edit = btn.SingleOrDefault(u => u.Action == "Edit" && u.Pid == mid.ID);
+                var delete = btn.SingleOrDefault(u => u.Action == "Delete" && u.Pid == mid.ID);
+                var isEdit = 0;
+                var isDelete = 0;
+                if (edit != null)
+                {
+                    isEdit++;
+                }
+                if (delete != null)
+                {
+                    isDelete++;
+                }
+            }
+            @if (add != null)
+            {
+                <li class="btn-group">
+                    <div class="actions">
+                        <a id="btnAdd" href="/User/UserAdd" class="btn blue"><i class="fa fa-plus"></i>添加用户</a>
+                    </div>
+                </li>
+            }
+            
+        </ul>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>
+<!-- END PAGE HEADER-->
+<!-- CONTENT BODY GOES HERE >>>> -->
+<!-- END PAGE CONTENT-->
+<div class="row">
+    <div class="col-md-12">
+        <!-- END EXAMPLE TABLE PORTLET-->
+        <div class="portlet box grey">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-globe"></i>账号列表
+                </div>
+                <div class="tools">
+                    <a href="javascript:;" class="collapse"></a>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <table class="table table-striped table-bordered table-hover" id="sample_1">
+                    <thead>
+                        <tr>
+                            <th>
+                                账号
+                            </th>
+                            <th>
+                                权限
+                            </th>
+                            <th>
+                                上次登录时间
+                            </th>
+                            <th>
+                                上次登录IP
+                            </th>
+                            <th>
+                                账号备注
+                            </th>
+                            <th>
+                                操作
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="detaillist"></tbody>
+                </table>
+            </div>
+            <input type="hidden" id="hidID" value="" />
+            <a id="linkDelete" class="btn default" data-toggle="modal" href="#delete" style="display:none">提示框</a>
+            <div class="modal fade" id="delete" tabindex="-1" role="basic" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                            <h4 class="modal-title">删除提示</h4>
+                        </div>
+                        <div class="modal-body" id="deleteShow">
+                            是否要删除
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn default" data-dismiss="modal" id="deleteclose">关闭</button>
+                            <button type="button" class="btn blue disabled" id="deleteOK" onclick="deleteOK()">确认</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="~/Scripts/assets/plugins/data-tables/jquery.dataTables.js"></script>
+<script type="text/javascript" src="~/Scripts/assets/plugins/data-tables/DT_bootstrap.js"></script>
+
+@*<script src="~/Scripts/js/user.js"></script>*@
+<script>
+    jQuery(document).ready(function () {
+        editableTable.init("sample_1", "/User/GetUserList", true, true, [], 4, "desc",[
+        { "mData": "UserName", },
+        { "mData": "Permission", },
+        {
+            "fnRender": function (obj) {
+                return Format(obj.aData.CreateTime, "yyyy-MM-dd HH:mm");
+            }
+        },
+        { "mData": "IP", },
+        { "mData": "Remark", },
+        {
+            "fnRender": function (obj) {
+                var str = "";
+                if(@isEdit == 1)
+                {
+                    str += "<a class='edit' href='/User/UserEdit?UserName=" + obj.aData.UserName + "'>编辑</a>";
+                }
+                if(@isEdit == 1 && @isDelete == 1)
+                {
+                    str += " / ";
+                }
+                if(@isDelete == 1)
+                {
+                    str += "<a class='delete' href='javascript:;' onclick=userDelete('" + obj.aData.UserName + "')>删除</a>";
+                }
+                return str;
+            }
+        }
+        ]);
+    });
+
+    //点击删除
+    function userDelete(key) {
+        $("#deleteOK").removeClass("disabled");
+        $("#deleteShow").html("是否要删除");
+        $("#linkDelete").click();
+        $("#hidID").val(key);
+    }
+    //点击删除
+    function deleteOK() {
+        var id = $("#hidID").val();
+        $("#deleteShow").html("正在删除请稍候");
+        $.ajax({
+            type: "post", //要用post方式
+            data: "{'key':'" + id + "'}",
+            url: "/User/DeleteUser",//方法所在页面和方法名
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                if (data == "1") {
+                    $("#hidID").val("");
+                    $("#deleteShow").html("删除成功");
+                    $("#deleteOK").addClass("disabled");
+                    editableTable.reload("sample_1", "/User/GetUserList");
+                    $("#deleteclose").click();
+                }
+                else {
+                    $("#hidID").val("");
+                    $("#deleteShow").html("删除失败");
+                    $("#deleteOK").addClass("disabled");
+                }
+            },
+            error: function (err) {
+                alert(err);
+            }
+        });
+    }
+</script>
+

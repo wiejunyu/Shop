@@ -1,0 +1,441 @@
+﻿<html>
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-cache">
+
+    <title>东南亚专线_越南专线|越南跨境购|越南工业品采购|跨境物流链</title>
+    <meta name="description" content="【跨境物流链】专注越南专线,泰国专线,老挝专线柬埔寨专线,工业品采购,五金采购,跨境国际陆运,越南工业品采购越南跨境购,路运,送货到门,包清关,货到付款等增值服务">
+    <meta name="keywords" content="越南专线-泰国专线-老挝专线-柬埔寨专线-工业品采购-五金采购-跨境国际陆运-越南工业品采购-越南跨境购">
+
+    <link href="~/Content/swiper.min.css" rel="stylesheet" />
+    <link href="~/Content/normalize.css" rel="stylesheet" />
+    <link href="~/Content/main.css" rel="stylesheet" />
+    <link href="~/Content/laydate.css" rel="stylesheet" />
+    <link href="~/Content/index.css" rel="stylesheet" />
+    <link href="~/Content/cityselect.css" rel="stylesheet" />
+    <link href="~/Content/cargo.css" rel="stylesheet" />
+    <link href="~/Content/banner.css" rel="stylesheet" />
+    <link href="~/Content/animations.css" rel="stylesheet" />
+    <link href="~/Content/revision.css" rel="stylesheet" />
+    <link href="~/Content/reset.css" rel="stylesheet" />
+    <link href="~/Content/css.css" rel="stylesheet" />
+
+    <script src="~/Scripts/jquery-1.11.0.min.js"></script>
+    <script src="~/Scripts/hm.js"></script>
+    <script src="~/Scripts/dedeajax2.js"></script>
+    <script src="~/Scripts/pic_scroll.js"></script>
+    <script src="~/Scripts/TweenMax.min.js"></script>
+    <script src="~/Scripts/main.js"></script>
+    <script src="~/Scripts/control.js"></script>
+    <script src="~/Scripts/js.js"></script>
+
+    <script src="~/Scripts/assets/plugins/particleground/demo.js"></script>
+    <script src="~/Scripts/assets/plugins/particleground/jquery.particleground.min.js"></script>
+    <link href="~/Scripts/assets/plugins/particleground/style.css" rel="stylesheet" />
+</head>
+<body style="overflow:hidden;" scroll="no">
+    <!--主体-->
+    <div id="particles">
+        <canvas class="pg-canvas" style="width:100%;height:100%;"></canvas>
+        <div style="position:fixed;top:0;left:0">
+            <button class="login_resigest js_open_p" style="width:100px;" onclick="window.location = '/'">返回首页</button>
+        </div>
+        <div class="intro" style="margin-top: -120.5px;">
+            <div class="loginBlock" style="box-shadow:none;">
+                <ul class="clearfix E_login_title">
+                    <li class="">
+                        <a href="javascript:void(0)" onclick="zhuce()">注册</a>
+                    </li>
+                    <li class="active">
+                        <a href="javascript:void(0)" onclick="denglu()">登录</a>
+                    </li>
+                </ul>
+                <div class="E_tab_box">
+                    <!--注册-->
+                    <div class="E_tab_list" style="display: none;">
+                        <div class="rel" id="info">
+                            <form name="register" action="/Login/UserRegister" class="loginForm E_login_box" id="register">
+                                <figure class="rel">
+                                    <p class="rel_p1"></p>
+                                    <input class="username" type="text" name="username" placeholder="用户名" id="username" />
+                                    <div id="rel_bottom"></div>
+                                    <p class="goods_tips pos_left">
+                                        <em id="_username"></em>
+                                    </p>
+                                </figure>
+                                <figure class="rel">
+                                    <p class="rel_p1"></p>
+                                    <input type="password" onkeyup="setPasswordLevel(this, document.getElementById('passwordLevel'));" class="password" id="txtPassword" name="userpwd" placeholder="密码不少于6位" />
+                                    <div id="rel_bottom"></div>
+                                    <p class="goods_tips pos_left">
+                                        <em id="_password"></em>
+                                    </p>
+                                </figure>
+                                <figure class="rel">
+                                    <p class="rel_p1"></p>
+                                    <input type="password" class="password" id="userpwdok" name="password" placeholder="确认密码" />
+                                    <div id="rel_bottom"></div>
+                                    <p class="goods_tips pos_left">
+                                        <em id="_password1"></em>
+                                    </p>
+                                </figure>
+                                <figure class="rel">
+                                    <p class="rel_p1"></p>
+                                    <input type="text" class="email" id="email" name="email" placeholder="电子邮箱" />
+                                    <div id="rel_bottom"></div>
+                                    <p class="goods_tips pos_left">
+                                        <em id="_email"></em>
+                                    </p>
+                                </figure>
+                                <figure class="rel">
+                                    <span>
+                                        <p class="rel_p1"></p>
+                                        <input type="text" class="safeanswer" style="display:initial;margin-top:0px; text-transform: uppercase;" placeholder="邮箱验证码" name="vdcode" id="emailVdcode" />
+                                        <div id="rel_bottom"></div>
+                                        <p class="goods_tips pos_left" style="top: 14px;right: -9px;">
+                                            <button type="button" class="login_resigest js_open_p" style="width:100px;height: 30px;font-size:0.5em;" onclick="GetCode();">获取验证码</button>
+                                        </p>
+                                    </span>
+                                </figure>
+                                <div class="resigest_ok">
+                                    <p>点击「注册」按钮，</p>
+                                    <p>即代表你同意<a href="javascript:void(0)" onclick="fuwuShow()">《服务条款》</a></p>
+                                </div>
+                                <span>
+                                    <input type="checkbox" checked="" id="agree" name="agree">我已阅读并完全接受服务协议<input />
+                                </span>
+                                <span style="margin-top:10px;">
+                                    <input type="submit" class="login_resigest js_open_p" />
+                                </span>
+                            </form>
+                        </div>
+                    </div>
+                    <!--注册结束-->
+                    <!--登陆-->
+                    <div class="E_tab_list" style="display: block;">
+                        <div class="rel" id="info">
+                            <form name='login' method="post" id="login" action="/Login/UserLogin" class="loginForm E_login_box">
+                                <figure class="rel">
+                                    <p class="rel_p1"></p>
+                                    <input id="loginUsername" class="username" type="text" name="username" placeholder="用户名/手机号/邮箱" />
+                                    <p class="goods_tips pos_left"><em id="loginUsername_err"></em></p>
+                                    <div id="rel_bottom"></div>
+                                </figure>
+                                <figure class="rel">
+                                    <p class="rel_p1"></p>
+                                    <input class="password" type="password" name="password" placeholder="请输入登录密码" />
+                                    <p class="goods_tips pos_left"><em id="loginPassword_err"></em></p>
+                                    <div id="rel_bottom"></div>
+                                </figure>
+
+                                <figure class="rel" style="margin-top:20px;">
+                                    <span>
+                                        验证码：<input id="loginVdcode" class="safeanswer" type="text" style="display:initial;margin-top:0px; width: 100px; text-transform: uppercase;" name="vdcode" />
+                                    </span>
+                                    <img id="loginImg" onclick="loginChangeCheckCode();return false;" alt="看不清？点击更换" src="" />
+                                </figure>
+
+                                <figure class="rel" style="margin-top:0px;height:10px;">
+                                    <ul>
+                                        <li style="float:left;">
+                                            <input type="checkbox" name="Checked" id="loginTime" />
+                                            <span>7天自动登陆</span>
+                                        </li>
+                                        <li style="float:right;">
+                                            <a href="resetpassword.php">忘记密码？</a>
+                                        </li>
+                                    </ul>
+                                </figure>
+                                <div class="E_login_password">
+
+                                </div>
+                                <input class="login_resigest" type="submit" value="登&nbsp;录" />
+                            </form>
+                        </div>
+                    </div>
+                    <!--登陆结束-->
+                </div>
+            </div>
+        </div>
+        <!--协议弹框-->
+        <div class="yl_promte">
+            <div class="Agreement_box" style="margin-top: 102.5px;">
+                <h3>跨境一键通会员服务协议</h3>
+                <div class="Agreement_info">
+                    <p>本服务协议内容适用于包括本协议正文及所有已发布的或将来可能在跨境一键通平台发布的各类规则。所有规则为协议不可分割的一部分，与协议正文具有同等法律效力。</p>
+                    <p>（一）用户在跨境一键通平台上勾选此服务（“我同意”）后，即表示同意并签署了本服务协议；</p>
+                    <p>（二）跨境一键通平台有权根据需要更新或修改本协议的个别内容或规则，包括发布新规则，并在跨境一键通平台上公布修改后的协议和规则。如用户不同意相关变更，应停止使用“本服务”。经修订的协议一经在跨境一键通平台公布后，立即自动生效。各类规则会在发布后即时生效，亦成为本协议的一部分。登陆或继续使用“本服务”将表示用户接受已修订的协议。</p>
+                    <p>一、协议范围</p>
+                    <p><b>1.1</b>本协议由您与跨境一键通平台共同缔结，本协议对您与跨境一键通平台均具有合同效力。</p>
+                    <p><b>1.2</b>跨境一键通平台在不同地区拥有子公司和/或关联法律实体。在某些时候，这些子公司和/或关联法律实体将代表跨境一键通平台向您提供服务。您理解并同意这些子公司和/或关联法律实体有权向您提供服务。</p>
+                    <p><b>1.3</b>【主体变更】跨境一键通平台可能根据跨境一键通平台业务调整将本协议项下权利义务转让或分包给第三方。跨境一键通平台完成前述转让或分包后，权利义务受让方或分包方会与您共同履行本协议并向您提供服务，这种情况不会影响您本协议项下权益。</p>
+                    <p>二、用户/会员资格</p>
+                    <p><b>2.1</b>当您完成全部注册程序取得跨境一键通平台账户或您开始使用服务时（包括受他人委托、登录他人账号使用服务），即表示您已充分阅读、理解、接受并同意本协议的全部内容，并与跨境一键通平台达成一致，成为跨境一键通平台用户，并自动成为跨境一键通平台的会员。</p>
+                    <p><b>2.2</b>您确认，您在跨境一键通平台的账户为您本人在自愿的情况下注册使用，在您取得跨境一键通平台账户或使用跨境一键通平台服务前，您应具备中华人民共和国法律规定的及您开始注册程序或使用服务时所在国家或地区的相关法律规定的与您行为相适应的民事行为能力。如果您不具备前述与您行为相适应的民事行为能力，请您应立即停止注册或停止使用跨境一键通平台服务或在您的监护人监督下完成注册或使用跨境一键通平台服务，否则您及您的监护人应依据法律规定承担因此导致的一切后果。</p>
+                    <p><b>2.3</b>如果您属于非自然人法律主体，则您确认，在您取得跨境一键通平台账户或使用跨境一键通平台服务前，您为在中国大陆地区合法设立并已具备相应资质开展经营活动或其他业务的法人或其他组织，且您订立并履行本协议不受您所属、所居住或开展经营活动或其他业务的国家或地区法律法规的排斥。且具备订立并合法有效履行本协议的一切授权/资质/认可，如果不具备前述条件的，您应立即停止注册或停止使用跨境一键通平台服务，否则您及您的负责人应依据法律规定承担因此导致的一切后果。</p>
+                    <p><b>2.4</b>您须确保您不是任何国家、国际组织或者地域实施的贸易限制、制裁或其他法律、规则限制的对象，否则您可能无法正常注册或使用服务。</p>
+                    <p>三、账户管理</p>
+                    <p><b>3.1</b>账户保管</p>
+
+                    <p>您理解并同意，跨境一键通平台任何时候均不会主动要求您提供您的账户，因此，建议您务必保管好您的账户，保管好您的跨境一键通平台账户密码和登陆信息，并确保您在每个上网时段结束时退出登录并以正确步骤离开跨境一键通平台网站。账户因您主动泄露或遭受他人攻击、诈骗等行为导致的损失及后果，均由您自行承担。除跨境一键通平台存在过错外，您应对您账户项下的所有行为（包括但不限于在线签署各类协议、发布信息、采购服务及披露信息等）负责。</p>
+                    <p><b>3.2</b>如果发现任何未经授权使用您账户登录跨境一键通平台或其他可能导致您账户遭窃、遗失的情况，建议您立即通知跨境一键通平台，并授权跨境一键通平台将该信息同步给相关合作公司。您理解跨境一键通平台对您的任何请求采取行动均需要合理时间，除跨境一键通平台存在过错外，跨境一键通平台对因任何未经授权使用您账户登录跨境一键通平台网站或其他可能导致您账户遭窃、遗失的情况而产生的后果不承担任何责任。</p>
+                    <p>
+                        <b>3.3</b>实名认证和/或资质认证
+                        为使您更好地使用跨境一键通平台网站的各项服务，保障您的账户安全，跨境一键通平台有权根据相关法律法规规定或跨境一键通平台实际经营管理需要将你的信息提交第三方做实名认证/或资质认证。您理解并同意，在跨境一键通平台提出前述要求情况下，您需要按要求完成实名认证和/或资质认证，否则您将有可能无法正常访问/登陆跨境一键通平台网站或使用服务。
+                    </p>
+                    <p>
+                        <b>3.4</b>账户转让
+                        由于跨境一键通平台账户关联您的相关信息（包括个人信息、商业信息、交易信息），仅当有法律明文规定、司法裁定或经跨境一键通平台同意，并符合本协议约定情况下，您可进行账户的转让、赠与或让第三方继承您的跨境一键通平台账户；在此情况下，跨境一键通平台有权要求您、受让人、受赠者或继承人提供合格合法文件材料并按照跨境一键通平台要求的操作流程办理相关手续。您的账户一经转让，该账户项下权利义务及您本协议项下权利义务一并转移。除此外，您的账户不得以任何方式转让，否则跨境一键通平台有权追究您的违约责任，且由此产生的一切责任均由您承担。
+                    </p>
+                    <p>四、信息收集、使用、共享、存储和保护</p>
+                    <p><b>4.1</b>个人信息</p>
+                    <p>跨境一键通平台非常重视用户个人信息（即能够独立或与其他信息结合后识别用户身份的信息）的保护，在您使用跨境一键通平台提供的服务时，您同意跨境一键通平台根据在跨境一键通平台收集、使用、共享、存储和保护您的个人信息。</p>
+                    <p><b>4.2</b>非个人信息</p>
+                    <p>对于您在注册账户或使用跨境一键通平台网站服务过程中提供、形成的除个人信息外的文字、图片、视频、音频、数据等非个人信息，在法律规定的保护期限内您免费授予跨境一键通平台的许可使用权利及再授权给其他第三方使用并可以自身名义对第三方侵权行为取证及提起诉讼的权利。您同意跨境一键通平台使用、复制、修订、编辑、发布、展示、翻译、分发您的非个人信息或制作其派生作品，并以已知或日后开发的形式、媒体或技术将上述信息纳入其它作品内。</p>
+                    <p><b>4.3</b>若您在注册账户或使用跨境一键通平台网站服务过程中提供的信息有变化，您应当及时更新您提供的信息。在法律有明确规定要求跨境一键通平台作为服务提供者必须对用户信息进行核实的情况下，跨境一键通平台将依法不时地对您的信息进行检查核实，您应当配合提供最新、真实、完整的信息。如果跨境一键通平台按您最后一次提供的信息与您联系未果，或您未按跨境一键通平台的要求及时提供信息，或您提供的信息存在明显不实的，您将承担因此对您自身、他人及跨境一键通平台造成的全部损失与不利后果。</p>
+                    <p>五、条款解释和争议解决</p>
+                    <p><b>5.1</b>本协议各条款为独立条款，如有任何一款无效或者无法实施，并不影响其他条款的效力。</p>
+                    <p><b>5.2</b>本协议条款之解释与适用，以及与本协议条款有关的争议，均应依照中华人名共和国法律予以处理。如有争议，任何一方应先提交跨境一键通网站进行调解，如经调解未达成一致，应提交上海仲裁委员会在上海进行仲裁。仲裁庭由一名仲裁员组成，由上海市仲裁委员会委派。仲裁裁定为终局裁定，对各方均有约束力。</p>
+                </div>
+                <div class="agrement_btn">
+                    <a href="javascript:void(0)" class="agrement_qx" onclick="fuwuHide()">取消</a>
+                    <a href="javascript:void(0)" class="agrement_ty" onclick="fuwuHide()">同意协议</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="portlet-body">
+        <div style="text-align: center;" id="loading" class="display-none">
+            <div style="margin:0 auto">
+                <img src="~/Image/loading.gif" /><br />
+                <label>Loading...</label>
+            </div>
+        </div>
+    </div>
+    <div class="msg" id="msg" style="display:none" onclick="closeTime();">
+        <header>
+            <h3>消息提示</h3>
+        </header>
+        <section>
+            <p>消息提示内容</p>
+            <h4>点击关闭提示消息</h4>
+        </section>
+    </div>
+    <!--协议弹框结束-->
+    <script type="text/javascript">
+        var id = 0;
+        function denglu() {
+            var display = $(".E_tab_list").eq(1).css('display');
+            if (display == 'none') {
+                id++;
+                $("#loginImg").attr("src", "/Login/ShowValidateCode?id=" + id);
+                $(".E_login_title li").removeClass('active');
+                $(".E_login_title li").eq(1).addClass("active");
+                $(".E_tab_list").eq(0).hide();
+                $(".E_tab_list").eq(1).show();
+
+            }
+        };
+        function zhuce() {
+            var display = $(".E_tab_list").eq(0).css('display');
+            if (display == 'none') {
+                id++;
+                $("#reImg").attr("src", "/Login/ShowValidateCode?id=" + id);
+                $(".E_login_title li").removeClass('active');
+                $(".E_login_title li").eq(0).addClass("active");
+                $(".E_tab_list").eq(1).hide();
+                $(".E_tab_list").eq(0).show();
+
+            }
+        };
+        function fuwuShow() {
+            $(".yl_promte").show();
+        };
+        function fuwuHide() {
+            $(".yl_promte").hide();
+        };
+
+        function loginChangeCheckCode() {
+            id++;
+            $("#loginImg").attr("src", "/Login/ShowValidateCode?id=" + id);  //id=2
+        }
+
+        function GetCode() {
+            _show();
+            if ($("#email").val() == "") {
+                _hide();
+                message(true, "邮箱不能为空", "");   //消息提示
+                return false;
+            }
+            $.ajax({
+                type: "POST",
+                url: "/Login/EmaliGetCode",
+                data: { emali: $("#email").val() },
+                dataType: "json",
+                success: function (json) {
+                    _hide();
+                    message(json.error, json.message, json.link);   //消息提示
+                }
+            });
+        };
+
+        $(function () {
+            $("#loginImg").attr("src", "/Login/ShowValidateCode?id=" + id);
+            $(".rel input").focus(function () {
+                $(this).parent().children("#rel_bottom").animate({ "width": "100%" });
+                var a = $(this).attr('placeholder');
+                $(this).attr('placeholder', '');
+                $(this).parent().children(".rel_p1").text(a);
+            });
+            $(".rel input").blur(function () {
+                $(this).parent().children("#rel_bottom").animate({ "width": "0%" });
+                var a = $(this).parent().children(".rel_p1").text();
+                $(this).attr('placeholder', a);
+                $(this).parent().children(".rel_p1").text('');
+            });
+
+            $("#username").blur(function () {
+                if ($("#username").val() != "") {
+                    $.ajax({
+                        type: "POST",
+                        async: true,
+                        url: "/Login/NameUserExistence",
+                        data: { username: $("#username").val() },
+                        dataType: 'json',
+                        success: function (json) {
+                            if (json == true) {
+                                $("#_username").html("用户名可用");
+                                $("#_username").css("color", "#00FF00");
+                            }
+                            else {
+                                $("#_username").html("用户名已存在");
+                                $("#_username").css("color", "#b00014");
+                            }
+                        }
+                    });
+                }
+                else {
+                    $("#_username").html("用户名不能为空");
+                    $("#_username").css("color", "#b00014");
+                }
+            });
+
+            $("#login").submit(function () {
+                _show();
+                var url = $(this).attr('action');
+                var data = $(this).serialize();
+
+                var data_arr = $(this).serializeArray();
+
+                if (data_arr[0].value == "") {
+                    _hide();
+                    $("#loginUsername_err").html("账号不能为空");
+                    return false;
+                }
+                if (data_arr[1].value == "") {
+                    _hide();
+                    $("#loginPassword_err").html("密码不能为空");
+                    return false;
+                }
+                if (data_arr[2].value == "") {
+                    _hide();
+                    message(true, "验证码不能为空", "");   //消息提示
+                    return false;
+                }
+                var jsondata = undefined;
+                jsondata = $("#login").serializeObject();
+                jsondata = { json: JSON.stringify(jsondata) };
+
+                $.ajax({
+                    type: "POST",
+                    async: true,
+                    dataType: 'json',
+                    url: url,
+                    data: jsondata,
+                    success: function (json) {
+                        if (json.message == '0') {
+                            _hide();
+                            loginChangeCheckCode();
+                            message(json.error, "验证码错误", json.link);   //消息提示
+                        }
+                        else {
+                            _hide();
+                            message(json.error, json.message, json.link);   //消息提示
+                        }
+                    }
+                });
+                return false;
+            });
+
+            $("#register").submit(function () {
+                _shou();
+                var url = $(this).attr('action');
+                var data = $(this).serialize();
+
+                var data_arr = $(this).serializeArray();
+
+                if (data_arr[0].value == "") {
+                    $("#_username").html("用户名不能为空");
+                    $("#_username").css("color", "#b00014");
+                    _hide();
+                    return false;
+                }
+                if (data_arr[1].value == "") {
+                    $("#_password").html("密码不能为空");
+                    _hide();
+                    return false;
+                }
+                if (data_arr[2].value == "") {
+                    $("#_password1").html("确认密码不能为空");
+                    _hide();
+                    return false;
+                }
+                if (data_arr[1].value != data_arr[2].value) {
+                    $("#_password").html("两次密码不相同");
+                    $("#_password1").html("两次密码不相同");
+                    _hide();
+                    return false;
+                }
+                if (data_arr[3].value == "") {
+                    $("#_email").html("电子邮箱不能为空");
+                    _hide();
+                    return false;
+                }
+                var email = $.trim(data_arr[3].value);
+                var isEmail = /^\w+([-+.]\w+)*@@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+                if (!(isEmail.test(email))) {
+                    $("#_email").html("电子邮箱格式不正确");
+                    _hide();
+                    return false;
+                }
+                if (data_arr[4].value == "") {
+                    _hide();
+                    message(true, "验证码不能为空", "");   //消息提示
+                    return false;
+                }
+                var jsondata = undefined;
+                jsondata = $("#register").serializeObject();
+                jsondata = { json: JSON.stringify(jsondata) };
+
+                $.ajax({
+                    type: "POST",
+                    async: true,
+                    dataType: 'json',
+                    url: url,
+                    data: jsondata,
+                    success: function (json) {
+                        _hide();
+                        message(json.error, json.message, json.link);   //消息提示
+                    }
+                });
+                return false;
+            });
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>浏览器升级</title>
+<link href="/css/public.css?cookie=-1134062486" rel="stylesheet" type="text/css" />
+<link href="/css/browserUpgrade.css?cookie=500930333" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div class="upgrade-head">
+	<div class="wrapper">
+		
+			<img src="/image/browserUpgrade/logo.jpg" class="upgrade-logo">
+		<!-- </a> -->
+		<a href="http://wpa.qq.com/msgrd?v=3&uin=2850689477&site=qq&menu=yes" target="_blank" rel="nofollow"><img src="/image/browserUpgrade/zx.jpg" class="upgrade-zx"></a>
+	</div>
+</div>
+<div class="wrapper">
+	<div class="upgrade-text">
+		<img src="/image/browserUpgrade/text.jpg">
+	</div>
+	<div class="upgrade-cont">
+		<img src="/image/browserUpgrade/upgrade.jpg">
+		<div class="upgrade-cont-browser">
+			<a href="http://download.firefox.com.cn/releases-sha2/stub/official/zh-CN/Firefox-latest.exe" target="_blank">
+				<img src="/image/browserUpgrade/firefox.jpg" class="browser-img">
+			</a>
+			<a href="http://down.360safe.com/se/360se9.1.0.356.exe" target="_blank">
+				<img src="/image/browserUpgrade/360.jpg" class="browser-img">
+			</a>
+			<a href="http://sm.myapp.com/original/Browser/QQBrowser_Setup_Qqpcmgr_9.6.12028.400.exe" target="_blank">
+				<img src="/image/browserUpgrade/qq.jpg" class="browser-img">
+			</a>
+		</div>
+	</div>
+	<div class="upgrade-cont">
+		<img src="/image/browserUpgrade/saoma.jpg">
+		<div class="upgrade-cont-browser">
+			<a href="">
+				<img src="/image/browserUpgrade/kehuduan.jpg" class="saoma-img">
+			</a>
+			<a href="">
+				<img src="/image/browserUpgrade/weixin.jpg" class="saoma-img">
+			</a>
+		</div>
+	</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,83 @@
+﻿@using WL.Home.Models
+@using WL.Infrastructure.Common
+@model WL.Home.Models.ArticleModels
+@{
+    int next = 0;
+    int pre = 0;
+    List<ArticleModels> list = ViewData["list"] as List<ArticleModels>;
+    foreach (ArticleModels temp in list as List<ArticleModels>)
+    {
+        if (temp.id == @Model.id)
+        {
+            //上一篇和下一篇
+            int index = list.IndexOf(temp);
+            if ((list.Count - 1) > index)
+            {
+                next = list[index + 1].id;
+            }
+            if (index >= 1)
+            {
+                pre = list[index - 1].id;
+            }
+        }
+    }
+}
+@{
+    ViewBag.Title = "";
+    ViewBag.Description = "";
+    ViewBag.Keywords = "";
+    Layout = "~/Views/Shared/MainMaster.cshtml";
+}
+
+<div class="about_info">
+    <div class="wrapper">
+        <div class="Notice_box news_msg_box">
+            <hgroup>
+                <h3>@Model.title</h3>
+                <h4>@Common.ConvertDate(@Model.createtime.ToString())&nbsp;&nbsp; &nbsp;&nbsp;来源：宇宙物流</h4>
+                <h5></h5>
+            </hgroup>
+            <div class="news_msg_info">
+                @Html.Raw(Model.content)
+            </div>
+            <div class="clearfix">
+                @if (pre == 0)
+                {
+                    <div class="fl">上一篇：没有了</div>
+                }
+                else
+                {
+                    <div class="fl">
+                        上一篇：<a href="/Home/Article?aid=@pre">
+                            @foreach (ArticleModels temp in list as List<ArticleModels>)
+                            {
+                                if (temp.id == @pre)
+                                {
+                                    @temp.title
+                                }
+                            }
+                        </a>
+                    </div>
+                }
+                @if (next == 0)
+                {
+                    <div class="fr">下一篇：没有了</div>
+                }
+                else
+                {
+                    <div class="fr">
+                        下一篇：<a href="/Home/Article?aid=@next">
+                            @foreach (ArticleModels temp in list as List<ArticleModels>)
+                            {
+                                if (temp.id == @next)
+                                {
+                                    @temp.title
+                                }
+                            }
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
