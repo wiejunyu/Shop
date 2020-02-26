@@ -128,6 +128,5 @@ namespace WL.API.Controllers
                 return Request.RequestUri.ToString();
             }
         }
-
     }
 }
