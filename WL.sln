@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27428.2015
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29728.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0.Base", "0.Base", "{5A2A25B4-093A-4B66-AD8F-0B3904433C73}"
 EndProject
@@ -18,6 +18,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WL.Cms", "1.Domain\WL.Cms\WL.Cms.csproj", "{7B464B3D-BD9A-4873-AE69-9DEC859166BC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WL.Web.Cms", "2.Web\WL.Web.Cms\WL.Web.Cms.csproj", "{7846228A-6906-4BD6-B4BC-D2068C0776DE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3.Api", "3.Api", "{99BED5D7-DE06-4B5B-98AF-2669DEEED2ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WL.Api.Home", "3.Api\WL.Api.Home\WL.Api.Home.csproj", "{9C2D3A0F-B4E2-45CA-BB6E-2EAFF2A471B9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +49,10 @@ Global
 		{7846228A-6906-4BD6-B4BC-D2068C0776DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7846228A-6906-4BD6-B4BC-D2068C0776DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7846228A-6906-4BD6-B4BC-D2068C0776DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C2D3A0F-B4E2-45CA-BB6E-2EAFF2A471B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C2D3A0F-B4E2-45CA-BB6E-2EAFF2A471B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C2D3A0F-B4E2-45CA-BB6E-2EAFF2A471B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C2D3A0F-B4E2-45CA-BB6E-2EAFF2A471B9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,9 +63,10 @@ Global
 		{C68BE4A9-0D16-4CFB-90A0-2E2BB0E75B6D} = {C613CEE2-7F4F-4C44-B84B-3B3BBF0C04A0}
 		{7B464B3D-BD9A-4873-AE69-9DEC859166BC} = {07FAC2E9-973A-4080-A920-FC54C4B3A435}
 		{7846228A-6906-4BD6-B4BC-D2068C0776DE} = {C613CEE2-7F4F-4C44-B84B-3B3BBF0C04A0}
+		{9C2D3A0F-B4E2-45CA-BB6E-2EAFF2A471B9} = {99BED5D7-DE06-4B5B-98AF-2669DEEED2ED}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		VisualSVNWorkingCopyRoot = .
 		SolutionGuid = {64233EEA-D4EC-41AC-A0F6-395371F32B6E}
+		VisualSVNWorkingCopyRoot = .
 	EndGlobalSection
 EndGlobal
