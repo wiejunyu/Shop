@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity;
 
 namespace WL.Domain
 {
@@ -14,63 +18,85 @@ namespace WL.Domain
         /// <summary>
         /// id
         /// </summary>  
-        public int id { get; set; }
+        [DisplayName("id")]
+        		        public int id { get; set; }
 		/// <summary>
         /// catid
         /// </summary>  
-        public int? catid { get; set; }
+        [DisplayName("catid")]
+        		        public int? catid { get; set; }
 		/// <summary>
         /// userid
         /// </summary>  
-        public int? userid { get; set; }
+        [DisplayName("userid")]
+        		        public int? userid { get; set; }
 		/// <summary>
         /// username
         /// </summary>  
-        public string username { get; set; }
+        [DisplayName("username")]
+        [MaxLength(50,ErrorMessage="username最大长度为50")]
+        		        public string username { get; set; }
 		/// <summary>
         /// title
         /// </summary>  
-        public string title { get; set; }
+        [DisplayName("title")]
+        [MaxLength(120,ErrorMessage="title最大长度为120")]
+        		        public string title { get; set; }
 		/// <summary>
         /// keywords
         /// </summary>  
-        public string keywords { get; set; }
+        [DisplayName("keywords")]
+        [MaxLength(120,ErrorMessage="keywords最大长度为120")]
+        		        public string keywords { get; set; }
 		/// <summary>
         /// description
         /// </summary>  
-        public string description { get; set; }
+        [DisplayName("description")]
+        [MaxLength(8,ErrorMessage="description最大长度为8")]
+        		        public string description { get; set; }
 		/// <summary>
         /// content
         /// </summary>  
-        public string content { get; set; }
+        [DisplayName("content")]
+        [MaxLength(8,ErrorMessage="content最大长度为8")]
+        		        public string content { get; set; }
 		/// <summary>
         /// thumb
         /// </summary>  
-        public string thumb { get; set; }
+        [DisplayName("thumb")]
+        [MaxLength(100,ErrorMessage="thumb最大长度为100")]
+        		        public string thumb { get; set; }
 		/// <summary>
         /// listorder
         /// </summary>  
-        public int? listorder { get; set; }
+        [DisplayName("listorder")]
+        		        public int? listorder { get; set; }
 		/// <summary>
         /// url
         /// </summary>  
-        public string url { get; set; }
+        [DisplayName("url")]
+        [MaxLength(150,ErrorMessage="url最大长度为150")]
+        		        public string url { get; set; }
 		/// <summary>
         /// hits
         /// </summary>  
-        public int? hits { get; set; }
+        [DisplayName("hits")]
+        		        public int? hits { get; set; }
 		/// <summary>
         /// createtime
         /// </summary>  
-        public int? createtime { get; set; }
+        [DisplayName("createtime")]
+        		        public int? createtime { get; set; }
 		/// <summary>
         /// updatetime
         /// </summary>  
-        public int? updatetime { get; set; }
+        [DisplayName("updatetime")]
+        		        public int? updatetime { get; set; }
 		/// <summary>
         /// lang
         /// </summary>  
-        public int? lang { get; set; }
+        [DisplayName("lang")]
+        		        public int? lang { get; set; }
 		        /// <summary>
         /// 构造函数
         /// </summary>		
@@ -78,5 +104,13 @@ namespace WL.Domain
         {
         }
 
+    } 
+
+    public partial class WLDbContext : DbContext
+    {
+        /// <summary>
+        /// 把实体添加到EF上下文
+        /// </summary>
+        public DbSet<Cms_Article> Cms_Article { get; set; }
     }    
 }

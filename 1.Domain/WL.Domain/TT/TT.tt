@@ -57,6 +57,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity;
 
 namespace <#=namespacestr#>
 {
@@ -75,6 +79,11 @@ namespace <#=namespacestr#>
 		#>/// <summary>
         /// <#=column.Remark#>
         /// </summary>  
+        [DisplayName("<#=column.Remark#>")]
+        <# if(column.CSharpType=="string"&&column.CharLength!=-1){#>[MaxLength(<#=column.CharLength#>,ErrorMessage="<#=column.Remark#>最大长度为<#=column.CharLength#>")]
+        <#}#>
+		<# if(column.IsPrimaryKey){#>[Key]
+        <#}#>
         public <#= column.CSharpType#><# if(column.CommonType.IsValueType && column.IsNullable){#>?<#}#> <#=column.ColumnName#> { get; set; }
 		<#}#>
         /// <summary>
@@ -84,6 +93,14 @@ namespace <#=namespacestr#>
         {
         }
 
+    } 
+
+    public partial class WLDbContext : DbContext
+    {
+        /// <summary>
+        /// 把实体添加到EF上下文
+        /// </summary>
+        public DbSet<<#=tb_name#>> <#=tb_name#> { get; set; }
     }    
 }
 <#

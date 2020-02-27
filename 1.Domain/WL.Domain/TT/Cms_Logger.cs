@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity;
 
 namespace WL.Domain
 {
@@ -14,35 +18,49 @@ namespace WL.Domain
         /// <summary>
         /// ID
         /// </summary>  
-        public int ID { get; set; }
+        [DisplayName("ID")]
+        		[Key]
+                public int ID { get; set; }
 		/// <summary>
         /// View
         /// </summary>  
-        public string View { get; set; }
+        [DisplayName("View")]
+        [MaxLength(50,ErrorMessage="View最大长度为50")]
+        		        public string View { get; set; }
 		/// <summary>
         /// Action
         /// </summary>  
-        public string Action { get; set; }
+        [DisplayName("Action")]
+        [MaxLength(50,ErrorMessage="Action最大长度为50")]
+        		        public string Action { get; set; }
 		/// <summary>
         /// Description
         /// </summary>  
-        public string Description { get; set; }
+        [DisplayName("Description")]
+        [MaxLength(50,ErrorMessage="Description最大长度为50")]
+        		        public string Description { get; set; }
 		/// <summary>
         /// Remark
         /// </summary>  
-        public string Remark { get; set; }
+        [DisplayName("Remark")]
+        		        public string Remark { get; set; }
 		/// <summary>
         /// UserName
         /// </summary>  
-        public string UserName { get; set; }
+        [DisplayName("UserName")]
+        [MaxLength(50,ErrorMessage="UserName最大长度为50")]
+        		        public string UserName { get; set; }
 		/// <summary>
         /// Time
         /// </summary>  
-        public DateTime? Time { get; set; }
+        [DisplayName("Time")]
+        		        public DateTime? Time { get; set; }
 		/// <summary>
         /// IP
         /// </summary>  
-        public string IP { get; set; }
+        [DisplayName("IP")]
+        [MaxLength(50,ErrorMessage="IP最大长度为50")]
+        		        public string IP { get; set; }
 		        /// <summary>
         /// 构造函数
         /// </summary>		
@@ -50,5 +68,13 @@ namespace WL.Domain
         {
         }
 
+    } 
+
+    public partial class WLDbContext : DbContext
+    {
+        /// <summary>
+        /// 把实体添加到EF上下文
+        /// </summary>
+        public DbSet<Cms_Logger> Cms_Logger { get; set; }
     }    
 }

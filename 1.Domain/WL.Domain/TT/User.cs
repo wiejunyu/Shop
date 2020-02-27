@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity;
 
 namespace WL.Domain
 {
@@ -14,55 +18,77 @@ namespace WL.Domain
         /// <summary>
         /// ID
         /// </summary>  
-        public int ID { get; set; }
+        [DisplayName("ID")]
+        		[Key]
+                public int ID { get; set; }
 		/// <summary>
         /// UserName
         /// </summary>  
-        public string UserName { get; set; }
+        [DisplayName("UserName")]
+        [MaxLength(50,ErrorMessage="UserName最大长度为50")]
+        		        public string UserName { get; set; }
 		/// <summary>
         /// PassWord
         /// </summary>  
-        public string PassWord { get; set; }
+        [DisplayName("PassWord")]
+        [MaxLength(50,ErrorMessage="PassWord最大长度为50")]
+        		        public string PassWord { get; set; }
 		/// <summary>
         /// 创建时间
         /// </summary>  
-        public DateTime? CreateTime { get; set; }
+        [DisplayName("创建时间")]
+        		        public DateTime? CreateTime { get; set; }
 		/// <summary>
         /// 最后登陆时间
         /// </summary>  
-        public DateTime? LoginTime { get; set; }
+        [DisplayName("最后登陆时间")]
+        		        public DateTime? LoginTime { get; set; }
 		/// <summary>
         /// IP
         /// </summary>  
-        public string IP { get; set; }
+        [DisplayName("IP")]
+        [MaxLength(50,ErrorMessage="IP最大长度为50")]
+        		        public string IP { get; set; }
 		/// <summary>
         /// 备注
         /// </summary>  
-        public string Remark { get; set; }
+        [DisplayName("备注")]
+        [MaxLength(50,ErrorMessage="备注最大长度为50")]
+        		        public string Remark { get; set; }
 		/// <summary>
         /// 权限
         /// </summary>  
-        public int? Permission { get; set; }
+        [DisplayName("权限")]
+        		        public int? Permission { get; set; }
 		/// <summary>
         /// 头像
         /// </summary>  
-        public string Portrait { get; set; }
+        [DisplayName("头像")]
+        [MaxLength(100,ErrorMessage="头像最大长度为100")]
+        		        public string Portrait { get; set; }
 		/// <summary>
         /// Email
         /// </summary>  
-        public string Email { get; set; }
+        [DisplayName("Email")]
+        [MaxLength(50,ErrorMessage="Email最大长度为50")]
+        		        public string Email { get; set; }
 		/// <summary>
         /// Phone
         /// </summary>  
-        public string Phone { get; set; }
+        [DisplayName("Phone")]
+        [MaxLength(20,ErrorMessage="Phone最大长度为20")]
+        		        public string Phone { get; set; }
 		/// <summary>
         /// QQ
         /// </summary>  
-        public string QQ { get; set; }
+        [DisplayName("QQ")]
+        [MaxLength(15,ErrorMessage="QQ最大长度为15")]
+        		        public string QQ { get; set; }
 		/// <summary>
         /// Money
         /// </summary>  
-        public decimal? Money { get; set; }
+        [DisplayName("Money")]
+        		        public decimal? Money { get; set; }
 		        /// <summary>
         /// 构造函数
         /// </summary>		
@@ -70,5 +96,13 @@ namespace WL.Domain
         {
         }
 
+    } 
+
+    public partial class WLDbContext : DbContext
+    {
+        /// <summary>
+        /// 把实体添加到EF上下文
+        /// </summary>
+        public DbSet<User> User { get; set; }
     }    
 }

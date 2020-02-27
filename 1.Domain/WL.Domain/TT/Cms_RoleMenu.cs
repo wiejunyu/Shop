@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity;
 
 namespace WL.Domain
 {
@@ -14,15 +18,18 @@ namespace WL.Domain
         /// <summary>
         /// ID
         /// </summary>  
-        public int ID { get; set; }
+        [DisplayName("ID")]
+        		        public int ID { get; set; }
 		/// <summary>
         /// MenuID
         /// </summary>  
-        public int? MenuID { get; set; }
+        [DisplayName("MenuID")]
+        		        public int? MenuID { get; set; }
 		/// <summary>
         /// RoleID
         /// </summary>  
-        public int? RoleID { get; set; }
+        [DisplayName("RoleID")]
+        		        public int? RoleID { get; set; }
 		        /// <summary>
         /// 构造函数
         /// </summary>		
@@ -30,5 +37,13 @@ namespace WL.Domain
         {
         }
 
+    } 
+
+    public partial class WLDbContext : DbContext
+    {
+        /// <summary>
+        /// 把实体添加到EF上下文
+        /// </summary>
+        public DbSet<Cms_RoleMenu> Cms_RoleMenu { get; set; }
     }    
 }

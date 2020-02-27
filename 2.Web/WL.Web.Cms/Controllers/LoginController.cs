@@ -10,6 +10,8 @@ using WL.Cms.Models;
 using WL.Infrastructure.Common;
 using WL.Web.Cms.Filters;
 using System.Configuration;
+using WL.Domain;
+using WL.Infrastructure.Commom;
 
 namespace WL.Web.Cms.Controllers
 {
@@ -31,38 +33,37 @@ namespace WL.Web.Cms.Controllers
         [Logger(Top = "Login", Key = "Login", Description = "登陆")]
         public JsonResult LoginCheck(string userName, string passWord, string isChecked)
         {
-            string pwd = MD5.Md5(passWord);
-            UserInfo user = UserManager.GetUserInfo(userName);
-            if (user != null)
+            using (WLDbContext db = new WLDbContext())
             {
-                if (user.PassWord == pwd.ToLower())
+                ReturnResult result = new ReturnResult();
+                try
                 {
+                    string pwd = MD5.Md5(passWord).ToLower();
+                    if (!db.Cms_UserInfo.Where(x => x.UserName == userName && x.PassWord == pwd).Any()) throw new Exception("用户不存在");
+                    Cms_UserInfo user = db.Cms_UserInfo.Where(x => x.UserName == userName && x.PassWord == pwd).FirstOrDefault();
                     string ip = Common.GetUserIp();
                     user.IP = ip;
-                    user.LoginTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                    UserManager.UpdateUser(user);
+                    user.LoginTime = DateTime.Now;
+                    db.SaveChanges();
                     Session["user"] = user;
                     if (isChecked == "1")
                     {
-                        HttpCookie cookie = new HttpCookie("usercookie_gg_cms");;
+                        HttpCookie cookie = new HttpCookie("usercookie_gg_cms"); ;
                         cookie.Values.Add("userName", user.UserName);
                         cookie.Values.Add("password", user.PassWord);
                         cookie.Expires = DateTime.Now.AddDays(7);
                         Response.AppendCookie(cookie);
                     }
 
-                    string url = "/Home/Index";
-
-                    return Json(url);
+                    result.Status = (int)ReturnResultStatus.Succeed;
+                    result.Message = "/Home/Index";
+                    return Json(result);
                 }
-                else
+                catch (Exception ex)
                 {
-                    return Json("false");
+                    result.Message = ex.Message;
                 }
-            }
-            else
-            {
-                return Json("false");
+                return Json(result);
             }
         }
 

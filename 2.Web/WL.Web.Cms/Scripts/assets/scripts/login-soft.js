@@ -58,15 +58,15 @@ var Login = function () {
 	                    contentType: "application/json; charset=utf-8",
 	                    dataType: "json",
 	                    success: function (data) {
-	                        if (data == "false")//返回的数据用data.d获取内容
+							if (data.Status != 200)//返回的数据用data.d获取内容
 	                        {
 	                            $("#erroShow").show();
 	                            $("#login").button('reset');
 	                            //$("login").removeAttr('disabled');
 	                        } else
 	                        {
-	                            //$("#login").button('complete');
-	                            window.location.href = data;
+								//$("#login").button('complete');
+								window.location.href = data.Message;
 	                            //$("#login").button('reset');
 	                            //$("login").removeAttr('disabled');
 	                        }
@@ -95,14 +95,14 @@ var Login = function () {
 	                        contentType: "application/json; charset=utf-8",
 	                        dataType: "json",
 	                        success: function (data) {
-	                            if (data == "false")//返回的数据用data.d获取内容
+								if (data.Status != 200)//返回的数据用data.d获取内容
 	                            {
 	                                $("#erroShow").show();
 	                                $("#login").button('reset');
 	                                //$("login").removeAttr('disabled');
 	                            } else {
-	                                //$("#login").button('complete');
-	                                window.location.href = data;
+									//$("#login").button('complete');
+									window.location.href = data.Message;
 	                                //$("#login").button('reset');
 	                                //$("login").removeAttr('disabled');
 	                            }

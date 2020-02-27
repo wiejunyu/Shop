@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WL.Cms.Models;
+using WL.Domain;
 using WL.Infrastructure.Data;
 
 namespace WL.Cms.Manager
@@ -180,19 +181,15 @@ namespace WL.Cms.Manager
         /// 查询菜单权限
         /// </summary>
         /// <returns></returns>
-        public static List<Menu> GetMenuListByPermission(string permission)
+        public static List<Cms_Menu> GetMenuListByPermission(string permission)
         {
-            DynamicParameters param = new DynamicParameters();
-            param.Add("@Permission", permission);
-            string sql = "Select * from CMS_RoleMenu where RoleID=@Permission";
-            List<RoleMenu> list = new BaseDAL().GetList<RoleMenu>(sql, param);
-            List<Menu> last = new List<Menu>();
-            foreach (RoleMenu m in list)
+            WLDbContext db = new WLDbContext();
+            int iPermission = Convert.ToInt32(permission);
+            List<Cms_RoleMenu> list = db.Cms_RoleMenu.Where(x => (x.RoleID ?? 0) == iPermission).ToList();
+            List<Cms_Menu> last = new List<Cms_Menu>();
+            foreach (Cms_RoleMenu m in list)
             {
-                param = new DynamicParameters();
-                param.Add("@ID", m.MenuID);
-                sql = "Select * from CMS_Menu where ID=@ID";
-                Menu d = new BaseDAL().Single<Menu>(sql, param);
+                Cms_Menu d = db.Cms_Menu.Single(x => x.ID == (m.MenuID ?? 0));
                 last.Add(d);
             }
             return last;

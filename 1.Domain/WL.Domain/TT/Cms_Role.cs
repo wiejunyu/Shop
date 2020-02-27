@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity;
 
 namespace WL.Domain
 {
@@ -14,15 +18,20 @@ namespace WL.Domain
         /// <summary>
         /// ID
         /// </summary>  
-        public int ID { get; set; }
+        [DisplayName("ID")]
+        		        public int ID { get; set; }
 		/// <summary>
         /// Name
         /// </summary>  
-        public string Name { get; set; }
+        [DisplayName("Name")]
+        [MaxLength(50,ErrorMessage="Name最大长度为50")]
+        		        public string Name { get; set; }
 		/// <summary>
         /// Remark
         /// </summary>  
-        public string Remark { get; set; }
+        [DisplayName("Remark")]
+        [MaxLength(50,ErrorMessage="Remark最大长度为50")]
+        		        public string Remark { get; set; }
 		        /// <summary>
         /// 构造函数
         /// </summary>		
@@ -30,5 +39,13 @@ namespace WL.Domain
         {
         }
 
+    } 
+
+    public partial class WLDbContext : DbContext
+    {
+        /// <summary>
+        /// 把实体添加到EF上下文
+        /// </summary>
+        public DbSet<Cms_Role> Cms_Role { get; set; }
     }    
 }

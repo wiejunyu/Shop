@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity;
 
 namespace WL.Domain
 {
@@ -14,35 +18,46 @@ namespace WL.Domain
         /// <summary>
         /// ID
         /// </summary>  
-        public int ID { get; set; }
+        [DisplayName("ID")]
+        		        public int ID { get; set; }
 		/// <summary>
         /// Name
         /// </summary>  
-        public string Name { get; set; }
+        [DisplayName("Name")]
+        [MaxLength(50,ErrorMessage="Name最大长度为50")]
+        		        public string Name { get; set; }
 		/// <summary>
         /// Url
         /// </summary>  
-        public string Url { get; set; }
+        [DisplayName("Url")]
+        [MaxLength(50,ErrorMessage="Url最大长度为50")]
+        		        public string Url { get; set; }
 		/// <summary>
         /// Action
         /// </summary>  
-        public string Action { get; set; }
+        [DisplayName("Action")]
+        		        public string Action { get; set; }
 		/// <summary>
         /// Sort
         /// </summary>  
-        public int? Sort { get; set; }
+        [DisplayName("Sort")]
+        		        public int? Sort { get; set; }
 		/// <summary>
         /// Lv
         /// </summary>  
-        public int? Lv { get; set; }
+        [DisplayName("Lv")]
+        		        public int? Lv { get; set; }
 		/// <summary>
         /// Icon
         /// </summary>  
-        public string Icon { get; set; }
+        [DisplayName("Icon")]
+        [MaxLength(50,ErrorMessage="Icon最大长度为50")]
+        		        public string Icon { get; set; }
 		/// <summary>
         /// Pid
         /// </summary>  
-        public int? Pid { get; set; }
+        [DisplayName("Pid")]
+        		        public int? Pid { get; set; }
 		        /// <summary>
         /// 构造函数
         /// </summary>		
@@ -50,5 +65,13 @@ namespace WL.Domain
         {
         }
 
+    } 
+
+    public partial class WLDbContext : DbContext
+    {
+        /// <summary>
+        /// 把实体添加到EF上下文
+        /// </summary>
+        public DbSet<Cms_Menu> Cms_Menu { get; set; }
     }    
 }

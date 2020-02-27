@@ -8,6 +8,7 @@ using System.IO;
 using WL.Web.Cms.Filters;
 using WL.Web.Home.Filters;
 using WL.Cms.Models;
+using WL.Domain;
 
 namespace WL.Web.Cms.Controllers
 {
@@ -16,7 +17,7 @@ namespace WL.Web.Cms.Controllers
     public class BaseController : Controller
     {
         //定义一个静态保存菜单值
-        public static Dictionary<string, List<Menu>> dictionary = new Dictionary<string, List<Menu>>();
+        public static Dictionary<int, List<Cms_Menu>> dictionary = new Dictionary<int, List<Cms_Menu>>();
         /// <summary>
         /// 构造
         /// 
