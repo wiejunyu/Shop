@@ -2,7 +2,7 @@
     Layout = null;
 }
 <!DOCTYPE html>
-@using WL.Cms.Models
+@using WL.Domain
 <html>
 <head>
     <meta charset="utf-8" />
@@ -95,29 +95,13 @@
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
                         success: function (data) {
-                            if (data == "1")//返回的数据用data.d获取内容
+                            if (data.Status == 200)//返回的数据用data.d获取内容
                             {
                                 window.location.href = "/Login/Login";
                             }
                         },
                         error: function (err) {
                             alert(err);
-                        }
-                    });
-                    $.ajax({
-                        type: "post", //要用post方式
-                        data: "{}",
-                        url: "/data/LogOut",//方法所在页面和方法名
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        beforeSend: function () {                           //正在执行请求事件
-                            load();
-                        },
-                        complete: function () {                             //执行完成事件
-                            finish();
-                        },
-                        success: function (json) {
-                            message(json.error, json.message, json.link);   //消息提示
                         }
                     });
                 }
@@ -174,16 +158,16 @@
                         <!-- END RESPONSIVE QUICK SEARCH FORM -->
                     </li>
                     @{
-                        List<Menu> d = ViewData["Menulist"] as List<Menu>;
-                        List<Menu> btn = ViewData["Btnlist"] as List<Menu>;
+                        List<Cms_Menu> d = ViewData["Menulist"] as List<Cms_Menu>;
+                        List<Cms_Menu> btn = ViewData["Btnlist"] as List<Cms_Menu>;
                     }
-                    @foreach (Menu temp in ViewData["Toplist"] as List<Menu>)
+                    @foreach (Cms_Menu temp in ViewData["Toplist"] as List<Cms_Menu>)
                     {
                         var action = "";
 
-                        List<Menu> last = d.Where(u => u.Pid == temp.ID).ToList();
+                        List<Cms_Menu> last = d.Where(u => u.Pid == temp.ID).ToList();
                         var islook = 0;
-                        foreach (Menu m in last)
+                        foreach (Cms_Menu m in last)
                         {
                             islook += btn.Count(u => u.Action == "Look" && u.Pid == m.ID);
 
@@ -196,7 +180,7 @@
                                 <span class="title">@temp.Name</span>
                             </a>
                             <ul class="sub-menu">
-                                @foreach (Menu m in last)
+                                @foreach (Cms_Menu m in last)
                                 {
                                     if (m.Pid == temp.ID)
                                     {

@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using WL.Cms.Manager;
 using WL.Cms.Models;
 using WL.Domain;
+using WL.Infrastructure.Commom;
 using WL.Web.Cms.Filters;
 
 namespace WL.Web.Cms.Controllers
@@ -19,6 +20,7 @@ namespace WL.Web.Cms.Controllers
         {
             return View();
         }
+
         /// <summary>
         /// 查询角色信息
         /// </summary>
@@ -26,20 +28,27 @@ namespace WL.Web.Cms.Controllers
         [Logger(Top = "RoleList", Key = "Look", Description = "查看")]
         public JsonResult GetRoleList()
         {
-            List<Role> list = new List<Role>();
-            list = MenuManager.GetRoleList();
-            JsonResult json = new JsonResult();
-            json.Data = new { sEcho = 0, iTotalRecords = list.Count(), iTotalDisplayRecords = list.Count(), aaData = list, };
-            return json;
+            using (WLDbContext db = new WLDbContext())
+            {
+                List<Cms_Role> list = new List<Cms_Role>();
+                list = db.Cms_Role.ToList();
+                JsonResult json = new JsonResult();
+                json.Data = new { sEcho = 0, iTotalRecords = list.Count(), iTotalDisplayRecords = list.Count(), aaData = list, };
+                return json;
+            }
         }
+
         /// <summary>
         /// 修改角色
         /// </summary>
         /// <returns></returns>
-        public ActionResult RoleEdit(string ID)
+        public ActionResult RoleEdit(int ID)
         {
-            Role Role = MenuManager.GetRoleByID(ID);
-            return View(Role);
+            using (WLDbContext db = new WLDbContext())
+            {
+                Cms_Role Role = db.Cms_Role.SingleOrDefault(x => x.ID == ID);
+                return View(Role);
+            }
         }
         /// <summary>
         /// 修改角色信息
@@ -52,35 +61,27 @@ namespace WL.Web.Cms.Controllers
         [Logger(Top = "RoleList", Key = "Edit", Description = "编辑")]
         public JsonResult UpdateRole(string json)
         {
-            int rel = -1;
-            try
+            using (WLDbContext db = new WLDbContext())
             {
-                JObject jo = JObject.Parse(json);
-                Role temp = jo.ToObject<Role>();
-                //获取原本的信息
-                Role poco = MenuManager.GetRoleByID(temp.ID.ToString());
-                if (poco != null)
+                ReturnResult result = new ReturnResult();
+                try
                 {
+                    JObject jo = JObject.Parse(json);
+                    Cms_Role temp = jo.ToObject<Cms_Role>();
+                    //获取原本的信息
+                    Cms_Role poco = db.Cms_Role.SingleOrDefault(x => x.ID == temp.ID);
+                    if (poco == null) throw new Exception("角色不存在");
                     poco.Name = temp.Name;
                     poco.Remark = temp.Remark;
-
-                    bool flag = MenuManager.UpdateRole(poco);
-                    if (flag)
-                    {
-                        rel = 1;
-                    }
+                    db.SaveChanges();
+                    result.Status = (int)ReturnResultStatus.Succeed;
                 }
-                else
+                catch (Exception ex)
                 {
-                    rel = -1;
-                    return Json(rel);
+                    result.Message = ex.Message;
                 }
+                return Json(result);
             }
-            catch (System.Exception ex)
-            {
-                rel = -1;
-            }
-            return Json(rel);
         }
         /// <summary>
         /// 跳转到添加角色页面

@@ -181,7 +181,7 @@ namespace WL.Cms.Manager
         /// 查询菜单权限
         /// </summary>
         /// <returns></returns>
-        public static List<Cms_Menu> GetMenuListByPermission(string permission)
+        public static List<Cms_Menu> GetMenuListByPermission(int permission)
         {
             WLDbContext db = new WLDbContext();
             int iPermission = Convert.ToInt32(permission);

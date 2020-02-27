@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using WL.Cms.Manager;
 using WL.Cms.Models;
+using WL.Domain;
 using WL.Web.Cms.Filters;
 
 namespace WL.Web.Cms.Controllers
@@ -34,21 +35,21 @@ namespace WL.Web.Cms.Controllers
         public JsonResult GetLoggerList(string action_c, string user, string st, string et)
         {
             UserInfo us = Session["user"] as UserInfo;
-            List<Menu> alllist = new List<Menu>();
-            List<Menu> Toplist = new List<Menu>();
-            List<Menu> Menulist = new List<Menu>();
-            List<Menu> Btnlist = new List<Menu>();
+            List<Cms_Menu> alllist = new List<Cms_Menu>();
+            List<Cms_Menu> Toplist = new List<Cms_Menu>();
+            List<Cms_Menu> Menulist = new List<Cms_Menu>();
+            List<Cms_Menu> Btnlist = new List<Cms_Menu>();
             //根据超级管理员的权限来获取所有的菜单
-            if (BaseController.dictionary.ContainsKey("1"))
+            if (BaseController.dictionary.ContainsKey(1))
             {
-                alllist = BaseController.dictionary["1"];
+                alllist = BaseController.dictionary[1];
             }
             else
             {
                 //查询菜单
-                alllist = MenuManager.GetMenuListByPermission("1");
+                alllist = MenuManager.GetMenuListByPermission(1);
                 //添加进数组
-                BaseController.dictionary.Add("1", alllist);
+                BaseController.dictionary.Add(1, alllist);
             }
             Menulist = alllist.Where(u => u.Lv == 1).OrderBy(u => u.Sort).ToList();
             //按钮菜单
@@ -67,7 +68,7 @@ namespace WL.Web.Cms.Controllers
                 {
                     try
                     {
-                        Menu d = Menulist.SingleOrDefault(u => u.Action == temp.View);
+                        Cms_Menu d = Menulist.SingleOrDefault(u => u.Action == temp.View);
                         temp.View = d.Name;
                         temp.Description = Btnlist.SingleOrDefault(u => u.Action == temp.Action && u.Pid == d.ID).Name;
                     }

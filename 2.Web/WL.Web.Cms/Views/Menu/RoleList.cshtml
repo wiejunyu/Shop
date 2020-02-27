@@ -11,7 +11,7 @@
 <!-- END SAMPLE PORTLET CONFIGURATION MODAL FORM-->
 <!-- BEGIN STYLE CUSTOMIZER -->
 <!-- BEGIN PAGE HEADER-->
-@using WL.Cms.Models;
+@using WL.Domain;
 <div class="row">
     <div class="col-md-12">
         <!-- BEGIN PAGE TITLE & BREADCRUMB-->
@@ -24,8 +24,8 @@
             <li><a href="/Menu/RoleList">权限管理</a><i class="fa fa-angle-right"></i></li>
             <li class="active">角色管理</li>
             @{
-                List<Menu> d = ViewData["Menulist"] as List<Menu>;
-                List<Menu> btn = ViewData["Btnlist"] as List<Menu>;
+                List<Cms_Menu> d = ViewData["Menulist"] as List<Cms_Menu>;
+                List<Cms_Menu> btn = ViewData["Btnlist"] as List<Cms_Menu>;
                 var mid = d.SingleOrDefault(u => u.Action == "RoleList");
                 var add = btn.SingleOrDefault(u => u.Action == "Add" && u.Pid == mid.ID);
                 var edit = btn.SingleOrDefault(u => u.Action == "Edit" && u.Pid == mid.ID);

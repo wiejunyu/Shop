@@ -123,12 +123,12 @@
             data: jsondata,
             dataType: "json",
             success: function (data) {
-                if (data == "1")//返回的数据用data.d获取内容
+                if (data.Status == 200)//返回的数据用data.d获取内容
                 {
                     $("#resultShow").html("已经成功编辑角色");
                 }
                 else {
-                    $("#resultShow").html("编辑角色失败");
+                    $("#resultShow").html("编辑角色失败:" + data.Message);
                 }
             },
             error: function (err) {

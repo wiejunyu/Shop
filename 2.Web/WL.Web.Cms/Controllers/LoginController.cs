@@ -57,7 +57,6 @@ namespace WL.Web.Cms.Controllers
 
                     result.Status = (int)ReturnResultStatus.Succeed;
                     result.Message = "/Home/Index";
-                    return Json(result);
                 }
                 catch (Exception ex)
                 {
@@ -73,22 +72,24 @@ namespace WL.Web.Cms.Controllers
         /// <returns></returns>
         public JsonResult LogOut()
         {
-
-            UserInfo user = Session["user"] as UserInfo;
-            HttpCookie cookie = Request.Cookies["usercookie_gg_cms"];
-            if (cookie != null)
+            ReturnResult result = new ReturnResult();
+            try
             {
-                cookie.Expires = System.DateTime.Now.AddDays(-1);
-                Response.Cookies.Add(cookie);
+                UserInfo user = Session["user"] as UserInfo;
+                HttpCookie cookie = Request.Cookies["usercookie_gg_cms"];
+                if (cookie != null)
+                {
+                    cookie.Expires = System.DateTime.Now.AddDays(-1);
+                    Response.Cookies.Add(cookie);
+                }
+                Session.Contents.Remove("user");
+                result.Status = (int)ReturnResultStatus.Succeed;
             }
-            Session.Contents.Remove("user");
-            return Json("1");
-        }
-
-        // GET: Login
-        public ActionResult Test()
-        {
-            return View();
+            catch (Exception ex)
+            {
+                result.Message = ex.Message;
+            }
+            return Json(result);
         }
     }
 }
