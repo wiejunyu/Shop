@@ -2882,6 +2882,10 @@
       <Project>{7B464B3D-BD9A-4873-AE69-9DEC859166BC}</Project>
       <Name>WL.Cms</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\1.Domain\WL.Domain\WL.Domain.csproj">
+      <Project>{f767c035-3f7b-4a8d-8c84-99bd7a250b22}</Project>
+      <Name>WL.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\1.Domain\WL.Home\WL.Home.csproj">
       <Project>{34211909-99FE-4328-8D47-EF621FD96B0C}</Project>
       <Name>WL.Home</Name>

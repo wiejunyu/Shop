@@ -1,0 +1,145 @@
+﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ assembly name="System.xml" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Data.SqlClient" #>
+<#@ import namespace="System.Data" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ include file="$(ProjectDir)/TT/DbHelper.ttinclude"  #>
+<#@ include file="$(ProjectDir)/TT/MultipleOutputHelper.ttinclude"  #>
+<#        
+	//命名空间
+    string namespacestr="WL.Domain";
+
+	//服务器
+	string DbServer=@"118.89.182.215";
+	//数据库名
+	string DbDatabase="WL";
+	//登录名
+	string LoginName="sa";
+	//密码
+	string LoginPwd="woaiZIJI.234";
+	//数据连接
+	string connectionString=string.Format($"Data Source={DbServer};Initial Catalog={DbDatabase};uid={LoginName};pwd={LoginPwd}");
+
+	SqlConnection conn = new SqlConnection(connectionString);
+	conn.Open();
+    
+    string selectQuery ="SET FMTONLY ON; select * from @tableName; SET FMTONLY OFF;";
+    SqlCommand command = new SqlCommand(selectQuery,conn);
+    SqlDataAdapter ad = new SqlDataAdapter(command);
+    System.Data.DataSet ds = new DataSet(); 
+  
+    var manager = Manager.Create(Host, GenerationEnvironment); 
+	 
+	string[] res = new string[4];
+	res[3] = "base table";
+
+    System.Data.DataTable schema = conn.GetSchema("Tables",res);
+    foreach(System.Data.DataRow row in schema.Rows)
+    {   
+
+        ds.Tables.Clear();
+        string tb_name= row["TABLE_NAME"].ToString();  
+			
+		string Explain=DbHelper.GetDbTable(connectionString, DbDatabase, tb_name).Explain;
+		if(string.IsNullOrEmpty(Explain))
+        {
+            Explain=tb_name;
+        }
+			      
+        command.CommandText = selectQuery.Replace("@tableName","["+tb_name+"]");
+        ad.FillSchema(ds, SchemaType.Mapped,"["+tb_name+"]");  
+        manager.StartNewFile(tb_name+".cs");
+#>
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace <#=namespacestr#>
+{
+	/// <summary>
+    /// <#=Explain#>
+    /// </summary>
+    public class <#=tb_name#>
+    {
+        <# 
+		var dbColumns=DbHelper.GetDbColumns(connectionString, DbDatabase, tb_name);
+		foreach(DbColumn column in dbColumns){
+			if(string.IsNullOrEmpty(column.Remark))
+			{
+				column.Remark=column.ColumnName;
+			}
+		#>/// <summary>
+        /// <#=column.Remark#>
+        /// </summary>  
+        public <#= column.CSharpType#><# if(column.CommonType.IsValueType && column.IsNullable){#>?<#}#> <#=column.ColumnName#> { get; set; }
+		<#}#>
+        /// <summary>
+        /// 构造函数
+        /// </summary>		
+        public <#=tb_name#>()
+        {
+        }
+
+    }    
+}
+<#
+		manager.EndBlock();    
+		}
+	conn.Close();  
+	manager.Process(true);
+#>
+using System.Collections.Generic;
+
+namespace <#=namespacestr#>
+{
+	/// <summary>
+    /// 数据库信息
+    /// </summary>
+    public static class DB
+    {
+	    /// <summary>
+        /// 数据库名称
+        /// </summary>
+        private static string _DBName = "<#=DbDatabase#>";
+
+        /// <summary>
+        /// 数据库名称
+        /// </summary>
+        public static string DBName { get { return _DBName; } }
+
+		/// <summary>
+        /// 数据库表名集合
+        /// </summary>
+        private static List<string> _TableName = new List<string>()
+        {
+		<#
+			Dictionary<string,string> tablenamelist=new Dictionary<string,string>();
+			foreach(System.Data.DataRow row in schema.Rows)
+			{
+				string tkey = row["TABLE_NAME"].ToString();
+				string tvalue=DbHelper.GetDbTable(connectionString, DbDatabase, tkey).Explain;
+				if(string.IsNullOrEmpty(tvalue))
+				{
+					tvalue=tkey;
+				}
+				tablenamelist.Add(tkey,tvalue);
+			}
+			foreach(var itme in tablenamelist.OrderBy(x=>x.Key))
+			{
+		#>	"<#=itme.Key#>",//<#=itme.Value#>
+		<#}#>
+};
+
+		/// <summary>
+        /// 获取数据库表名集合
+        /// </summary>
+        public static List<string> GetTableName() 
+		{
+            return _TableName;
+        }
+    }
+}
