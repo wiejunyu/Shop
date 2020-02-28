@@ -11,27 +11,27 @@ using System.Data.Entity;
 namespace WL.Domain
 {
 	/// <summary>
-    /// Hot
+    /// 商品热门表
     /// </summary>
     public class Hot
     {
         /// <summary>
-        /// id
+        /// ID
         /// </summary>  
-        [DisplayName("id")]
+        [DisplayName("ID")]
         		[Key]
                 public int id { get; set; }
 		/// <summary>
-        /// Image
+        /// 热门图片
         /// </summary>  
-        [DisplayName("Image")]
-        [MaxLength(200,ErrorMessage="Image最大长度为200")]
+        [DisplayName("热门图片")]
+        [MaxLength(200,ErrorMessage="热门图片最大长度为200")]
         		        public string Image { get; set; }
 		/// <summary>
-        /// Sid
+        /// 商品ID
         /// </summary>  
-        [DisplayName("Sid")]
-        		        public int? Sid { get; set; }
+        [DisplayName("商品ID")]
+        		        public int Sid { get; set; }
 		        /// <summary>
         /// 构造函数
         /// </summary>		

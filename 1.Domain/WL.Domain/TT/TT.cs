@@ -25,22 +25,22 @@ namespace WL.Domain
         /// </summary>
         private static List<string> _TableName = new List<string>()
         {
-			"Category",//Category
-			"Cms_Article",//Cms_Article
-			"Cms_Category",//Cms_Category
-			"Cms_Logger",//Cms_Logger
-			"Cms_Menu",//Cms_Menu
-			"Cms_Role",//Cms_Role
-			"Cms_RoleMenu",//Cms_RoleMenu
-			"Cms_UserInfo",//Cms_UserInfo
-			"Code",//Code
-			"Hot",//Hot
-			"Logger",//Logger
-			"Order",//Order
-			"Shop",//Shop
-			"test",//test
-			"User",//User
-			"UserDetails",//UserDetails
+			"Category",//栏目表
+			"Cms_Article",//CMS文章表
+			"Cms_Category",//CMS栏目表
+			"Cms_Logger",//CMS日志表
+			"Cms_Menu",//CMS菜单表
+			"Cms_Role",//CMS角色表
+			"Cms_RoleMenu",//角色按钮关联表
+			"Cms_UserInfo",//CMS用户表
+			"Code",//验证码表
+			"ExceptionLog",//系统异常记录
+			"Hot",//商品热门表
+			"Logger",//日志表
+			"Order",//订单表
+			"Shop",//商品表
+			"User",//用户表
+			"UserDetails",//用户详情表
 		};
 
 		/// <summary>

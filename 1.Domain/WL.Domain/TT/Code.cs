@@ -11,43 +11,43 @@ using System.Data.Entity;
 namespace WL.Domain
 {
 	/// <summary>
-    /// Code
+    /// 验证码表
     /// </summary>
     public class Code
     {
         /// <summary>
-        /// id
+        /// ID
         /// </summary>  
-        [DisplayName("id")]
+        [DisplayName("ID")]
         		[Key]
                 public int id { get; set; }
 		/// <summary>
-        /// type
+        /// 类型
         /// </summary>  
-        [DisplayName("type")]
-        		        public int? type { get; set; }
+        [DisplayName("类型")]
+        		        public int type { get; set; }
 		/// <summary>
-        /// number
+        /// 验证码数字
         /// </summary>  
-        [DisplayName("number")]
-        [MaxLength(50,ErrorMessage="number最大长度为50")]
+        [DisplayName("验证码数字")]
+        [MaxLength(50,ErrorMessage="验证码数字最大长度为50")]
         		        public string number { get; set; }
 		/// <summary>
-        /// code
+        /// 验证码字符
         /// </summary>  
-        [DisplayName("code")]
-        [MaxLength(20,ErrorMessage="code最大长度为20")]
+        [DisplayName("验证码字符")]
+        [MaxLength(20,ErrorMessage="验证码字符最大长度为20")]
         		        public string code { get; set; }
 		/// <summary>
-        /// time
+        /// 时间
         /// </summary>  
-        [DisplayName("time")]
-        		        public DateTime? time { get; set; }
+        [DisplayName("时间")]
+        		        public DateTime time { get; set; }
 		/// <summary>
-        /// frequency
+        /// 次数
         /// </summary>  
-        [DisplayName("frequency")]
-        		        public int? frequency { get; set; }
+        [DisplayName("次数")]
+        		        public int frequency { get; set; }
 		        /// <summary>
         /// 构造函数
         /// </summary>		

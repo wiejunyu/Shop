@@ -11,15 +11,16 @@ using System.Data.Entity;
 namespace WL.Domain
 {
 	/// <summary>
-    /// UserDetails
+    /// 用户详情表
     /// </summary>
     public class UserDetails
     {
         /// <summary>
-        /// id
+        /// ID
         /// </summary>  
-        [DisplayName("id")]
-        		        public int id { get; set; }
+        [DisplayName("ID")]
+        		[Key]
+                public int id { get; set; }
 		/// <summary>
         /// Msn
         /// </summary>  
@@ -78,10 +79,10 @@ namespace WL.Domain
         [MaxLength(20,ErrorMessage="县区最大长度为20")]
         		        public string district { get; set; }
 		/// <summary>
-        /// address
+        /// 详细地址
         /// </summary>  
-        [DisplayName("address")]
-        [MaxLength(1000,ErrorMessage="address最大长度为1000")]
+        [DisplayName("详细地址")]
+        [MaxLength(1000,ErrorMessage="详细地址最大长度为1000")]
         		        public string address { get; set; }
 		        /// <summary>
         /// 构造函数

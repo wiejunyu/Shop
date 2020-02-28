@@ -11,7 +11,7 @@ using System.Data.Entity;
 namespace WL.Domain
 {
 	/// <summary>
-    /// Cms_Role
+    /// CMS角色表
     /// </summary>
     public class Cms_Role
     {
@@ -19,18 +19,19 @@ namespace WL.Domain
         /// ID
         /// </summary>  
         [DisplayName("ID")]
-        		        public int ID { get; set; }
+        		[Key]
+                public int ID { get; set; }
 		/// <summary>
-        /// Name
+        /// 权限名称
         /// </summary>  
-        [DisplayName("Name")]
-        [MaxLength(50,ErrorMessage="Name最大长度为50")]
+        [DisplayName("权限名称")]
+        [MaxLength(50,ErrorMessage="权限名称最大长度为50")]
         		        public string Name { get; set; }
 		/// <summary>
-        /// Remark
+        /// 权限备注
         /// </summary>  
-        [DisplayName("Remark")]
-        [MaxLength(50,ErrorMessage="Remark最大长度为50")]
+        [DisplayName("权限备注")]
+        [MaxLength(50,ErrorMessage="权限备注最大长度为50")]
         		        public string Remark { get; set; }
 		        /// <summary>
         /// 构造函数

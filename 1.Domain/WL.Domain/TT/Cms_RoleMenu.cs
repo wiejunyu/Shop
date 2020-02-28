@@ -11,7 +11,7 @@ using System.Data.Entity;
 namespace WL.Domain
 {
 	/// <summary>
-    /// Cms_RoleMenu
+    /// 角色按钮关联表
     /// </summary>
     public class Cms_RoleMenu
     {
@@ -19,17 +19,18 @@ namespace WL.Domain
         /// ID
         /// </summary>  
         [DisplayName("ID")]
-        		        public int ID { get; set; }
+        		[Key]
+                public int ID { get; set; }
 		/// <summary>
-        /// MenuID
+        /// 按钮ID
         /// </summary>  
-        [DisplayName("MenuID")]
-        		        public int? MenuID { get; set; }
+        [DisplayName("按钮ID")]
+        		        public int MenuID { get; set; }
 		/// <summary>
-        /// RoleID
+        /// 角色ID
         /// </summary>  
-        [DisplayName("RoleID")]
-        		        public int? RoleID { get; set; }
+        [DisplayName("角色ID")]
+        		        public int RoleID { get; set; }
 		        /// <summary>
         /// 构造函数
         /// </summary>		

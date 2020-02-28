@@ -11,54 +11,54 @@ using System.Data.Entity;
 namespace WL.Domain
 {
 	/// <summary>
-    /// Cms_Article
+    /// CMS文章表
     /// </summary>
     public class Cms_Article
     {
         /// <summary>
-        /// id
+        /// ID
         /// </summary>  
-        [DisplayName("id")]
+        [DisplayName("ID")]
         		        public int id { get; set; }
 		/// <summary>
-        /// catid
+        /// 栏目ID
         /// </summary>  
-        [DisplayName("catid")]
-        		        public int? catid { get; set; }
+        [DisplayName("栏目ID")]
+        		        public int catid { get; set; }
 		/// <summary>
-        /// userid
+        /// 用户ID
         /// </summary>  
-        [DisplayName("userid")]
-        		        public int? userid { get; set; }
+        [DisplayName("用户ID")]
+        		        public int userid { get; set; }
 		/// <summary>
-        /// username
+        /// 用户名称
         /// </summary>  
-        [DisplayName("username")]
-        [MaxLength(50,ErrorMessage="username最大长度为50")]
+        [DisplayName("用户名称")]
+        [MaxLength(50,ErrorMessage="用户名称最大长度为50")]
         		        public string username { get; set; }
 		/// <summary>
-        /// title
+        /// 标题
         /// </summary>  
-        [DisplayName("title")]
-        [MaxLength(120,ErrorMessage="title最大长度为120")]
+        [DisplayName("标题")]
+        [MaxLength(120,ErrorMessage="标题最大长度为120")]
         		        public string title { get; set; }
 		/// <summary>
-        /// keywords
+        /// 关键字
         /// </summary>  
-        [DisplayName("keywords")]
-        [MaxLength(120,ErrorMessage="keywords最大长度为120")]
+        [DisplayName("关键字")]
+        [MaxLength(120,ErrorMessage="关键字最大长度为120")]
         		        public string keywords { get; set; }
 		/// <summary>
-        /// description
+        /// 描述
         /// </summary>  
-        [DisplayName("description")]
-        [MaxLength(8,ErrorMessage="description最大长度为8")]
+        [DisplayName("描述")]
+        [MaxLength(8,ErrorMessage="描述最大长度为8")]
         		        public string description { get; set; }
 		/// <summary>
-        /// content
+        /// 内容
         /// </summary>  
-        [DisplayName("content")]
-        [MaxLength(8,ErrorMessage="content最大长度为8")]
+        [DisplayName("内容")]
+        [MaxLength(8,ErrorMessage="内容最大长度为8")]
         		        public string content { get; set; }
 		/// <summary>
         /// thumb
@@ -67,35 +67,35 @@ namespace WL.Domain
         [MaxLength(100,ErrorMessage="thumb最大长度为100")]
         		        public string thumb { get; set; }
 		/// <summary>
-        /// listorder
+        /// 排序
         /// </summary>  
-        [DisplayName("listorder")]
-        		        public int? listorder { get; set; }
+        [DisplayName("排序")]
+        		        public int listorder { get; set; }
 		/// <summary>
-        /// url
+        /// URL地址
         /// </summary>  
-        [DisplayName("url")]
-        [MaxLength(150,ErrorMessage="url最大长度为150")]
+        [DisplayName("URL地址")]
+        [MaxLength(150,ErrorMessage="URL地址最大长度为150")]
         		        public string url { get; set; }
 		/// <summary>
-        /// hits
+        /// 点击次数
         /// </summary>  
-        [DisplayName("hits")]
-        		        public int? hits { get; set; }
+        [DisplayName("点击次数")]
+        		        public int hits { get; set; }
 		/// <summary>
-        /// createtime
+        /// 创建时间
         /// </summary>  
-        [DisplayName("createtime")]
-        		        public int? createtime { get; set; }
+        [DisplayName("创建时间")]
+        		        public int createtime { get; set; }
 		/// <summary>
-        /// updatetime
+        /// 更新时间
         /// </summary>  
-        [DisplayName("updatetime")]
-        		        public int? updatetime { get; set; }
+        [DisplayName("更新时间")]
+        		        public int updatetime { get; set; }
 		/// <summary>
-        /// lang
+        /// 语言
         /// </summary>  
-        [DisplayName("lang")]
+        [DisplayName("语言")]
         		        public int? lang { get; set; }
 		        /// <summary>
         /// 构造函数

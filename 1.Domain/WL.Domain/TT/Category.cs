@@ -11,14 +11,14 @@ using System.Data.Entity;
 namespace WL.Domain
 {
 	/// <summary>
-    /// Category
+    /// 栏目表
     /// </summary>
     public class Category
     {
         /// <summary>
-        /// id
+        /// ID
         /// </summary>  
-        [DisplayName("id")]
+        [DisplayName("ID")]
         		[Key]
                 public int id { get; set; }
 		/// <summary>
@@ -31,7 +31,7 @@ namespace WL.Domain
         /// 栏目等级
         /// </summary>  
         [DisplayName("栏目等级")]
-        		        public int? Rank { get; set; }
+        		        public int Rank { get; set; }
 		/// <summary>
         /// 栏目图片，空为无图栏目
         /// </summary>  
@@ -39,26 +39,26 @@ namespace WL.Domain
         [MaxLength(200,ErrorMessage="栏目图片，空为无图栏目最大长度为200")]
         		        public string Picture { get; set; }
 		/// <summary>
-        /// Url
+        /// URL路径
         /// </summary>  
-        [DisplayName("Url")]
-        [MaxLength(200,ErrorMessage="Url最大长度为200")]
+        [DisplayName("URL路径")]
+        [MaxLength(200,ErrorMessage="URL路径最大长度为200")]
         		        public string Url { get; set; }
 		/// <summary>
         /// 父栏目ID
         /// </summary>  
         [DisplayName("父栏目ID")]
-        		        public int? Parentid { get; set; }
+        		        public int Parentid { get; set; }
 		/// <summary>
-        /// 推荐
+        /// 是否推荐
         /// </summary>  
-        [DisplayName("推荐")]
-        		        public bool? Recommend { get; set; }
+        [DisplayName("是否推荐")]
+        		        public bool Recommend { get; set; }
 		/// <summary>
         /// 点击次数
         /// </summary>  
         [DisplayName("点击次数")]
-        		        public int? Click { get; set; }
+        		        public int Click { get; set; }
 		        /// <summary>
         /// 构造函数
         /// </summary>		

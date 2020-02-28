@@ -11,7 +11,7 @@ using System.Data.Entity;
 namespace WL.Domain
 {
 	/// <summary>
-    /// User
+    /// 用户表
     /// </summary>
     public class User
     {
@@ -22,27 +22,27 @@ namespace WL.Domain
         		[Key]
                 public int ID { get; set; }
 		/// <summary>
-        /// UserName
+        /// 用户名
         /// </summary>  
-        [DisplayName("UserName")]
-        [MaxLength(50,ErrorMessage="UserName最大长度为50")]
+        [DisplayName("用户名")]
+        [MaxLength(50,ErrorMessage="用户名最大长度为50")]
         		        public string UserName { get; set; }
 		/// <summary>
-        /// PassWord
+        /// 密码
         /// </summary>  
-        [DisplayName("PassWord")]
-        [MaxLength(50,ErrorMessage="PassWord最大长度为50")]
+        [DisplayName("密码")]
+        [MaxLength(50,ErrorMessage="密码最大长度为50")]
         		        public string PassWord { get; set; }
 		/// <summary>
         /// 创建时间
         /// </summary>  
         [DisplayName("创建时间")]
-        		        public DateTime? CreateTime { get; set; }
+        		        public DateTime CreateTime { get; set; }
 		/// <summary>
         /// 最后登陆时间
         /// </summary>  
         [DisplayName("最后登陆时间")]
-        		        public DateTime? LoginTime { get; set; }
+        		        public DateTime LoginTime { get; set; }
 		/// <summary>
         /// IP
         /// </summary>  
@@ -67,16 +67,16 @@ namespace WL.Domain
         [MaxLength(100,ErrorMessage="头像最大长度为100")]
         		        public string Portrait { get; set; }
 		/// <summary>
-        /// Email
+        /// 邮箱
         /// </summary>  
-        [DisplayName("Email")]
-        [MaxLength(50,ErrorMessage="Email最大长度为50")]
+        [DisplayName("邮箱")]
+        [MaxLength(50,ErrorMessage="邮箱最大长度为50")]
         		        public string Email { get; set; }
 		/// <summary>
-        /// Phone
+        /// 手机
         /// </summary>  
-        [DisplayName("Phone")]
-        [MaxLength(20,ErrorMessage="Phone最大长度为20")]
+        [DisplayName("手机")]
+        [MaxLength(20,ErrorMessage="手机最大长度为20")]
         		        public string Phone { get; set; }
 		/// <summary>
         /// QQ
@@ -85,10 +85,10 @@ namespace WL.Domain
         [MaxLength(15,ErrorMessage="QQ最大长度为15")]
         		        public string QQ { get; set; }
 		/// <summary>
-        /// Money
+        /// 余额
         /// </summary>  
-        [DisplayName("Money")]
-        		        public decimal? Money { get; set; }
+        [DisplayName("余额")]
+        		        public decimal Money { get; set; }
 		        /// <summary>
         /// 构造函数
         /// </summary>		

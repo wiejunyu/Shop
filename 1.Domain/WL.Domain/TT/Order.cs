@@ -11,21 +11,21 @@ using System.Data.Entity;
 namespace WL.Domain
 {
 	/// <summary>
-    /// Order
+    /// 订单表
     /// </summary>
     public class Order
     {
         /// <summary>
-        /// 订单ID
+        /// ID
         /// </summary>  
-        [DisplayName("订单ID")]
+        [DisplayName("ID")]
         		[Key]
                 public int Id { get; set; }
 		/// <summary>
         /// 用户ID
         /// </summary>  
         [DisplayName("用户ID")]
-        		        public int? UserId { get; set; }
+        		        public int UserId { get; set; }
 		/// <summary>
         /// 订单号
         /// </summary>  
@@ -36,27 +36,27 @@ namespace WL.Domain
         /// 商品ID
         /// </summary>  
         [DisplayName("商品ID")]
-        		        public int? Sid { get; set; }
+        		        public int Sid { get; set; }
 		/// <summary>
         /// 商品价格
         /// </summary>  
         [DisplayName("商品价格")]
-        		        public decimal? Price { get; set; }
+        		        public decimal Price { get; set; }
 		/// <summary>
         /// 商品数量
         /// </summary>  
         [DisplayName("商品数量")]
-        		        public int? Number { get; set; }
+        		        public int Number { get; set; }
 		/// <summary>
         /// 运费
         /// </summary>  
         [DisplayName("运费")]
-        		        public decimal? Freight { get; set; }
+        		        public decimal Freight { get; set; }
 		/// <summary>
         /// 应付金额
         /// </summary>  
         [DisplayName("应付金额")]
-        		        public decimal? Money { get; set; }
+        		        public decimal Money { get; set; }
 		/// <summary>
         /// 收货地址
         /// </summary>  
@@ -72,31 +72,33 @@ namespace WL.Domain
         /// 订单生成日期
         /// </summary>  
         [DisplayName("订单生成日期")]
-        		        public DateTime? Date { get; set; }
+        		        public DateTime Date { get; set; }
 		/// <summary>
         /// 支付状态
         /// </summary>  
         [DisplayName("支付状态")]
-        		        public bool? PayState { get; set; }
+        		        public bool PayState { get; set; }
 		/// <summary>
         /// 支付方式：0货到付款
         /// </summary>  
         [DisplayName("支付方式：0货到付款")]
-        		        public int? PayMethod { get; set; }
+        		        public int PayMethod { get; set; }
 		/// <summary>
         /// 物流状态，0未发货，1运输中，2已收货
         /// </summary>  
         [DisplayName("物流状态，0未发货，1运输中，2已收货")]
-        		        public int? LogisticsState { get; set; }
+        		        public int LogisticsState { get; set; }
 		/// <summary>
         /// 物流信息
         /// </summary>  
         [DisplayName("物流信息")]
+        [MaxLength(200,ErrorMessage="物流信息最大长度为200")]
         		        public string Logistics { get; set; }
 		/// <summary>
         /// 备注
         /// </summary>  
         [DisplayName("备注")]
+        [MaxLength(200,ErrorMessage="备注最大长度为200")]
         		        public string Remarks { get; set; }
 		        /// <summary>
         /// 构造函数

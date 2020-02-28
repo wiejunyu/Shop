@@ -12,6 +12,9 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using WL.API.Models;
+using WL.Cms.Manager;
+using WL.Domain;
+using WL.Domain.Enum;
 using WL.Infrastructure.Commom;
 
 namespace WL.API.Controllers
@@ -50,33 +53,31 @@ namespace WL.API.Controllers
             catch (AppException exception)
             {
                 response.HandleException(exception);
-                //ILog log = LogManager.GetLogger("AppException");
-                //log.Warn(exception.Message, exception);
             }
             catch (Exception exception)
             {
                 //记录数据库日志
                 #region 日志记录
-                //string errorCode = DateTime.Now.ToString("yyMMddHHmmss");
-                //ExceptionLog exceptionLog = new ExceptionLog();
-                //exceptionLog.Response = JsonConvert.SerializeObject(exception);
-                //exceptionLog.Error_code = errorCode;
-                //exceptionLog.Exception_Type = (int)ExceptionTypeEnum.System;
-                //exceptionLog.Url = Url;
-                //exceptionLog.CreateTime = DateTime.Now;
-                //exceptionLog.Request = requestBody;
-                response.message = "网络异常或超时，请稍后再试！";// string.Format("系统异常,错误代码：{0}", errorCode);
-                //ExceptionLogDsService.Log(exceptionLog);
+                string errorCode = DateTime.Now.ToString("yyMMddHHmmss");
+                ExceptionLog exceptionLog = new ExceptionLog();
+                exceptionLog.Response = JsonConvert.SerializeObject(exception);
+                exceptionLog.Error_code = errorCode;
+                exceptionLog.Exception_Type = (int)ExceptionTypeEnum.System;
+                exceptionLog.Url = Url;
+                exceptionLog.CreateTime = DateTime.Now;
+                exceptionLog.Request = requestBody;
+                response.message = "网络异常或超时，请稍后再试！";
+                using (WLDbContext db = new WLDbContext()) 
+                {
+                    db.ExceptionLog.Add(exceptionLog);
+                    db.SaveChanges();
+                }
                 #endregion
-
-                //ILog log = LogManager.GetLogger("exception");
-                //log.Error(exception.Message, exception);
             }
 
             stop.Stop();
             long runtime = stop.ElapsedMilliseconds;
-            //ExceptionLogDsService.TimeOutLog(Url, requestBody, JsonConvert.SerializeObject(response), runtime);
-
+            ExceptionLogManager.TimeOutLog(Url, requestBody, JsonConvert.SerializeObject(response), runtime);
             return response;
         }
 

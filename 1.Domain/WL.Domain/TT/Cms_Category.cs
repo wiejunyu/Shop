@@ -11,81 +11,82 @@ using System.Data.Entity;
 namespace WL.Domain
 {
 	/// <summary>
-    /// Cms_Category
+    /// CMS栏目表
     /// </summary>
     public class Cms_Category
     {
         /// <summary>
-        /// id
+        /// ID
         /// </summary>  
-        [DisplayName("id")]
-        		        public int id { get; set; }
+        [DisplayName("ID")]
+        		[Key]
+                public int id { get; set; }
 		/// <summary>
-        /// catname
+        /// 栏目名称
         /// </summary>  
-        [DisplayName("catname")]
-        [MaxLength(50,ErrorMessage="catname最大长度为50")]
+        [DisplayName("栏目名称")]
+        [MaxLength(50,ErrorMessage="栏目名称最大长度为50")]
         		        public string catname { get; set; }
 		/// <summary>
-        /// parentid
+        /// 父ID
         /// </summary>  
-        [DisplayName("parentid")]
-        		        public int? parentid { get; set; }
+        [DisplayName("父ID")]
+        		        public int parentid { get; set; }
 		/// <summary>
-        /// moduleid
+        /// 文章模型
         /// </summary>  
-        [DisplayName("moduleid")]
-        		        public int? moduleid { get; set; }
+        [DisplayName("文章模型")]
+        		        public int moduleid { get; set; }
 		/// <summary>
-        /// title
+        /// 标题
         /// </summary>  
-        [DisplayName("title")]
-        [MaxLength(150,ErrorMessage="title最大长度为150")]
+        [DisplayName("标题")]
+        [MaxLength(150,ErrorMessage="标题最大长度为150")]
         		        public string title { get; set; }
 		/// <summary>
-        /// keywords
+        /// 关键字
         /// </summary>  
-        [DisplayName("keywords")]
-        [MaxLength(100,ErrorMessage="keywords最大长度为100")]
+        [DisplayName("关键字")]
+        [MaxLength(100,ErrorMessage="关键字最大长度为100")]
         		        public string keywords { get; set; }
 		/// <summary>
-        /// description
+        /// 描述
         /// </summary>  
-        [DisplayName("description")]
-        [MaxLength(255,ErrorMessage="description最大长度为255")]
+        [DisplayName("描述")]
+        [MaxLength(255,ErrorMessage="描述最大长度为255")]
         		        public string description { get; set; }
 		/// <summary>
-        /// listorder
+        /// 排序
         /// </summary>  
-        [DisplayName("listorder")]
-        		        public int? listorder { get; set; }
+        [DisplayName("排序")]
+        		        public int listorder { get; set; }
 		/// <summary>
-        /// hits
+        /// 点击次数
         /// </summary>  
-        [DisplayName("hits")]
-        		        public int? hits { get; set; }
+        [DisplayName("点击次数")]
+        		        public int hits { get; set; }
 		/// <summary>
-        /// image
+        /// 栏目图片
         /// </summary>  
-        [DisplayName("image")]
-        [MaxLength(100,ErrorMessage="image最大长度为100")]
+        [DisplayName("栏目图片")]
+        [MaxLength(100,ErrorMessage="栏目图片最大长度为100")]
         		        public string image { get; set; }
 		/// <summary>
-        /// url
+        /// URL路径
         /// </summary>  
-        [DisplayName("url")]
-        [MaxLength(150,ErrorMessage="url最大长度为150")]
+        [DisplayName("URL路径")]
+        [MaxLength(150,ErrorMessage="URL路径最大长度为150")]
         		        public string url { get; set; }
 		/// <summary>
-        /// lang
+        /// 语言
         /// </summary>  
-        [DisplayName("lang")]
+        [DisplayName("语言")]
         		        public int? lang { get; set; }
 		/// <summary>
-        /// catdir
+        /// 栏目目录
         /// </summary>  
-        [DisplayName("catdir")]
-        [MaxLength(50,ErrorMessage="catdir最大长度为50")]
+        [DisplayName("栏目目录")]
+        [MaxLength(50,ErrorMessage="栏目目录最大长度为50")]
         		        public string catdir { get; set; }
 		        /// <summary>
         /// 构造函数

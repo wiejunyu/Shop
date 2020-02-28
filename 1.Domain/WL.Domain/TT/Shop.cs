@@ -11,14 +11,14 @@ using System.Data.Entity;
 namespace WL.Domain
 {
 	/// <summary>
-    /// Shop
+    /// 商品表
     /// </summary>
     public class Shop
     {
         /// <summary>
-        /// id
+        /// ID
         /// </summary>  
-        [DisplayName("id")]
+        [DisplayName("ID")]
         		[Key]
                 public int id { get; set; }
 		/// <summary>
@@ -31,12 +31,12 @@ namespace WL.Domain
         /// 商品栏目ID
         /// </summary>  
         [DisplayName("商品栏目ID")]
-        		        public int? Catid { get; set; }
+        		        public int Catid { get; set; }
 		/// <summary>
         /// 上架时间
         /// </summary>  
         [DisplayName("上架时间")]
-        		        public DateTime? Uptime { get; set; }
+        		        public DateTime Uptime { get; set; }
 		/// <summary>
         /// 计量单位
         /// </summary>  
@@ -53,12 +53,12 @@ namespace WL.Domain
         /// 优惠价
         /// </summary>  
         [DisplayName("优惠价")]
-        		        public decimal? Trueprice { get; set; }
+        		        public decimal Trueprice { get; set; }
 		/// <summary>
         /// 市场价
         /// </summary>  
         [DisplayName("市场价")]
-        		        public decimal? Price { get; set; }
+        		        public decimal Price { get; set; }
 		/// <summary>
         /// 详细介绍
         /// </summary>  
@@ -81,17 +81,17 @@ namespace WL.Domain
         /// 点击次数
         /// </summary>  
         [DisplayName("点击次数")]
-        		        public int? Click { get; set; }
+        		        public int Click { get; set; }
 		/// <summary>
         /// 购买次数
         /// </summary>  
         [DisplayName("购买次数")]
-        		        public int? Buy { get; set; }
+        		        public int Buy { get; set; }
 		/// <summary>
         /// 推荐
         /// </summary>  
         [DisplayName("推荐")]
-        		        public bool? Recommend { get; set; }
+        		        public bool Recommend { get; set; }
 		/// <summary>
         /// 缩略图
         /// </summary>  
@@ -107,16 +107,19 @@ namespace WL.Domain
         /// 备注
         /// </summary>  
         [DisplayName("备注")]
+        [MaxLength(200,ErrorMessage="备注最大长度为200")]
         		        public string Remarks { get; set; }
 		/// <summary>
         /// 参数
         /// </summary>  
         [DisplayName("参数")]
+        [MaxLength(200,ErrorMessage="参数最大长度为200")]
         		        public string Parameter { get; set; }
 		/// <summary>
         /// 品牌证书
         /// </summary>  
         [DisplayName("品牌证书")]
+        [MaxLength(200,ErrorMessage="品牌证书最大长度为200")]
         		        public string Certificate { get; set; }
 		        /// <summary>
         /// 构造函数

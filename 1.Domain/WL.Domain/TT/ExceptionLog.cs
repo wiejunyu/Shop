@@ -11,9 +11,9 @@ using System.Data.Entity;
 namespace WL.Domain
 {
 	/// <summary>
-    /// CMS用户表
+    /// 系统异常记录
     /// </summary>
-    public class Cms_UserInfo
+    public class ExceptionLog
     {
         /// <summary>
         /// ID
@@ -22,53 +22,52 @@ namespace WL.Domain
         		[Key]
                 public int ID { get; set; }
 		/// <summary>
-        /// 用户名
+        /// Url
         /// </summary>  
-        [DisplayName("用户名")]
-        [MaxLength(50,ErrorMessage="用户名最大长度为50")]
-        		        public string UserName { get; set; }
+        [DisplayName("Url")]
+        [MaxLength(300,ErrorMessage="Url最大长度为300")]
+        		        public string Url { get; set; }
 		/// <summary>
-        /// 密码
+        /// Request
         /// </summary>  
-        [DisplayName("密码")]
-        [MaxLength(50,ErrorMessage="密码最大长度为50")]
-        		        public string PassWord { get; set; }
+        [DisplayName("Request")]
+        		        public string Request { get; set; }
 		/// <summary>
-        /// 权限
+        /// Response
         /// </summary>  
-        [DisplayName("权限")]
-        		        public int? Permission { get; set; }
+        [DisplayName("Response")]
+        		        public string Response { get; set; }
 		/// <summary>
-        /// 领导
+        /// 1.系统异常  2.业务异常
         /// </summary>  
-        [DisplayName("领导")]
-        		        public int? Leader { get; set; }
+        [DisplayName("1.系统异常  2.业务异常")]
+        		        public int? Exception_Type { get; set; }
+		/// <summary>
+        /// 错误代码
+        /// </summary>  
+        [DisplayName("错误代码")]
+        [MaxLength(50,ErrorMessage="错误代码最大长度为50")]
+        		        public string Error_code { get; set; }
+		/// <summary>
+        /// 状态
+        /// </summary>  
+        [DisplayName("状态")]
+        		        public int? Status { get; set; }
 		/// <summary>
         /// 备注
         /// </summary>  
         [DisplayName("备注")]
-        [MaxLength(50,ErrorMessage="备注最大长度为50")]
+        [MaxLength(200,ErrorMessage="备注最大长度为200")]
         		        public string Remark { get; set; }
 		/// <summary>
         /// 创建时间
         /// </summary>  
         [DisplayName("创建时间")]
         		        public DateTime CreateTime { get; set; }
-		/// <summary>
-        /// 最后登陆时间
-        /// </summary>  
-        [DisplayName("最后登陆时间")]
-        		        public DateTime LoginTime { get; set; }
-		/// <summary>
-        /// IP
-        /// </summary>  
-        [DisplayName("IP")]
-        [MaxLength(50,ErrorMessage="IP最大长度为50")]
-        		        public string IP { get; set; }
 		        /// <summary>
         /// 构造函数
         /// </summary>		
-        public Cms_UserInfo()
+        public ExceptionLog()
         {
         }
 
@@ -79,6 +78,6 @@ namespace WL.Domain
         /// <summary>
         /// 把实体添加到EF上下文
         /// </summary>
-        public DbSet<Cms_UserInfo> Cms_UserInfo { get; set; }
+        public DbSet<ExceptionLog> ExceptionLog { get; set; }
     }    
 }

@@ -11,7 +11,7 @@ using System.Data.Entity;
 namespace WL.Domain
 {
 	/// <summary>
-    /// Cms_Menu
+    /// CMS菜单表
     /// </summary>
     public class Cms_Menu
     {
@@ -19,45 +19,46 @@ namespace WL.Domain
         /// ID
         /// </summary>  
         [DisplayName("ID")]
-        		        public int ID { get; set; }
+        		[Key]
+                public int ID { get; set; }
 		/// <summary>
-        /// Name
+        /// 菜单名称
         /// </summary>  
-        [DisplayName("Name")]
-        [MaxLength(50,ErrorMessage="Name最大长度为50")]
+        [DisplayName("菜单名称")]
+        [MaxLength(50,ErrorMessage="菜单名称最大长度为50")]
         		        public string Name { get; set; }
 		/// <summary>
-        /// Url
+        /// URL路径
         /// </summary>  
-        [DisplayName("Url")]
-        [MaxLength(50,ErrorMessage="Url最大长度为50")]
+        [DisplayName("URL路径")]
+        [MaxLength(50,ErrorMessage="URL路径最大长度为50")]
         		        public string Url { get; set; }
 		/// <summary>
-        /// Action
+        /// 控制器
         /// </summary>  
-        [DisplayName("Action")]
+        [DisplayName("控制器")]
         		        public string Action { get; set; }
 		/// <summary>
-        /// Sort
+        /// 排序
         /// </summary>  
-        [DisplayName("Sort")]
-        		        public int? Sort { get; set; }
+        [DisplayName("排序")]
+        		        public int Sort { get; set; }
 		/// <summary>
-        /// Lv
+        /// 菜单等级
         /// </summary>  
-        [DisplayName("Lv")]
-        		        public int? Lv { get; set; }
+        [DisplayName("菜单等级")]
+        		        public int Lv { get; set; }
 		/// <summary>
-        /// Icon
+        /// 图标
         /// </summary>  
-        [DisplayName("Icon")]
-        [MaxLength(50,ErrorMessage="Icon最大长度为50")]
+        [DisplayName("图标")]
+        [MaxLength(50,ErrorMessage="图标最大长度为50")]
         		        public string Icon { get; set; }
 		/// <summary>
-        /// Pid
+        /// 父ID
         /// </summary>  
-        [DisplayName("Pid")]
-        		        public int? Pid { get; set; }
+        [DisplayName("父ID")]
+        		        public int Pid { get; set; }
 		        /// <summary>
         /// 构造函数
         /// </summary>		

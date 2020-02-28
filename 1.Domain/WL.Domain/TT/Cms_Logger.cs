@@ -11,7 +11,7 @@ using System.Data.Entity;
 namespace WL.Domain
 {
 	/// <summary>
-    /// Cms_Logger
+    /// CMS日志表
     /// </summary>
     public class Cms_Logger
     {
@@ -22,38 +22,38 @@ namespace WL.Domain
         		[Key]
                 public int ID { get; set; }
 		/// <summary>
-        /// View
+        /// 视图
         /// </summary>  
-        [DisplayName("View")]
-        [MaxLength(50,ErrorMessage="View最大长度为50")]
+        [DisplayName("视图")]
+        [MaxLength(50,ErrorMessage="视图最大长度为50")]
         		        public string View { get; set; }
 		/// <summary>
-        /// Action
+        /// 控制器
         /// </summary>  
-        [DisplayName("Action")]
-        [MaxLength(50,ErrorMessage="Action最大长度为50")]
+        [DisplayName("控制器")]
+        [MaxLength(50,ErrorMessage="控制器最大长度为50")]
         		        public string Action { get; set; }
 		/// <summary>
-        /// Description
+        /// 描述
         /// </summary>  
-        [DisplayName("Description")]
-        [MaxLength(50,ErrorMessage="Description最大长度为50")]
+        [DisplayName("描述")]
+        [MaxLength(50,ErrorMessage="描述最大长度为50")]
         		        public string Description { get; set; }
 		/// <summary>
-        /// Remark
+        /// 备注
         /// </summary>  
-        [DisplayName("Remark")]
+        [DisplayName("备注")]
         		        public string Remark { get; set; }
 		/// <summary>
-        /// UserName
+        /// 用户名
         /// </summary>  
-        [DisplayName("UserName")]
-        [MaxLength(50,ErrorMessage="UserName最大长度为50")]
+        [DisplayName("用户名")]
+        [MaxLength(50,ErrorMessage="用户名最大长度为50")]
         		        public string UserName { get; set; }
 		/// <summary>
-        /// Time
+        /// 时间
         /// </summary>  
-        [DisplayName("Time")]
+        [DisplayName("时间")]
         		        public DateTime? Time { get; set; }
 		/// <summary>
         /// IP
