@@ -20,18 +20,18 @@ namespace WL.Web.Home.Filters
             var url = request.Url.AbsolutePath.ToString();
 
             #region 熔断
-            var key = request.UserHostAddress + url + GapTimeType.Min;
-            //RedisHelper.StringIncrement($"Count:{GapTimeType.Day}{url}",1);
-            if (CheckCache(key))
-            {
-                int times = GetCache<int>(key);
-                if (times > 20)
-                {
-                    filterContext.Result = new EmptyResult();
-                    filterContext.HttpContext.Response.Write("操作过于频繁 触发系统熔断策略");
-                    return;
-                }
-            }
+            //var key = request.UserHostAddress + url + GapTimeType.Min;
+            ////RedisHelper.StringIncrement($"Count:{GapTimeType.Day}{url}",1);
+            //if (CheckCache(key))
+            //{
+            //    int times = GetCache<int>(key);
+            //    if (times > 20)
+            //    {
+            //        filterContext.Result = new EmptyResult();
+            //        filterContext.HttpContext.Response.Write("操作过于频繁 触发系统熔断策略");
+            //        return;
+            //    }
+            //}
             #endregion
             UserModels user = HttpContext.Current.Session["user"] as UserModels;
             filterContext.Controller.ViewBag.username = "";
