@@ -81,6 +81,10 @@
       <Project>{90013FD8-7A88-4D37-8E9F-B2C04DF9349E}</Project>
       <Name>WL.Infrastructure</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WL.Domain\WL.Domain.csproj">
+      <Project>{F767C035-3F7B-4A8D-8C84-99BD7A250B22}</Project>
+      <Name>WL.Domain</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

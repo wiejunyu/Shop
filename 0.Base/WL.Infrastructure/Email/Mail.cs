@@ -41,7 +41,7 @@ namespace WL.Infrastructure.Email
                 //不和请求一块发送。
                 client.UseDefaultCredentials = false;
                 //验证发件人身份(发件人的邮箱，邮箱里的生成授权码);
-                client.Credentials = new NetworkCredential("673256903@qq.com", "nzsaainavkykbbci");
+                client.Credentials = new NetworkCredential("673256903@qq.com", "lyecaohtmajqbdbd");
                 //发送
                 client.Send(mailMessage);
             }

@@ -91,7 +91,7 @@
                         @foreach (ArticleModels temp in listTwo)
                         {
                             <li class="noWrapEllipsis">
-                                <a href="/Home/Article?aid=@temp.id" class="clearfix">
+                                <a href="/article/@(temp.id).html" class="clearfix">
                                     <span class="noWrapEllipsis">@temp.title</span>
                                     <em>@Common.ConvertDate(temp.createtime.ToString()).ToString("yy-MM-dd")</em>
                                 </a>

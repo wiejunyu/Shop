@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <link href="Scripts/L2Dwidget/waifu.css" rel="stylesheet" />
+    <link href="Scripts/L2Dwidget/flat-ui.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="jumbotron">
+        <h1>swagger API 管理</h1>
+        <p><a href="/swagger" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <h2>测试 工具1</h2>
+            <p>getman</p>
+            <p><a class="btn btn-default" href="https://getman.cn/" target="_blank">GO！ &raquo;</a></p>
+        </div>
+        <div class="col-md-4">
+            <h2>测试 工具2</h2>
+            <p>coolaf</p>
+            <p><a class="btn btn-default" href="http://coolaf.com/" target="_blank">GO！ &raquo;</a></p>
+        </div>
+    </div>
+    <div class="waifu" id="waifu">
+        <div class="waifu-tips" style="opacity: 1;"></div>
+        <canvas id="live2d" width="280" height="250" class="live2d"></canvas>
+        <div class="waifu-tool">
+            <span class="fui-home"></span>
+            <span class="fui-chat"></span>
+            <span class="fui-eye"></span>
+            <span class="fui-user"></span>
+            <span class="fui-photo"></span>
+            <span class="fui-info-circle"></span>
+            <span class="fui-cross"></span>
+        </div>
+    </div>
+    <script src="Scripts/jquery-3.4.1.min.js"></script>
+    <script src="Scripts/L2Dwidget/live2d.min.js"></script>
+    <script src="Scripts/L2Dwidget/waifu-tips.js"></script>
+    <script type="text/javascript">initModel()</script>
+</body>
+</html>

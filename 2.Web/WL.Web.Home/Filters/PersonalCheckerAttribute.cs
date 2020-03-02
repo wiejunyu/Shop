@@ -39,17 +39,17 @@ namespace WL.Web.Home.Filters
                         }
                         else
                         {
-                            HttpContext.Current.Response.Redirect("/Login/Login");
+                            HttpContext.Current.Response.Redirect("/login/login.html");
                         }
                     }
                     else
                     {
-                        HttpContext.Current.Response.Redirect("/Login/Login");
+                        HttpContext.Current.Response.Redirect("/login/login.html");
                     }
                 }
                 else
                 {
-                    HttpContext.Current.Response.Redirect("/Login/Login");
+                    HttpContext.Current.Response.Redirect("/login/login.html");
                 }
             }
             else

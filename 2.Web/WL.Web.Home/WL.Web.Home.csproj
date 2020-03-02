@@ -2256,6 +2256,8 @@
     <Content Include="Content\icon\font-awesome\scss\_screen-reader.scss" />
     <Content Include="Content\icon\font-awesome\scss\_stacked.scss" />
     <Content Include="Content\icon\font-awesome\scss\_variables.scss" />
+    <Content Include="App_Data\configs\appSettings.config" />
+    <Content Include="App_Data\configs\connectionStrings.config" />
     <None Include="packages.config" />
     <Content Include="Scripts\assets\css\pages\vssver2.scc" />
     <Content Include="Scripts\assets\css\themes\vssver2.scc" />
@@ -2878,7 +2880,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Models\" />
     <Folder Include="uploads\20180419\" />
     <Folder Include="uploads\allimg\180129\" />
@@ -2897,6 +2898,10 @@
     <ProjectReference Include="..\..\1.Domain\WL.Cms\WL.Cms.csproj">
       <Project>{7B464B3D-BD9A-4873-AE69-9DEC859166BC}</Project>
       <Name>WL.Cms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\1.Domain\WL.Domain\WL.Domain.csproj">
+      <Project>{F767C035-3F7B-4A8D-8C84-99BD7A250B22}</Project>
+      <Name>WL.Domain</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\1.Domain\WL.Home\WL.Home.csproj">
       <Project>{34211909-99fe-4328-8d47-ef621fd96b0c}</Project>

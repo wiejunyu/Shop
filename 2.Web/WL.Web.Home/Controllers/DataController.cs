@@ -288,7 +288,8 @@ namespace WL.Web.Home.Controllers
                 string portrait = user.Portrait;
                 if (UserManager.SetPortrait(ImageFile.SetImage(image)))
                 {
-                    ImageFile.DeleteImage(portrait);
+                    if(portrait.ToLower() != "/Image/user.png".ToLower())
+                        ImageFile.DeleteImage(portrait);
                     UserManager.SetSessionUser();
                     return Json("1");
                 }

@@ -2,7 +2,7 @@
     ViewBag.Title = "基本资料设置";
     Layout = "~/Views/Shared/PersonalMaster.cshtml";
 }
-@model WL.Home.Models.UserDetailsModels
+@model WL.Domain.UserDetails
 @using WL.Home.Models;
 @using WL.Home.Manager;
 @using WL.Infrastructure.Common;
@@ -369,7 +369,7 @@
                                             <div class="form-group">
                                                 <label class="control-label">生日</label>
                                                 <div class="input-group input-small date-picker input-daterange" data-date="2014-01-01" data-date-format="yyyy-mm-dd">
-                                                    @if (@Model.Birthday == "")
+                                                    @if (Model.Birthday == null)
                                                     {
                                                         <input type="text" class="form-control input-small" id="Time" value="请选择生日" name="Birthday">
                                                     }
@@ -449,15 +449,15 @@
         $("#Emotional").select2();
         handleDatePickersT();
         setClass("Setup", "Basic");
-        if (@Model.Emotional == 1)
+        if (@(Model.Emotional ?? 0) == 1)
         {
             $('#s2id_Emotional .select2-chosen').html("已婚");
         }
-        if (@Model.Emotional == 2)
+        if (@(Model.Emotional ?? 0) == 2)
         {
             $('#s2id_Emotional .select2-chosen').html("未婚");
         }
-        if (@Model.Emotional == 3)
+        if (@(Model.Emotional ?? 0) == 3)
         {
             $('#s2id_Emotional .select2-chosen').html("单身");
         }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using WL.Domain;
 using WL.Home.Models;
 using WL.Infrastructure.Common;
 using WL.Infrastructure.Data;
@@ -152,22 +153,23 @@ namespace WL.Home.Manager
         /// <returns></returns>
         public static int SetUser(RegisterModels re)
         {
-            DynamicParameters param = new DynamicParameters();
-            param.Add("@UserName", re.UserName);
-            param.Add("@PassWord", (MD5.Md5(re.PassWord)).ToLower());
-            param.Add("@CreateTime", re.CreateTime.ToString());
-            param.Add("@LoginTime", re.LoginTime.ToString());
-            param.Add("@IP", re.IP);
-            param.Add("@Remark", re.Remark);
-            param.Add("@Permission", re.Permission);
-            param.Add("@Portrait", re.Portrait);
-            param.Add("@Email", re.Email);
-            param.Add("@Phone", re.Phone);
-            param.Add("@QQ", "");
-            param.Add("@Money", 0);
-            param.Add("@ID", dbType: DbType.Int32, direction: ParameterDirection.Output);
-            string sql = "INSERT INTO [User] VALUES (@UserName,@PassWord,@CreateTime,@LoginTime,@IP,@Remark,@Permission,@Portrait,@Email,@Phone,@QQ,@Money);SELECT @ID=SCOPE_IDENTITY()";
-            return new BaseDAL().AddGetID(sql, param); 
+            using (WLDbContext db = new WLDbContext()) {
+                User user = new User();
+                user.UserName = re.UserName;
+                user.PassWord = (MD5.Md5(re.PassWord)).ToLower();
+                user.CreateTime = re.CreateTime;
+                user.LoginTime = re.LoginTime;
+                user.IP = re.IP;
+                user.Remark = re.Remark;
+                user.Permission = re.Permission;
+                user.Portrait = re.Portrait;
+                user.Email = re.Email;
+                user.Phone = re.Phone;
+                user.Money = 0;
+                db.User.Add(user);
+                db.SaveChanges();
+                return user.ID;
+            }
         }
 
         /// <summary>
@@ -177,10 +179,14 @@ namespace WL.Home.Manager
         /// <returns></returns>
         public static bool SetDetails(int id)
         {
-            DynamicParameters param = new DynamicParameters();
-            param.Add("@id",id);
-            string sql = "INSERT INTO [UserDetails] VALUES (@id,null,null,null,null,null,null,null,null,null,null)";
-            return new BaseDAL().Add(sql, param);
+            using (WLDbContext db = new WLDbContext())
+            {
+                UserDetails user = new UserDetails();
+                user.UID = id;
+                db.UserDetails.Add(user);
+                db.SaveChanges();
+                return true;
+            }
         }
 
         /// <summary>
@@ -240,34 +246,37 @@ namespace WL.Home.Manager
         /// <returns></returns>
         public static bool SetUserDetails(UserDetailsModels userdetails)
         {
-            UserModels user = System.Web.HttpContext.Current.Session["user"] as UserModels;
-            DynamicParameters param = new DynamicParameters();
-            param.Add("@Id", user.ID);
-            param.Add("@Msn", userdetails.Msn);
-            param.Add("@Tel", userdetails.Tel);
-            param.Add("@Birthday", userdetails.Birthday);
-            param.Add("@Emotional", userdetails.Emotional);
-            param.Add("@Interest", userdetails.Interest);
-            param.Add("@Describe", userdetails.Describe);
-            param.Add("@Website", userdetails.Website);
-            param.Add("@province", userdetails.province);
-            param.Add("@city", userdetails.city);
-            param.Add("@district", userdetails.district);
-            string sql = "UPDATE [UserDetails] SET Msn = @Msn,Tel = @Tel,Birthday = @Birthday,Emotional = @Emotional,Interest = @Interest,Describe = @Describe,Website = @Website,province = @province,city = @city,district = @district WHERE ID = @Id";
-            return new BaseDAL().Update(sql, param);
+            using (WLDbContext db = new WLDbContext())
+            {
+                UserModels user = System.Web.HttpContext.Current.Session["user"] as UserModels;
+                UserDetails GetUserDetails = db.UserDetails.Single(x => x.UID == user.ID);
+                GetUserDetails.Msn = userdetails.Msn;
+                GetUserDetails.Tel = userdetails.Tel;
+                GetUserDetails.Birthday = DateTime.Parse(userdetails.Birthday);
+                GetUserDetails.Emotional = userdetails.Emotional;
+                GetUserDetails.Interest = userdetails.Interest;
+                GetUserDetails.Describe = userdetails.Describe;
+                GetUserDetails.Website = userdetails.Website;
+                GetUserDetails.province = userdetails.province;
+                GetUserDetails.city = userdetails.city;
+                GetUserDetails.district = userdetails.district;
+                db.SaveChanges();
+                return true;
+            }
         }
 
         /// <summary>
         /// 获取用户基本信息
         /// </summary>
         /// <returns></returns>
-        public static UserDetailsModels GetUserDetails()
+        public static UserDetails GetUserDetails()
         {
-            UserModels user = System.Web.HttpContext.Current.Session["user"] as UserModels;
-            DynamicParameters param = new DynamicParameters();
-            param.Add("@Id", user.ID);
-            string sql = "Select * from [UserDetails] WHERE ID = @Id";
-            return new BaseDAL().Single<UserDetailsModels>(sql, param);
+            using (WLDbContext db = new WLDbContext())
+            {
+
+                UserModels user = System.Web.HttpContext.Current.Session["user"] as UserModels;
+                return db.UserDetails.Single(x => x.UID == user.ID);
+            }
         }
     }
 }

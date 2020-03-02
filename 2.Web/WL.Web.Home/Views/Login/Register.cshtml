@@ -55,7 +55,7 @@
                     <!--注册-->
                     <div class="E_tab_list" style="display: block;">
                         <div class="rel" id="info">
-                            <form name="register" action="/Login/UserRegister" class="loginForm E_login_box" id="register">
+                            <form name="register" action="/Data/UserRegister" class="loginForm E_login_box" id="register">
                                 <figure class="rel">
                                     <p class="rel_p1"></p>
                                     <input class="username" type="text" name="username" placeholder="用户名" id="username" />
@@ -278,7 +278,7 @@
             }
             $.ajax({
                 type: "POST",
-                url: "/Login/EmaliGetCode",
+                url: "/Data/EmaliGetCode",
                 data: { emali: $("#email").val() },
                 dataType: "json",
                 success: function (json) {

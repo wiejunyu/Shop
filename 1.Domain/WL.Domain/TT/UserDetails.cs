@@ -23,6 +23,11 @@ namespace WL.Domain
         		[Key]
                 public int id { get; set; }
 		/// <summary>
+        /// 用户ID
+        /// </summary>  
+        [DisplayName("用户ID")]
+        		        public int UID { get; set; }
+		/// <summary>
         /// Msn
         /// </summary>  
         [DisplayName("Msn")]

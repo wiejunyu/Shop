@@ -11,6 +11,7 @@ using WL.Home.Models;
 using WL.Infrastructure.File;
 using System.Globalization;
 using PagedList;
+using WL.Domain;
 
 namespace WL.Web.Home.Controllers
 {
@@ -24,13 +25,11 @@ namespace WL.Web.Home.Controllers
         [Route("{lang}/personal/personal.html")]
         public ActionResult Personal()
         {
-            UserDetailsModels userdetails = UserManager.GetUserDetails();
-            if (userdetails.Birthday != "") {
-                userdetails.Birthday = DateTime.Parse(userdetails.Birthday).ToString("yyyy-MM-dd");
-            }
+            UserDetails userdetails = UserManager.GetUserDetails();
             ViewData["Order"] = HomeManager.GetOrder();
             return View(userdetails);
         }
+
         //头像设置页
         [Route("personal/portrait.html")]
         [Route("{lang}/portrait/portrait.html")]

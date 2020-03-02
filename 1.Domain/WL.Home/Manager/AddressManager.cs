@@ -7,6 +7,7 @@ using WL.Home.Models;
 using WL.Infrastructure.Data;
 using System.Web;
 using Newtonsoft.Json;
+using WL.Domain;
 
 namespace WL.Home.Manager
 {
@@ -19,34 +20,28 @@ namespace WL.Home.Manager
         /// <returns></returns>
         public static bool SetAddress(AddressModels Address)
         {
-            UserModels user = HttpContext.Current.Session["user"] as UserModels;
-            
-            DynamicParameters param = new DynamicParameters();
-            param.Add("@id", user.ID);
-            string sql = "Select address from UserDetails where id = @id";
-            string json = new BaseDAL().Single<string>(sql, param);
-            if (json != null && json != "")
+            using (WLDbContext db = new WLDbContext())
             {
-                List<AddressModels> list = JsonConvert.DeserializeObject<List<AddressModels>>(json);
-                list.Add(Address);
-                json = JsonConvert.SerializeObject(list);
-                param = new DynamicParameters();
-                param.Add("@id", user.ID);
-                param.Add("@address", json);
-                sql = "UPDATE UserDetails SET address = @address WHERE id = @id";
-                return new BaseDAL().Update(sql, param);
-            }
-            else
-            {
-                Address.Choice = true;
-                List<AddressModels> list = new List<AddressModels>();
-                list.Add(Address);
-                json = JsonConvert.SerializeObject(list);
-                param = new DynamicParameters();
-                param.Add("@id", user.ID);
-                param.Add("@address", json);
-                sql = "UPDATE UserDetails SET address = @address WHERE id = @id";
-                return new BaseDAL().Update(sql, param);
+                UserModels user = HttpContext.Current.Session["user"] as UserModels;
+                UserDetails userDetails = db.UserDetails.Single(x => x.UID == user.ID);
+                if (!string.IsNullOrWhiteSpace(userDetails.province))
+                {
+                    List<AddressModels> list = JsonConvert.DeserializeObject<List<AddressModels>>(userDetails.province);
+                    list.Add(Address);
+                    string json = JsonConvert.SerializeObject(list);
+                    userDetails.province = json;
+                    db.SaveChanges();
+                }
+                else
+                {
+                    Address.Choice = true;
+                    List<AddressModels> list = new List<AddressModels>();
+                    list.Add(Address);
+                    string json = JsonConvert.SerializeObject(list);
+                    userDetails.province = json;
+                    db.SaveChanges();
+                }
+                return true;
             }
         }
 
@@ -56,20 +51,15 @@ namespace WL.Home.Manager
         /// <returns></returns>
         public static List<AddressModels> GetAddress()
         {
-            UserModels user = HttpContext.Current.Session["user"] as UserModels;
-
-            DynamicParameters param = new DynamicParameters();
-            param.Add("@id", user.ID);
-            string sql = "Select address from UserDetails where id = @id";
-            string json = new BaseDAL().Single<string>(sql, param);
-            if (json != null && json != "")
+            using (WLDbContext db = new WLDbContext())
             {
-                List<AddressModels> list = JsonConvert.DeserializeObject<List<AddressModels>>(json);
-                return list;
-            }
-            else
-            {
+                UserModels user = HttpContext.Current.Session["user"] as UserModels;
+                UserDetails userDetails = db.UserDetails.Single(x => x.UID == user.ID);
                 List<AddressModels> list = new List<AddressModels>();
+                if (!string.IsNullOrWhiteSpace(userDetails.province))
+                {
+                    list = JsonConvert.DeserializeObject<List<AddressModels>>(userDetails.province);
+                }
                 return list;
             }
         }
