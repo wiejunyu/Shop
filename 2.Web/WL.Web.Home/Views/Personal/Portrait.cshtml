@@ -6,6 +6,7 @@
 @{
     UserModels user = ViewData["user"] as UserModels;
 }
+<link href="~/Scripts/assets/plugins/CityChoice/CityChoice_bootstrap.css" rel="stylesheet" />
 <script src="~/Scripts/Plug_image/iscroll-zoom.js"></script>
 <script src="~/Scripts/Plug_image/hammer.js"></script>
 <script src="~/Scripts/Plug_image/lrz.all.bundle.js"></script>
@@ -95,15 +96,15 @@
         <ul class="page-breadcrumb breadcrumb">
             <li>
                 <i class="fa fa-home"></i>
-                <a href="/Personal/MyOrder">个人中心</a>
+                <a href="/personal/myorder.html">个人中心</a>
                 <i class="fa fa-angle-right"></i>
             </li>
             <li>
-                <a href="/Personal/Index">个人管理</a>
+                <a href="/personal/personal.html">个人管理</a>
                 <i class="fa fa-angle-right"></i>
             </li>
             <li>
-                <a href="#">
+                <a href="###">
                     头像设置
                 </a>
             </li>
@@ -183,7 +184,7 @@
             $.ajax({
                 type: "POST",
                 url: "/Data/SetPortrait",
-                data: {image:data},
+                data: { image: data },
                 dataType: "json",
                 success: function (data) {
                     if (data == 1) {
@@ -201,8 +202,7 @@
         }
     });
     //clipArea.destroy();
-    function ret()
-    {
+    function ret() {
         $('.cover-wrap').fadeOut();
     }
 </script>

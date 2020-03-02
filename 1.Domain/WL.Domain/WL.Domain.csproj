@@ -102,6 +102,9 @@
     <Compile Include="TT\Shop.cs">
       <DependentUpon>TT.tt</DependentUpon>
     </Compile>
+    <Compile Include="TT\ShoppingCart.cs">
+      <DependentUpon>TT.tt</DependentUpon>
+    </Compile>
     <Compile Include="TT\TT.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

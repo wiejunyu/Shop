@@ -7,7 +7,7 @@
     Layout = "~/Views/Shared/PersonalMaster.cshtml";
 }
 @using Newtonsoft.Json
-
+<link href="~/Scripts/assets/plugins/CityChoice/CityChoice_bootstrap.css" rel="stylesheet" />
 <!-- BEGIN STYLE CUSTOMIZER -->
 <div class="theme-panel hidden-xs hidden-sm">
     <div class="toggler">
@@ -100,7 +100,7 @@
                 <i class="fa fa-angle-right"></i>
             </li>
             <li>
-                <a href="#">
+                <a href="###">
                     我的订单
                 </a>
             </li>
@@ -285,9 +285,9 @@
                                         </tr>
                                     </tbody>
                                     <tbody>
-                                         @{
-                                             List<ShopModels> list = JsonConvert.DeserializeObject<List<ShopModels>>(item.MultipleSid);
-                                         }
+                                        @{
+                                            List<ShopModels> list = JsonConvert.DeserializeObject<List<ShopModels>>(item.MultipleSid);
+                                        }
                                         @foreach (ShopModels temp in list)
                                         {
                                             ShopModels shop = HomeManager.GetShop(Convert.ToInt32(item.Sid));
