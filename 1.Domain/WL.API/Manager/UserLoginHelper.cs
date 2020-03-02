@@ -138,7 +138,7 @@ namespace WL.API.Manager
         {
             using (WLDbContext db = new WLDbContext())
             {
-                var account = db.User.Single(a => a.Token == token.Trim());
+                var account = db.User.Where(a => a.Token == token.Trim()).FirstOrDefault();
                 if (account != null)
                 {
                     SetTicket(account.Token);

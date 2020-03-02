@@ -13,6 +13,7 @@ namespace WL.Domain
 	/// <summary>
     /// 订单表
     /// </summary>
+        [Table("Order")]
     public class Order
     {
         /// <summary>

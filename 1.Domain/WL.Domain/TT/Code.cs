@@ -13,6 +13,7 @@ namespace WL.Domain
 	/// <summary>
     /// 验证码表
     /// </summary>
+        [Table("Code")]
     public class Code
     {
         /// <summary>

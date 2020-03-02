@@ -23,7 +23,7 @@ namespace WL.API.Filters.Swagger
             {
                 operation.parameters.Add(new Parameter
                 {
-                    name = "Authorization",
+                    name = "Token",
                     @in = "header",
                     description = "用户token",
                     required = false,

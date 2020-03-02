@@ -10,6 +10,7 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 using WL.API.Manager;
+using WL.Domain.Api;
 using WL.Infrastructure.Commom;
 
 namespace WL.API.Filters
@@ -17,24 +18,15 @@ namespace WL.API.Filters
     public class LoginApiAttribute : AuthorizeAttribute
     {
         /// <summary>
-        /// 请求头Token名称
-        /// </summary>
-        private static string Headers_Token = "Token";
-
-
-        /// <summary>
         /// 鉴权
         /// </summary>
         /// <param name="actionContext">上下文</param>
         /// <returns></returns>
         protected override bool IsAuthorized(HttpActionContext actionContext)
         {
-            #if DEBUG
-            UserLoginHelper.GetUserLoginBy("1", "111111");
-            #endif
-            if (actionContext.Request.Headers.Contains(Headers_Token))
+            if (actionContext.Request.Headers.Contains(CommentConfig.Headers_Token))
             {
-                string headerToken = actionContext.Request.Headers.GetValues(Headers_Token).ToList()[0];
+                string headerToken = actionContext.Request.Headers.GetValues(CommentConfig.Headers_Token).ToList()[0];
 
                 var loginUser = UserLoginHelper.CurrentUser();
                 if (loginUser == null)
@@ -77,7 +69,6 @@ namespace WL.API.Filters
             response.Content = new StringContent(JsonConvert.SerializeObject(result), System.Text.Encoding.UTF8, "application/json");
             response.StatusCode = HttpStatusCode.OK;
             actionContext.Response = response;
-            //base.HandleUnauthorizedRequest(actionContext);
         }
     }
 }

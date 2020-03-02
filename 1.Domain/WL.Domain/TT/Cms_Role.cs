@@ -13,6 +13,7 @@ namespace WL.Domain
 	/// <summary>
     /// CMS角色表
     /// </summary>
+        [Table("Cms_Role")]
     public class Cms_Role
     {
         /// <summary>

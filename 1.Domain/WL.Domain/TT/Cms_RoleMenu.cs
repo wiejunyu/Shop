@@ -13,6 +13,7 @@ namespace WL.Domain
 	/// <summary>
     /// 角色按钮关联表
     /// </summary>
+        [Table("Cms_RoleMenu")]
     public class Cms_RoleMenu
     {
         /// <summary>

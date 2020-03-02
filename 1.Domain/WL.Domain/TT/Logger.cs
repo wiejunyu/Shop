@@ -13,6 +13,7 @@ namespace WL.Domain
 	/// <summary>
     /// 日志表
     /// </summary>
+        [Table("Logger")]
     public class Logger
     {
         /// <summary>

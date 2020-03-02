@@ -13,6 +13,7 @@ namespace WL.Domain
 	/// <summary>
     /// Cms_Sysconfig
     /// </summary>
+        [Table("Cms_Sysconfig")]
     public class Cms_Sysconfig
     {
         /// <summary>

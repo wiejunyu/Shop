@@ -13,6 +13,7 @@ namespace WL.Domain
 	/// <summary>
     /// CMS菜单表
     /// </summary>
+        [Table("Cms_Menu")]
     public class Cms_Menu
     {
         /// <summary>

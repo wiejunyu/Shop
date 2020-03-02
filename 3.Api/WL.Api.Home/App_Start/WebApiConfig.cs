@@ -14,7 +14,7 @@ namespace WL.Api.Home
             // Web API 配置和服务
             //首字母转为小写
             config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-            config.Filters.Add(new ApiAuthorizeAttribute());
+            config.Filters.Add(new LoginApiAttribute());
 
             // Web API 路由
             config.MapHttpAttributeRoutes();

@@ -17,5 +17,6 @@ namespace WL.Domain.Api
 
         public static string PrefixKey { get { return "UserLogin_"; } }
 
+        public static string Headers_Token { get { return "Token"; } }
     }
 }

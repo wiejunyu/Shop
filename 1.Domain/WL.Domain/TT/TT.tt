@@ -67,9 +67,11 @@ namespace <#=namespacestr#>
 	/// <summary>
     /// <#=Explain#>
     /// </summary>
+        [Table("<#=tb_name#>")]
     public class <#=tb_name#>
     {
         <# 
+        
 		var dbColumns=DbHelper.GetDbColumns(connectionString, DbDatabase, tb_name);
 		foreach(DbColumn column in dbColumns){
 			if(string.IsNullOrEmpty(column.Remark))

@@ -13,6 +13,7 @@ namespace WL.Domain
 	/// <summary>
     /// CMS日志表
     /// </summary>
+        [Table("Cms_Logger")]
     public class Cms_Logger
     {
         /// <summary>

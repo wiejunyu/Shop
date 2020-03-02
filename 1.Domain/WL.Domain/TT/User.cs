@@ -13,6 +13,7 @@ namespace WL.Domain
 	/// <summary>
     /// 用户表
     /// </summary>
+        [Table("User")]
     public class User
     {
         /// <summary>

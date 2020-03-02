@@ -13,6 +13,7 @@ namespace WL.Domain
 	/// <summary>
     /// 系统异常记录
     /// </summary>
+        [Table("ExceptionLog")]
     public class ExceptionLog
     {
         /// <summary>

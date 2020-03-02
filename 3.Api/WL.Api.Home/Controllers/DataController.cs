@@ -36,8 +36,6 @@ namespace WL.Api.Home.Controllers
                 //{
                 //    throw new AppException("图片验证码不正确");
                 //}
-                throw new AppException("图片验证码不正确");
-                HttpContext.Current.Session[CommentConfig.ImageSessionCode] = string.Empty;
                 var result = UserLoginHelper.GetUserLoginBy(request.UserName, request.PassWord).Token;
                 return result;
             });
@@ -47,7 +45,7 @@ namespace WL.Api.Home.Controllers
         /// 判断是否登陆
         /// </summary>
         /// <returns></returns>
-        [Route("CheckLogin"), HttpPost]
+        [Route("CheckLogin"), HttpGet]
         public ResponseData<bool> CheckLogin()
         {
             return InvokeFunc(() =>

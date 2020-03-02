@@ -13,6 +13,7 @@ namespace WL.Domain
 	/// <summary>
     /// 商品热门表
     /// </summary>
+        [Table("Hot")]
     public class Hot
     {
         /// <summary>

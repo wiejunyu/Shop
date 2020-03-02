@@ -13,6 +13,7 @@ namespace WL.Domain
 	/// <summary>
     /// 栏目表
     /// </summary>
+        [Table("Category")]
     public class Category
     {
         /// <summary>

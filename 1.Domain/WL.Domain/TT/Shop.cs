@@ -13,6 +13,7 @@ namespace WL.Domain
 	/// <summary>
     /// 商品表
     /// </summary>
+        [Table("Shop")]
     public class Shop
     {
         /// <summary>

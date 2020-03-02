@@ -13,6 +13,7 @@ namespace WL.Domain
 	/// <summary>
     /// CMS栏目表
     /// </summary>
+        [Table("Cms_Category")]
     public class Cms_Category
     {
         /// <summary>
