@@ -75,7 +75,7 @@ namespace WL.Web.Home.Filters
                     {
                         content += temp.Key + "=" + temp.Value + ",";
                     }
-                    if(content == "")
+                    if (content == "")
                     {
                         content = "无";
                     }
@@ -99,7 +99,7 @@ namespace WL.Web.Home.Filters
 
                 }
             }
-            
+
         }
     }
 }
