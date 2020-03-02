@@ -14,6 +14,21 @@ namespace WL.Home.Manager
     public class UserManager
     {
         /// <summary>
+        /// 获取用户
+        /// </summary>
+        /// <param name="username">用户名</param>
+        /// <param name="password">密码</param>
+        /// <returns></returns>
+        public static UserModels GetUser(string username, string password)
+        {
+            DynamicParameters param = new DynamicParameters();
+            param.Add("@name", username);
+            param.Add("@password", password);
+            string sql = "select * from [User] where (Email = @name or UserName = @name) and PassWord = @password";
+            return new BaseDAL().Single<UserModels>(sql, param);
+        }
+
+        /// <summary>
         /// 用户名获取用户
         /// </summary>
         /// <param name="username">用户名</param>

@@ -690,18 +690,18 @@ function succeedAutomaticClose() {
 
 /**
  * 数据提交成功提示框
- * error 是否是错误信息，true是  false不是
- * link 跳转链接 默认为空，为空则不跳转
+ * Status 成功状态
+ * Message 消息
  */
-function message(error, message, link) {
+function message(Status, Message) {
     time = 0;
     Jump = link;
-    if (error) {
-        errorMsg(message);
-    } else {
-        succeedMsg(message);
+    if (Status == 200) {
+        succeedMsg(Message);
         time = 4;
         succeedAutomaticClose();
+    } else {
+        errorMsg(Message);
     }
 }
 

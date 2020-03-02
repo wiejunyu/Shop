@@ -126,83 +126,29 @@ namespace WL.Web.Home.Controllers
         [Logger(Top = "Login", Key = "Login", Description = "用户登录")]
         public ActionResult UserLogin(string json)
         {
+            if(string.IsNullOrWhiteSpace(json)) throw new CustomException("值不能为空");
             LoginModels login = JsonConvert.DeserializeObject<LoginModels>(json);
             string code = System.Web.HttpContext.Current.Session["code"].ToString();
-            JsonResult jsond = new JsonResult();
-            if (login.Vdcode == code)
+            if (login.Vdcode != code) throw new CustomException("验证码错误");
+
+            UserModels user = new UserModels();
+            string pwd = MD5.Md5(login.PassWord).ToLower();
+            user = UserManager.GetUser(login.UserName,pwd);
+            if (user == null) throw new CustomException("账号、密码错误");
+            string ip = Common.IPAddress;
+            user.IP = ip;
+            user.LoginTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            UserManager.UpdateUser(user);
+            Session["user"] = user;
+            if (login.Checked == "on")
             {
-                UserModels user = new UserModels();
-                string pwd = MD5.Md5(login.PassWord).ToLower();
-                user = UserManager.NameGetUser(login.UserName);
-                if (user != null)
-                {
-                    if (user.PassWord == pwd)
-                    {
-                        string ip = Common.IPAddress;
-                        user.IP = ip;
-                        user.LoginTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                        UserManager.UpdateUser(user);
-                        Session["user"] = user;
-                        if (login.Checked == "on")
-                        {
-                            HttpCookie cookie = new HttpCookie("usercookie_wl");
-                            cookie.Values.Add("userName", user.UserName);
-                            cookie.Values.Add("password", user.PassWord);
-                            cookie.Expires = DateTime.Now.AddDays(7);
-                            Response.AppendCookie(cookie);
-                        }
-                        string url = "/index.html";
-                        jsond.Data = new { error = false, message = "登陆成功", link = url, };
-                        return jsond;
-                    }
-                    else
-                    {
-                        jsond.Data = new { error = true, message = "密码错误", link = "", };
-                        return jsond;
-                    }
-                }
-                else
-                {
-                    user = UserManager.EmailGetUser(login.UserName);
-                    if (user != null)
-                    {
-                        if (user.PassWord == pwd)
-                        {
-                            string ip = Common.IPAddress;
-                            user.IP = ip;
-                            user.LoginTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                            UserManager.UpdateUser(user);
-                            Session["user"] = user;
-                            if (login.Checked == "on")
-                            {
-                                HttpCookie cookie = new HttpCookie("usercookie_wl"); ;
-                                cookie.Values.Add("userName", user.UserName);
-                                cookie.Values.Add("password", user.PassWord);
-                                cookie.Expires = DateTime.Now.AddDays(7);
-                                Response.AppendCookie(cookie);
-                            }
-                            string url = "/index.html";
-                            jsond.Data = new { error = false, message = "登陆成功", link = url, };
-                            return jsond;
-                        }
-                        else
-                        {
-                            jsond.Data = new { error = true, message = "密码错误", link = "", };
-                            return jsond;
-                        }
-                    }
-                    else
-                    {
-                        jsond.Data = new { error = true, message = "邮箱或用户名不存在", link = "", };
-                        return jsond;
-                    }
-                }
+                HttpCookie cookie = new HttpCookie("usercookie_wl");
+                cookie.Values.Add("userName", user.UserName);
+                cookie.Values.Add("password", user.PassWord);
+                cookie.Expires = DateTime.Now.AddDays(7);
+                Response.AppendCookie(cookie);
             }
-            else
-            {
-                jsond.Data = new { error = true, message = "0", link = "", };
-                return jsond;
-            }
+            return Json(new AjaxResult("/index.html"));
         }
 
         /// <summary>

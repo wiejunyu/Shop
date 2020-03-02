@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Caching;
 using System.Web.Mvc;
+using WL.Infrastructure.Common;
 using WL.Web.Home.Filters;
 
 namespace WL.Web.Home.Controllers
@@ -24,7 +25,20 @@ namespace WL.Web.Home.Controllers
         /// <param name="filterContext"></param>
         protected override void OnException(ExceptionContext filterContext)
         {
-            base.OnException(filterContext);
+            var exception = filterContext.Exception;
+            var request = filterContext.HttpContext.Request;
+            if (exception is CustomException)
+            {
+                if (WL.Infrastructure.Common.HttpRequestExtension.IsAjaxRequest(request))
+                {
+                    var result = new JsonResult();
+                    result.ContentType = "text/json";
+                    result.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+                    result.Data = new AjaxResult(ReturnResultStatus.UnValidate, exception.Message);
+                    filterContext.Result = result;
+                    return;
+                }
+            }
         }
 
         /// <summary>

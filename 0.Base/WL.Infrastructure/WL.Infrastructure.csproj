@@ -100,8 +100,13 @@
     <Compile Include="Caching\RedisHeartManage.cs" />
     <Compile Include="Collections\IPageOfItems.cs" />
     <Compile Include="Collections\PageOfItems.cs" />
+    <Compile Include="Commom\HttpRequestExtension.cs" />
+    <Compile Include="Commom\AjaxResult.cs" />
     <Compile Include="Commom\Common.cs" />
+    <Compile Include="Commom\CustomReturnResultStatus.cs" />
+    <Compile Include="Commom\CustomReturnResult.cs" />
     <Compile Include="Commom\MD5.cs" />
+    <Compile Include="Commom\CustomException.cs" />
     <Compile Include="Data\BaseDAL.cs" />
     <Compile Include="Data\SqlMapper.cs" />
     <Compile Include="Email\Mail.cs" />

@@ -8,6 +8,7 @@ using System.Web.Routing;
 using WL.Home.Models;
 using WL.Home.Manager;
 using WL.Infrastructure.Common;
+using WL.Infrastructure.Caching;
 
 namespace WL.Web.Home.Filters
 {
@@ -16,23 +17,6 @@ namespace WL.Web.Home.Filters
         //当action跳转的时候验证
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            var request = filterContext.HttpContext.Request;
-            var url = request.Url.AbsolutePath.ToString();
-
-            #region 熔断
-            var key = request.UserHostAddress + url + GapTimeType.Min;
-            //RedisHelper.StringIncrement($"Count:{GapTimeType.Day}{url}",1);
-            if (CheckCache(key))
-            {
-                int times = GetCache<int>(key);
-                if (times > 20)
-                {
-                    filterContext.Result = new EmptyResult();
-                    filterContext.HttpContext.Response.Write("操作过于频繁 触发系统熔断策略");
-                    return;
-                }
-            }
-            #endregion
             UserModels user = HttpContext.Current.Session["user"] as UserModels;
             filterContext.Controller.ViewBag.username = "";
             if (user == null)

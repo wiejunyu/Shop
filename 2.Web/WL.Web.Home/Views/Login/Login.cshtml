@@ -361,15 +361,15 @@
                     dataType: 'json',
                     url: url,
                     data: jsondata,
-                    success: function (json) {
-                        if (json.message == '0') {
+                    success: function (data) {
+                        if (data.Status == 200) {
                             _hide();
-                            loginChangeCheckCode();
-                            message(json.error, "验证码错误", json.link);   //消息提示
+                            message(data.Status, data.Message);   //消息提示
                         }
                         else {
                             _hide();
-                            message(json.error, json.message, json.link);   //消息提示
+                            loginChangeCheckCode();
+                            message(data.Status, data.Message);   //消息提示
                         }
                     }
                 });
