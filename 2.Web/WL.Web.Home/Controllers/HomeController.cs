@@ -170,5 +170,15 @@ namespace WL.Web.Home.Controllers
             ViewBag.description = article.description;
             return View(article);
         }
+
+        //行业资讯页
+        [Route("test.html")]
+        [Route("{lang}/test.html")]
+        public ActionResult Test()
+        {
+            List<ArticleModels> list = HomeManager.GetArticleList();
+            ViewData["list"] = list;
+            return View();
+        }
     }
 }

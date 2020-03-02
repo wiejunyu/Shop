@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -7,6 +9,7 @@ using WL.Cms.Manager;
 using WL.Cms.Models;
 using WL.Infrastructure.Common;
 using WL.Web.Cms.Filters;
+using System.Configuration;
 
 namespace WL.Web.Cms.Controllers
 {
@@ -62,6 +65,7 @@ namespace WL.Web.Cms.Controllers
                 return Json("false");
             }
         }
+
         /// <summary>
         /// 安全退出
         /// </summary>
@@ -78,6 +82,12 @@ namespace WL.Web.Cms.Controllers
             }
             Session.Contents.Remove("user");
             return Json("1");
+        }
+
+        // GET: Login
+        public ActionResult Test()
+        {
+            return View();
         }
     }
 }
