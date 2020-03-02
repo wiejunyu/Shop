@@ -32,6 +32,7 @@ namespace WL.Domain
 			"Cms_Menu",//CMS菜单表
 			"Cms_Role",//CMS角色表
 			"Cms_RoleMenu",//角色按钮关联表
+			"Cms_Sysconfig",//Cms_Sysconfig
 			"Cms_UserInfo",//CMS用户表
 			"Code",//验证码表
 			"ExceptionLog",//系统异常记录

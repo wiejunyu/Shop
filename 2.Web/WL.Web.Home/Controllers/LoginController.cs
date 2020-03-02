@@ -15,10 +15,8 @@ namespace WL.Web.Home.Controllers
 {
     public class LoginController : BaseController
     {
-        
         //登陆
         #region
-
         //登陆页
         [Route("login/login.html")]
         [Route("{lang}/login/login.html")]

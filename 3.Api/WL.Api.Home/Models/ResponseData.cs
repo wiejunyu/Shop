@@ -9,30 +9,30 @@ namespace WL.API.Models
     public class ResponseData<T>
     {
         /// <summary>
-        /// 状态 0表示正常
+        /// 状态 200表示正常
         /// </summary>
-        public int status { get; set; }
-        public string message { get; set; }
-        public T data { get; set; }
+        public int Status { get; set; }
+        public string Message { get; set; }
+        public T Data { get; set; }
 
 
         public ResponseData() { }
 
-        public ResponseData(T data)
+        public ResponseData(T Data)
         {
-            this.data = data;
+            this.Data = Data;
         }
 
         public void HandleException(Exception ex)
         {
-            this.status = (int)ReturnResultStatus.BLLError;
-            this.message = ex.Message;
+            this.Status = (int)ReturnResultStatus.BLLError;
+            this.Message = ex.Message;
         }
 
         public void HandleException(AppException ex)
         {
-            this.status = ex.ErrorStatus;
-            this.message = ex.Message;
+            this.Status = ex.ErrorStatus;
+            this.Message = ex.Message;
         }
 
     }

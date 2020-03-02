@@ -57,12 +57,15 @@ namespace WL.Infrastructure.Caching
         /// <param name="value">值对象。</param>
         /// <param name="validFor">有效时长。</param>
         void Set<TValue>(string key, TValue value, TimeSpan validFor);
+
         /// <summary>
         /// 移除缓存值。
         /// </summary>
         /// <param name="key">键对象。</param>
         void Remove(string key);
+
         bool LockRedis(string key, string content, TimeSpan validFor);
+
         /// <summary>
         /// 移除缓存值。
         /// </summary>

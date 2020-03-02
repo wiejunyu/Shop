@@ -161,6 +161,9 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\ApiBaseController.cs" />
     <Compile Include="Controllers\DataController.cs" />
+    <Compile Include="Filters\LoginApiAttribute.cs" />
+    <Compile Include="Filters\ApiAuthorizeAttribute.cs" />
+    <Compile Include="Filters\Swagger\HttpHeaderFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -188,12 +191,15 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Data\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\0.Base\WL.Infrastructure\WL.Infrastructure.csproj">
       <Project>{90013fd8-7a88-4d37-8e9f-b2c04df9349e}</Project>
       <Name>WL.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\1.Domain\WL.API\WL.API.csproj">
+      <Project>{565A36BE-03B4-4F8F-A418-F5A3EDF574DA}</Project>
+      <Name>WL.API</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\1.Domain\WL.Domain\WL.Domain.csproj">
       <Project>{f767c035-3f7b-4a8d-8c84-99bd7a250b22}</Project>

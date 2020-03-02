@@ -5,15 +5,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F767C035-3F7B-4A8D-8C84-99BD7A250B22}</ProjectGuid>
+    <ProjectGuid>{565A36BE-03B4-4F8F-A418-F5A3EDF574DA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WL.Domain</RootNamespace>
-    <AssemblyName>WL.Domain</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <RootNamespace>WL.API</RootNamespace>
+    <AssemblyName>WL.API</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
   </PropertyGroup>
@@ -42,9 +41,9 @@
       <HintPath>..\..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -53,83 +52,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Context\WLDbContext.cs" />
-    <Compile Include="Enum\ExceptionTypeEnum.cs" />
-    <Compile Include="Manager\ExceptionLogManager.cs" />
+    <Compile Include="Manager\CommentConfig.cs" />
+    <Compile Include="Manager\UserLoginHelper.cs" />
+    <Compile Include="Models\LoginRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TT\Category.cs">
-      <DependentUpon>TT.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TT\Cms_Article.cs">
-      <DependentUpon>TT.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TT\Cms_Category.cs">
-      <DependentUpon>TT.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TT\Cms_Logger.cs">
-      <DependentUpon>TT.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TT\Cms_Menu.cs">
-      <DependentUpon>TT.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TT\Cms_Role.cs">
-      <DependentUpon>TT.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TT\Cms_RoleMenu.cs">
-      <DependentUpon>TT.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TT\Cms_Sysconfig.cs">
-      <DependentUpon>TT.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TT\Cms_UserInfo.cs">
-      <DependentUpon>TT.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TT\Code.cs">
-      <DependentUpon>TT.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TT\ExceptionLog.cs">
-      <DependentUpon>TT.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TT\Hot.cs">
-      <DependentUpon>TT.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TT\Logger.cs">
-      <DependentUpon>TT.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TT\Order.cs">
-      <DependentUpon>TT.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TT\Shop.cs">
-      <DependentUpon>TT.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TT\TT.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>TT.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TT\User.cs">
-      <DependentUpon>TT.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TT\UserDetails.cs">
-      <DependentUpon>TT.tt</DependentUpon>
-    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\0.Base\WL.Infrastructure\WL.Infrastructure.csproj">
+      <Project>{90013FD8-7A88-4D37-8E9F-B2C04DF9349E}</Project>
+      <Name>WL.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WL.Domain\WL.Domain.csproj">
+      <Project>{F767C035-3F7B-4A8D-8C84-99BD7A250B22}</Project>
+      <Name>WL.Domain</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-    <None Include="TT\DbHelper.ttinclude" />
-    <None Include="TT\MultipleOutputHelper.ttinclude" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="TT\TT.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>TT.cs</LastGenOutput>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

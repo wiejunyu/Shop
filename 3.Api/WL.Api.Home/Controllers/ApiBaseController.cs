@@ -47,12 +47,14 @@ namespace WL.API.Controllers
                 // UsingTimeOut();
                 requestBody = GetPostData();
                 T result = func();
-                response.data = result;
+                response.Status = (int)ReturnResultStatus.Succeed;
+                response.Data = result;
 
             }
             catch (AppException exception)
             {
                 response.HandleException(exception);
+                response.Status = (int)ReturnResultStatus.BLLError;
             }
             catch (Exception exception)
             {
@@ -66,7 +68,8 @@ namespace WL.API.Controllers
                 exceptionLog.Url = Url;
                 exceptionLog.CreateTime = DateTime.Now;
                 exceptionLog.Request = requestBody;
-                response.message = "网络异常或超时，请稍后再试！";
+                response.Message = "网络异常或超时，请稍后再试！";
+                response.Status = (int)ReturnResultStatus.BLLError;
                 using (WLDbContext db = new WLDbContext()) 
                 {
                     db.ExceptionLog.Add(exceptionLog);

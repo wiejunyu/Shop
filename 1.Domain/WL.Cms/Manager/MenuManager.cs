@@ -185,11 +185,11 @@ namespace WL.Cms.Manager
         {
             WLDbContext db = new WLDbContext();
             int iPermission = Convert.ToInt32(permission);
-            List<Cms_RoleMenu> list = db.Cms_RoleMenu.Where(x => (x.RoleID ?? 0) == iPermission).ToList();
+            List<Cms_RoleMenu> list = db.Cms_RoleMenu.Where(x => x.RoleID == iPermission).ToList();
             List<Cms_Menu> last = new List<Cms_Menu>();
             foreach (Cms_RoleMenu m in list)
             {
-                Cms_Menu d = db.Cms_Menu.Single(x => x.ID == (m.MenuID ?? 0));
+                Cms_Menu d = db.Cms_Menu.Single(x => x.ID == m.MenuID);
                 last.Add(d);
             }
             return last;

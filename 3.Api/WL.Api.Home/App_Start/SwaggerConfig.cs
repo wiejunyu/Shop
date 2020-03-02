@@ -3,6 +3,7 @@ using WebActivatorEx;
 using WL.Api.Home;
 using Swashbuckle.Application;
 using System;
+using WL.API.Filters.Swagger;
 
 [assembly: PreApplicationStartMethod(typeof(SwaggerConfig), "Register")]
 
@@ -103,7 +104,7 @@ namespace WL.Api.Home
                         // more Xml comment files.
                         //
                         c.IncludeXmlComments(GetXmlCommentsPath(thisAssembly.GetName().Name));
-
+                        c.OperationFilter<HttpHeaderFilter>();
                         // Swashbuckle makes a best attempt at generating Swagger compliant JSON schemas for the various types
                         // exposed in your API. However, there may be occasions when more control of the output is needed.
                         // This is supported through the "MapType" and "SchemaFilter" options:

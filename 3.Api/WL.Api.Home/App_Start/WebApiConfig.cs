@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json.Serialization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using WL.API.Filters;
 
 namespace WL.Api.Home
 {
@@ -10,6 +12,9 @@ namespace WL.Api.Home
         public static void Register(HttpConfiguration config)
         {
             // Web API 配置和服务
+            //首字母转为小写
+            config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            config.Filters.Add(new ApiAuthorizeAttribute());
 
             // Web API 路由
             config.MapHttpAttributeRoutes();

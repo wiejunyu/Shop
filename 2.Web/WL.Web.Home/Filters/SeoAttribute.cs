@@ -13,10 +13,12 @@ namespace WL.Web.Home.Filters
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             string action = filterContext.RouteData.Values["Action"].ToString().ToLower();
-            ColumuModels Columu = ColumuManager.CatdirGetColumu(action);
+            ColumuModels Columu = new ColumuModels();
+            Columu = ColumuManager.CatdirGetColumu(action);
             if (Columu == null)
             {
                 Columu = SysconfigManager.GetSeo();
+                Columu = Columu == null ? new ColumuModels() : Columu;
             }
             else
             {
@@ -28,9 +30,9 @@ namespace WL.Web.Home.Filters
                 if (Columu.keywords == "")
                     Columu.keywords = temp.keywords;
             }
-            filterContext.Controller.ViewBag.title = Columu.title;
-            filterContext.Controller.ViewBag.keywords = Columu.keywords;
-            filterContext.Controller.ViewBag.description = Columu.description;
+            filterContext.Controller.ViewBag.title = Columu.title ?? "";
+            filterContext.Controller.ViewBag.keywords = Columu.keywords ?? "";
+            filterContext.Controller.ViewBag.description = Columu.description ?? "";
         }
     }
 }

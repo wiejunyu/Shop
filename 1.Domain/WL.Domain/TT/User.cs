@@ -89,6 +89,12 @@ namespace WL.Domain
         /// </summary>  
         [DisplayName("余额")]
         		        public decimal Money { get; set; }
+		/// <summary>
+        /// Token
+        /// </summary>  
+        [DisplayName("Token")]
+        [MaxLength(50,ErrorMessage="Token最大长度为50")]
+        		        public string Token { get; set; }
 		        /// <summary>
         /// 构造函数
         /// </summary>		
