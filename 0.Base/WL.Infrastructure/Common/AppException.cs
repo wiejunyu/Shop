@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WL.Infrastructure.Commom
+namespace WL.Infrastructure.Common
 {
     public class AppException : Exception
     {

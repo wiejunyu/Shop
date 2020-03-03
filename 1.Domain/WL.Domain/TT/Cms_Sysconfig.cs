@@ -17,46 +17,46 @@ namespace WL.Domain
     public class Cms_Sysconfig
     {
         /// <summary>
-        /// Id
+        /// ID
         /// </summary>  
-        [DisplayName("Id")]
+        [DisplayName("ID")]
         		[Key]
                 public int Id { get; set; }
 		/// <summary>
-        /// Address
+        /// 地址
         /// </summary>  
-        [DisplayName("Address")]
-        [MaxLength(200,ErrorMessage="Address最大长度为200")]
+        [DisplayName("地址")]
+        [MaxLength(200,ErrorMessage="地址最大长度为200")]
         		        public string Address { get; set; }
 		/// <summary>
-        /// Tel
+        /// 电话
         /// </summary>  
-        [DisplayName("Tel")]
-        [MaxLength(50,ErrorMessage="Tel最大长度为50")]
+        [DisplayName("电话")]
+        [MaxLength(50,ErrorMessage="电话最大长度为50")]
         		        public string Tel { get; set; }
 		/// <summary>
-        /// Record
+        /// 备案号
         /// </summary>  
-        [DisplayName("Record")]
-        [MaxLength(50,ErrorMessage="Record最大长度为50")]
+        [DisplayName("备案号")]
+        [MaxLength(50,ErrorMessage="备案号最大长度为50")]
         		        public string Record { get; set; }
 		/// <summary>
-        /// Title
+        /// 网站标题
         /// </summary>  
-        [DisplayName("Title")]
-        [MaxLength(50,ErrorMessage="Title最大长度为50")]
+        [DisplayName("网站标题")]
+        [MaxLength(50,ErrorMessage="网站标题最大长度为50")]
         		        public string Title { get; set; }
 		/// <summary>
-        /// Description
+        /// 网站描述
         /// </summary>  
-        [DisplayName("Description")]
-        [MaxLength(200,ErrorMessage="Description最大长度为200")]
+        [DisplayName("网站描述")]
+        [MaxLength(200,ErrorMessage="网站描述最大长度为200")]
         		        public string Description { get; set; }
 		/// <summary>
-        /// Keywords
+        /// 网站关键字
         /// </summary>  
-        [DisplayName("Keywords")]
-        [MaxLength(50,ErrorMessage="Keywords最大长度为50")]
+        [DisplayName("网站关键字")]
+        [MaxLength(50,ErrorMessage="网站关键字最大长度为50")]
         		        public string Keywords { get; set; }
 		/// <summary>
         /// Facebook
@@ -65,17 +65,35 @@ namespace WL.Domain
         [MaxLength(50,ErrorMessage="Facebook最大长度为50")]
         		        public string Facebook { get; set; }
 		/// <summary>
-        /// Icon
+        /// 网站图标
         /// </summary>  
-        [DisplayName("Icon")]
-        [MaxLength(50,ErrorMessage="Icon最大长度为50")]
+        [DisplayName("网站图标")]
+        [MaxLength(50,ErrorMessage="网站图标最大长度为50")]
         		        public string Icon { get; set; }
 		/// <summary>
-        /// QR_code
+        /// 网站二维码
         /// </summary>  
-        [DisplayName("QR_code")]
-        [MaxLength(50,ErrorMessage="QR_code最大长度为50")]
+        [DisplayName("网站二维码")]
+        [MaxLength(50,ErrorMessage="网站二维码最大长度为50")]
         		        public string QR_code { get; set; }
+		/// <summary>
+        /// 邮箱配置发件人
+        /// </summary>  
+        [DisplayName("邮箱配置发件人")]
+        [MaxLength(100,ErrorMessage="邮箱配置发件人最大长度为100")]
+        		        public string Mail_From { get; set; }
+		/// <summary>
+        /// 邮箱配置地址
+        /// </summary>  
+        [DisplayName("邮箱配置地址")]
+        [MaxLength(100,ErrorMessage="邮箱配置地址最大长度为100")]
+        		        public string Mail_Host { get; set; }
+		/// <summary>
+        /// 授权码
+        /// </summary>  
+        [DisplayName("授权码")]
+        [MaxLength(50,ErrorMessage="授权码最大长度为50")]
+        		        public string Mail_Code { get; set; }
 		        /// <summary>
         /// 构造函数
         /// </summary>		

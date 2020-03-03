@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using WL.Infrastructure.Commom;
+using WL.Infrastructure.Common;
 
 namespace WL.API.Models
 {

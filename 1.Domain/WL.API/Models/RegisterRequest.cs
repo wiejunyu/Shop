@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WL.API.Models
 {
-    public class LoginRequest
+    public class RegisterRequest
     {
         /// <summary>
         /// 用户名
@@ -17,6 +17,16 @@ namespace WL.API.Models
         /// 密码
         /// </summary>
         public string PassWord { get; set; }
+
+        /// <summary>
+        /// 确认密码
+        /// </summary>
+        public string ConfirmPassWord { get; set; }
+
+        /// <summary>
+        /// 邮箱
+        /// </summary>
+        public string Email { get; set; }
 
         /// <summary>
         /// 验证码

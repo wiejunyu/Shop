@@ -15,7 +15,7 @@ using WL.API.Models;
 using WL.Cms.Manager;
 using WL.Domain;
 using WL.Domain.Enum;
-using WL.Infrastructure.Commom;
+using WL.Infrastructure.Common;
 
 namespace WL.API.Controllers
 {

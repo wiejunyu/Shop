@@ -26,23 +26,11 @@ namespace WL.API.Manager
             using (WLDbContext db = new WLDbContext())
             {
                 string pwd = MD5.Md5(password).ToLower();
-                var account = db.User.Single(a => (a.UserName == keyword.Trim() || a.Phone == keyword.Trim() || a.Email == keyword.Trim()) && a.PassWord == pwd);
+                var account = db.User.FirstOrDefault(a => (a.UserName == keyword.Trim() || a.Phone == keyword.Trim() || a.Email == keyword.Trim()) && a.PassWord == pwd);
                 if (account != null)
                 {
-                    if (string.IsNullOrWhiteSpace(account.Token))
-                    {
-                        account.Token = Guid.NewGuid().ToString("N");
-                        db.SaveChanges();
-                    }
-                    else
-                    {
-                        ////如果想实现同一账号同一时间只能一处登录，就用开放以下这段代码
-                        string key = WL.Domain.Api.CommentConfig.PrefixKey + account.Token;
-                        //CacheManager.Current.Remove(key);
-
-                        account.Token = Guid.NewGuid().ToString("N");
-                        db.SaveChanges();
-                    }
+                    account.Token = Guid.NewGuid().ToString("N");
+                    db.SaveChanges();
                     SetTicket(account.Token);
                     return account;
                 }

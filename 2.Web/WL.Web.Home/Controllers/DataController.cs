@@ -49,17 +49,9 @@ namespace WL.Web.Home.Controllers
             {
                 if (LoginManager.SetCode(code))
                 {
-                    string str = Mail.MailSending(emali, "宇宙物流验证码", "您在宇宙物流的验证码是:" + code.code);
-                    if (str == "1")
-                    {
-                        jsond.Data = new { error = false, message = "验证码发送成功", link = "", };
-                        return jsond;
-                    }
-                    else
-                    {
-                        jsond.Data = new { error = true, message = str, link = "", };
-                        return jsond;
-                    }
+                    Mail.MailSending(emali, "宇宙物流验证码", "您在宇宙物流的验证码是:" + code.code);
+                    jsond.Data = new { error = false, message = "验证码发送成功", link = "", };
+                    return jsond;
                 }
                 else
                 {
@@ -73,17 +65,9 @@ namespace WL.Web.Home.Controllers
                 {
                     if (LoginManager.UpdateCode(code))
                     {
-                        string str = Mail.MailSending(emali, "宇宙物流验证码", "您在宇宙物流的验证码是:" + code.code);
-                        if (str == "1")
-                        {
-                            jsond.Data = new { error = false, message = "验证码发送成功", link = "", };
-                            return jsond;
-                        }
-                        else
-                        {
-                            jsond.Data = new { error = true, message = str, link = "", };
-                            return jsond;
-                        }
+                        Mail.MailSending(emali, "宇宙物流验证码", "您在宇宙物流的验证码是:" + code.code);
+                        jsond.Data = new { error = false, message = "验证码发送成功", link = "", };
+                        return jsond;
                     }
                     else
                     {

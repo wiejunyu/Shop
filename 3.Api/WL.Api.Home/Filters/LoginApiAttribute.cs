@@ -11,7 +11,7 @@ using System.Web.Http;
 using System.Web.Http.Controllers;
 using WL.API.Manager;
 using WL.Domain.Api;
-using WL.Infrastructure.Commom;
+using WL.Infrastructure.Common;
 
 namespace WL.API.Filters
 {

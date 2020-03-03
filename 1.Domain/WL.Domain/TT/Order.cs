@@ -101,6 +101,17 @@ namespace WL.Domain
         [DisplayName("备注")]
         [MaxLength(200,ErrorMessage="备注最大长度为200")]
         		        public string Remarks { get; set; }
+		/// <summary>
+        /// 购物车订单商品IDjson
+        /// </summary>  
+        [DisplayName("购物车订单商品IDjson")]
+        [MaxLength(200,ErrorMessage="购物车订单商品IDjson最大长度为200")]
+        		        public string MultipleSid { get; set; }
+		/// <summary>
+        /// ShoppingCart
+        /// </summary>  
+        [DisplayName("ShoppingCart")]
+        		        public bool? ShoppingCart { get; set; }
 		        /// <summary>
         /// 构造函数
         /// </summary>		

@@ -1,4 +1,4 @@
-﻿namespace WL.Infrastructure.Commom
+﻿namespace WL.Infrastructure.Common
 {
     public class ReturnResult
     {

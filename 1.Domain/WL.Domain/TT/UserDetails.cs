@@ -37,7 +37,7 @@ namespace WL.Domain
         /// 电话
         /// </summary>  
         [DisplayName("电话")]
-        [MaxLength(15,ErrorMessage="电话最大长度为15")]
+        [MaxLength(50,ErrorMessage="电话最大长度为50")]
         		        public string Tel { get; set; }
 		/// <summary>
         /// 生日
@@ -53,7 +53,7 @@ namespace WL.Domain
         /// 兴趣
         /// </summary>  
         [DisplayName("兴趣")]
-        [MaxLength(20,ErrorMessage="兴趣最大长度为20")]
+        [MaxLength(50,ErrorMessage="兴趣最大长度为50")]
         		        public string Interest { get; set; }
 		/// <summary>
         /// 个人简介
@@ -64,31 +64,30 @@ namespace WL.Domain
         /// 个人网站
         /// </summary>  
         [DisplayName("个人网站")]
-        [MaxLength(20,ErrorMessage="个人网站最大长度为20")]
+        [MaxLength(50,ErrorMessage="个人网站最大长度为50")]
         		        public string Website { get; set; }
 		/// <summary>
         /// 省、自治区
         /// </summary>  
         [DisplayName("省、自治区")]
-        [MaxLength(20,ErrorMessage="省、自治区最大长度为20")]
+        [MaxLength(100,ErrorMessage="省、自治区最大长度为100")]
         		        public string province { get; set; }
 		/// <summary>
         /// 市
         /// </summary>  
         [DisplayName("市")]
-        [MaxLength(20,ErrorMessage="市最大长度为20")]
+        [MaxLength(100,ErrorMessage="市最大长度为100")]
         		        public string city { get; set; }
 		/// <summary>
         /// 县区
         /// </summary>  
         [DisplayName("县区")]
-        [MaxLength(20,ErrorMessage="县区最大长度为20")]
+        [MaxLength(100,ErrorMessage="县区最大长度为100")]
         		        public string district { get; set; }
 		/// <summary>
         /// 详细地址
         /// </summary>  
         [DisplayName("详细地址")]
-        [MaxLength(1000,ErrorMessage="详细地址最大长度为1000")]
         		        public string address { get; set; }
 		        /// <summary>
         /// 构造函数
