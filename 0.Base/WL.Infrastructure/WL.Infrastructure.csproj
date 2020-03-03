@@ -110,6 +110,7 @@
     <Compile Include="Collections\PageOfItems.cs" />
     <Compile Include="Commom\AppException.cs" />
     <Compile Include="Commom\Common.cs" />
+    <Compile Include="Commom\HttpRequestExtension.cs" />
     <Compile Include="Commom\MD5.cs" />
     <Compile Include="Commom\ReturnResult.cs" />
     <Compile Include="Commom\ReturnResultStatus.cs" />

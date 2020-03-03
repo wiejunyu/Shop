@@ -368,10 +368,10 @@ namespace WL.Web.Cms.Controllers
                 list = list.Where(p => Common.ConvertDate(p.createtime.ToString()) >= Convert.ToDateTime(st)).Where(p => Common.ConvertDate(p.createtime.ToString()) <= Convert.ToDateTime(et).AddDays(1)).ToList();
             }
             List<ColumuModels> cat = ColumuManager.GetSonColumu(lang);
-            foreach (ArticleCuttingModels temp in list)
+            list.ForEach(x =>
             {
-                temp.catname = cat.Where(p => p.ID == temp.catid).ToList()[0].catname;
-            }
+                x.catname = cat.Where(p => p.ID == x.catid).ToList()[0].catname;
+            });
             JsonResult json = new JsonResult();
             json.Data = new { sEcho = 0, iTotalRecords = list.Count(), iTotalDisplayRecords = list.Count(), aaData = list, };
             return json;

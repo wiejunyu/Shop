@@ -76,7 +76,7 @@ namespace WL.Web.Cms.Filters
                     
                     //判断权限
                     if(!list.Where(u => u.Lv == 0).Any()) throw new Exception("该账号没有任何查看的权限");
-                    if (url != "/home/index") 
+                    if (url != "/home/index" && !WL.Infrastructure.Common.HttpRequestExtension.IsAjaxRequest(request)) 
                     {
                         if (!list.Where(u => u.Lv == 1 && u.Url.ToLower() == url).Any()) throw new Exception("该账号没有查看的权限");
                         Cms_Menu Menu = list.Where(u => u.Lv == 1 && u.Url.ToLower() == url).FirstOrDefault();

@@ -40,6 +40,7 @@ namespace WL.Domain
 			"Logger",//日志表
 			"Order",//订单表
 			"Shop",//商品表
+			"ShoppingCart",//购物车
 			"User",//用户表
 			"UserDetails",//用户详情表
 		};
