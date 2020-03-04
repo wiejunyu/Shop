@@ -13,6 +13,9 @@ using WL.Infrastructure.Common;
 
 namespace WL.API.Manager
 {
+    /// <summary>
+    /// 登陆帮助类
+    /// </summary>
     public class UserLoginHelper
     {
         /// <summary>

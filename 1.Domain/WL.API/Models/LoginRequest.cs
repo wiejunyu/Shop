@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace WL.API.Models
 {
+    /// <summary>
+    /// 登陆模型
+    /// </summary>
     public class LoginRequest
     {
         /// <summary>

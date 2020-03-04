@@ -50,7 +50,7 @@ namespace WL.Infrastructure.Email
                     //发送
                     client.Send(mailMessage);
                 }
-                catch (Exception ex)
+                catch(Exception ex)
                 {
                     return false;
                 }

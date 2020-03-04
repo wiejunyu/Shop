@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -16,14 +17,15 @@ using WL.Domain.Api;
 using WL.Infrastructure.Caching;
 using WL.Infrastructure.Common;
 using WL.Infrastructure.Email;
+using Newtonsoft.Json;
 
 namespace WL.Api.Home.Controllers
 {
     /// <summary>
     /// 登陆控制器
     /// </summary>
-    [RoutePrefix("v1/data")]
-    public class DataController : ApiBaseController
+    [RoutePrefix("v1/user")]
+    public class UserController : ApiBaseController
     {
         #region 验证码
         /// <summary>
@@ -41,7 +43,7 @@ namespace WL.Api.Home.Controllers
                 //生成验证码，传几就是几位验证码
                 string code = ValidateCode.CreateValidateCode(4);
                 //保存验证码
-                CacheManager.Current.Set<string>(CommentConfig.ImageCacheCode + CodeKey,code);
+                CacheManager.Current.Set<string>(CommentConfig.ImageCacheCode + CodeKey, code);
                 //把验证码转成字节
                 byte[] buffer = ValidateCode.CreateValidateGraphic(code);
                 //把验证码转成Base64
@@ -62,25 +64,39 @@ namespace WL.Api.Home.Controllers
             {
                 using (WLDbContext db = new WLDbContext())
                 {
-                    ValidateCode ValidateCode = new ValidateCode();
-                    Code code = db.Code.FirstOrDefault(x => x.number == Emali);
-                    if (code == null) {
-                        code = new Code();
-                        code.number = Emali;
-                    }
-                    if (LoginManager.CodeNumber(code)) throw new AppException("发送超出次数");
-                    code.code = ValidateCode.CreateValidateCode(6);//生成验证码，传几就是几位验证码
-                    //删除冗余验证码
+                    LoginManager.DelCode();
+
                     DateTime dt = DateTime.Now.Date;
-                    if (db.Code.Where(x => x.time < dt && x.type == (int)CodeType.Emali).Any())
+                    
+                    Code cModel = db.Code.FirstOrDefault(x => x.emali == Emali && x.time > dt && x.type == (int)CodeType.Emali);
+                    //判断验证码是否超出次数
+                    if (cModel != null ? cModel.count >= 6 : false) throw new AppException("发送超出次数");
+                    //获得验证码
+                    string code = new ValidateCode().CreateValidateCode(6);//生成验证码，传几就是几位验证码
+                    //发送邮件
+                    if (!Mail.MailSending(Emali, "宇宙物流验证码", $"您在宇宙物流的验证码是:{code},10分钟内有效")) throw new AppException("发送失败");
+
+                    #region 保存验证码统计
+                    if (cModel == null)
                     {
-                        List<Code> list = db.Code.Where(x => x.time < dt && x.type == (int)CodeType.Emali).ToList();
-                        list.ForEach(x => db.Code.Remove(x));
+                        cModel = new Code()
+                        {
+                            type = (int)CodeType.Emali,
+                            emali = Emali,
+                            time = DateTime.Now,
+                            count = 1
+                        };
+                        db.Code.Add(cModel);
                     }
-                    if (!Mail.MailSending(Emali, "宇宙物流验证码", $"您在宇宙物流的验证码是:{code.code},10分钟内有效")) throw new AppException("发送超出次数");
-                    //保存验证码
-                    CacheManager.Current.Set<string>(CommentConfig.MailCacheCode + CodeKey, code.code,new TimeSpan(600000000));
+                    else 
+                    {
+                        cModel.count++;
+                    }
                     db.SaveChanges();
+                    #endregion
+                    cModel.code = code;
+                    //保存验证码进缓存
+                    CacheManager.Current.Set<Code>(CommentConfig.MailCacheCode + CodeKey, cModel, new TimeSpan(600000000));
                     return "验证码发送成功";
                 }
             });
@@ -102,10 +118,13 @@ namespace WL.Api.Home.Controllers
                 using (WLDbContext db = new WLDbContext())
                 {
 #if DEBUG
-#else         
-                    string code = CacheManager.Current.Get<string>(CommentConfig.MailCacheCode + request.CodeKey);
-                    if(string.IsNullOrWhiteSpace(code)) throw new AppException("验证码错误或已过期");
-                    if (request.Code != code) throw new AppException("验证码错误或已过期");
+#else
+                    Code code = CacheManager.Current.Get<Code>(CommentConfig.MailCacheCode + request.CodeKey);
+                    if (code == null) throw new AppException("验证码错误或已过期");
+                    if (string.IsNullOrWhiteSpace(code.number)) throw new AppException("验证码错误或已过期");
+                    if (code.number.ToLower() != request.Email.ToLower()) throw new AppException("验证码错误或已过期");
+                    if (string.IsNullOrWhiteSpace(code.code)) throw new AppException("验证码错误或已过期");
+                    if (request.Code != code.code) throw new AppException("验证码错误或已过期");
 #endif
                     if (db.User.Where(x => x.Email == request.Email).Any()) throw new AppException("该邮箱已经注册过");
                     if (db.User.Where(x => x.UserName == request.UserName).Any()) throw new AppException("该用户名已经注册过");
@@ -114,24 +133,33 @@ namespace WL.Api.Home.Controllers
                     if (string.IsNullOrWhiteSpace(request.ConfirmPassWord)) throw new AppException("请输入确认密码");
                     if (request.PassWord != request.ConfirmPassWord) throw new AppException("密码和确认密码不一致");
 
-                    User user = new User();
-                    user.UserName = request.UserName;
-                    user.PassWord = request.PassWord;
+                    var mapper = new MapperConfiguration(x => x.CreateMap<RegisterRequest, User>()).CreateMapper();
+                    User user = mapper.Map<User>(request);
+                    user.PassWord = MD5.Md5(user.PassWord).ToLower();
                     user.CreateTime = DateTime.Now;
                     user.LoginTime = DateTime.Now;
                     user.IP = Common.IPAddress;
                     user.Portrait = "/Image/user.png";
-                    user.Email = request.Email;
                     user.Money = 0;
-                    db.User.Add(user);
-                    db.SaveChanges();
+
+                    using (DbContextTransaction transaction = db.Database.BeginTransaction())
+                    {
+                        db.User.Add(user);
+                        db.SaveChanges();
+                        db.UserDetails.Add(new UserDetails()
+                        {
+                            UID = user.ID
+                        });
+                        db.SaveChanges();
+                        transaction.Commit();
+                    }
                     return true;
                 }
             });
         }
-#endregion
+        #endregion
 
-#region 登陆
+        #region 登陆
         /// <summary>
         /// 用户登陆获取Token
         /// </summary>
@@ -152,7 +180,7 @@ namespace WL.Api.Home.Controllers
                 if (request.Code != code) throw new AppException("图片验证码不正确");
 #endif
                 User user = UserLoginHelper.GetUserLoginBy(request.UserName, request.PassWord);
-                if(user == null) throw new AppException("账户密码错误");
+                if (user == null) throw new AppException("账户密码错误");
                 var result = user.Token;
                 return result;
             });
@@ -170,6 +198,6 @@ namespace WL.Api.Home.Controllers
                 return UserLoginHelper.CheckLogin();
             });
         }
-#endregion
+        #endregion
     }
 }

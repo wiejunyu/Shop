@@ -28,16 +28,22 @@ namespace WL.Domain
         [DisplayName("类型")]
         		        public int type { get; set; }
 		/// <summary>
-        /// 验证码数字
+        /// 验证码邮箱
         /// </summary>  
-        [DisplayName("验证码数字")]
-        [MaxLength(50,ErrorMessage="验证码数字最大长度为50")]
-        		        public string number { get; set; }
+        [DisplayName("验证码邮箱")]
+        [MaxLength(50,ErrorMessage="验证码邮箱最大长度为50")]
+        		        public string emali { get; set; }
 		/// <summary>
-        /// 验证码字符
+        /// 验证码手机
         /// </summary>  
-        [DisplayName("验证码字符")]
-        [MaxLength(20,ErrorMessage="验证码字符最大长度为20")]
+        [DisplayName("验证码手机")]
+        [MaxLength(50,ErrorMessage="验证码手机最大长度为50")]
+        		        public string phone { get; set; }
+		/// <summary>
+        /// 验证码
+        /// </summary>  
+        [DisplayName("验证码")]
+        [MaxLength(50,ErrorMessage="验证码最大长度为50")]
         		        public string code { get; set; }
 		/// <summary>
         /// 时间
@@ -48,7 +54,7 @@ namespace WL.Domain
         /// 次数
         /// </summary>  
         [DisplayName("次数")]
-        		        public int frequency { get; set; }
+        		        public int count { get; set; }
 		        /// <summary>
         /// 构造函数
         /// </summary>		

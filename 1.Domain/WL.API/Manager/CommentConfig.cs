@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace WL.Domain.Api
 {
+    /// <summary>
+    /// 配置字符串类
+    /// </summary>
     public class CommentConfig
     {
         /// <summary>

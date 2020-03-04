@@ -104,6 +104,7 @@ namespace WL.Api.Home
                         // more Xml comment files.
                         //
                         c.IncludeXmlComments(GetXmlCommentsPath(thisAssembly.GetName().Name));
+                        c.IncludeXmlComments(GetXmlCommentsPath("WL.API"));
                         c.OperationFilter<HttpHeaderFilter>();
                         // Swashbuckle makes a best attempt at generating Swagger compliant JSON schemas for the various types
                         // exposed in your API. However, there may be occasions when more control of the output is needed.

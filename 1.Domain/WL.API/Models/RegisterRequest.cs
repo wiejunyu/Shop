@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace WL.API.Models
 {
+    /// <summary>
+    /// 注册模型
+    /// </summary>
     public class RegisterRequest
     {
         /// <summary>

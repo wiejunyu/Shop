@@ -172,7 +172,8 @@
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\ApiBaseController.cs" />
-    <Compile Include="Controllers\DataController.cs" />
+    <Compile Include="Controllers\PortraitrController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Filters\LoginApiAttribute.cs" />
     <Compile Include="Filters\Swagger\HttpHeaderFilter.cs" />
     <Compile Include="Global.asax.cs">

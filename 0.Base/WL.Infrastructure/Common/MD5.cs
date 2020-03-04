@@ -112,7 +112,7 @@ namespace WL.Infrastructure.Common
                 byte[] Buffer = Convert.FromBase64String(data);
                 result = ASCIIEncoding.ASCII.GetString(DESDecrypt.TransformFinalBlock(Buffer, 0, Buffer.Length));
             }
-            catch (Exception e)
+            catch
             {
 
             }

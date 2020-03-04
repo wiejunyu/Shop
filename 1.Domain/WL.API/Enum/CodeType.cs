@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace WL.Api.Enum
 {
+    /// <summary>
+    /// 验证方式枚举
+    /// </summary>
     public enum CodeType
     {
         /// <summary>

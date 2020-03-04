@@ -2546,7 +2546,6 @@
     <Content Include="Views\Personal\Address.cshtml" />
     <Content Include="Views\Shop\OrderOk.cshtml" />
     <Content Include="Views\Shop\Pay.cshtml" />
-    <Content Include="Views\Test\Index.cshtml" />
     <Content Include="Views\Shop\Search.cshtml" />
     <Content Include="Views\Shop\ShoppingCart.cshtml" />
     <None Include="Properties\PublishProfiles\WL.Web.Home.pubxml" />
