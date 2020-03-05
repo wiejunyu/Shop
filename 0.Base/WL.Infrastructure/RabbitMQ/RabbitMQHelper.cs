@@ -87,46 +87,32 @@ namespace WL.Infrastructure.RabbitMQ
             }
         }
 
-        ///// <summary>
-        ///// 获取消息并发送邮件
-        ///// </summary>
-        ///// <param name="queue">需要进入的队列</param>
-        ///// <param name="MailSending">发送邮件函数</param>
-        ///// <returns></returns>
-        //public static bool Receive(string sQueue, deleMailSending MailSending)
-        //{
-        //    //初始化
-        //    ConnectionFactory factory = new ConnectionFactory();
-        //    //Rabbitmq服务IP
-        //    factory.HostName = HostName;
-        //    //用户名
-        //    factory.UserName = UserName;
-        //    //密码
-        //    factory.Password = Password;
-        //    factory.Port = AmqpTcpEndpoint.UseDefaultPort;
-        //    factory.VirtualHost = "/";
+        public delegate bool deleMailSending(string Addressee, string Title, string Body);
 
-        //    using (var connection = factory.CreateConnection())
-        //    {
-        //        using (var channel = connection.CreateModel())
-        //        {
-        //            channel.QueueDeclare(queue: "hello",
-        //                durable: false,
-        //                exclusive: false,
-        //                autoDelete: false,
-        //                arguments: null);
-        //            var consumer = new EventingBasicConsumer(channel);
-        //            consumer.Received += (model, ea) =>
-        //            {
-        //                var body = ea.Body;
-        //                var message = Encoding.UTF8.GetString(body);
-        //            };
-        //            channel.BasicConsume(queue: "hello",
-        //                autoAck: true,
-        //                consumer: consumer);
-        //        }
-        //    }
-        //}
+        /// <summary>
+        /// 获取消息并发送邮件
+        /// </summary>
+        /// <param name="sQueueName">队列名称</param>
+        /// <param name="MailSending">发送邮件函数</param>
+        /// <returns></returns>
+        public static bool Receive(string sQueueName, deleMailSending MailSending)
+        {
+            var factory = new ConnectionFactory() { HostName = RabbitMQ_HostName, UserName = RabbitMQ_UserName, Password = RabbitMQ_PassWord };
+            using (var connection = factory.CreateConnection())
+            {
+                using (var channel = connection.CreateModel())
+                {
+                    channel.QueueDeclare(sQueueName, false, false, false, null);
+                    var consumer = new QueueingBasicConsumer(channel);
+                    var ea = consumer.Queue.Dequeue();
+                    var body = ea.Body;
+                    string Mail = Encoding.UTF8.GetString(body);
+                    if (!MailSending(Mail, "", "")) return false;
+                    channel.BasicConsume(sQueueName, true, consumer);
+                }
+            }
+            return true;
+        }
 
         ///// <summary>
         ///// 返回队列模型
