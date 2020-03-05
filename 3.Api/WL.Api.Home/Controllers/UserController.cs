@@ -18,6 +18,7 @@ using WL.Infrastructure.Caching;
 using WL.Infrastructure.Common;
 using WL.Infrastructure.Email;
 using Newtonsoft.Json;
+using WL.Infrastructure.RabbitMQ;
 
 namespace WL.Api.Home.Controllers
 {
@@ -196,6 +197,39 @@ namespace WL.Api.Home.Controllers
             return InvokeFunc(() =>
             {
                 return UserLoginHelper.CheckLogin();
+            });
+        }
+        #endregion
+
+        #region MQ
+        /// <summary>
+        /// 使用MQ发送注册成功邮件发送消息端
+        /// </summary>
+        /// <param name="Email">邮箱</param>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [Route("MQ_SendRegisterMessageIsEmail"), HttpPost]
+        public ResponseData<bool> MQ_SendRegisterMessageIsEmail(string Email)
+        {
+            return InvokeFunc(() =>
+            {
+                RabbitMQHelper.Send(RabbitMQQueue.EmailQueue, Email);
+                return true;
+            });
+        }
+
+        /// <summary>
+        /// 使用MQ发送注册成功邮件消费端
+        /// </summary>
+        [AllowAnonymous]
+        [Route("MQ_ReceiveRegisterMessageIsEmail"), HttpPost]
+        public ResponseData<bool> MQ_ReceiveRegisterMessageIsEmail()
+        {
+            return InvokeFunc(() =>
+            {
+                
+                RabbitMQHelper.Receive(RabbitMQQueue.EmailQueue);
+                return true;
             });
         }
         #endregion
