@@ -36,7 +36,8 @@ namespace WL.Web.Cms.Filters
                     filterContext.Controller.ViewData["Btnlist"] = Btnlist;
                     string controller = filterContext.RouteData.Values["Controller"].ToString().ToLower();
                     string action = filterContext.RouteData.Values["Action"].ToString().ToLower();
-                    string url = filterContext.RequestContext.HttpContext.Request.RawUrl.ToLower();
+                    var request = filterContext.RequestContext.HttpContext.Request;
+                    string url = request.RawUrl.ToLower();
                     ContentResult cr = new ContentResult();
                     #endregion
 
