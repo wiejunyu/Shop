@@ -8,7 +8,7 @@ using System.Web.Mvc;
 using WL.Cms.Manager;
 using WL.Cms.Models;
 using WL.Domain;
-using WL.Infrastructure.Commom;
+using WL.Infrastructure.Common;
 using WL.Web.Cms.Filters;
 
 namespace WL.Web.Cms.Controllers

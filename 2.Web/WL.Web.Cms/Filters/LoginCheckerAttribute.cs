@@ -9,7 +9,7 @@ using WL.Cms.Manager;
 using WL.Infrastructure.Common;
 using WL.Web.Cms.Controllers;
 using WL.Domain;
-using WL.Infrastructure.Commom;
+using WL.Infrastructure.Common;
 
 namespace WL.Web.Cms.Filters
 {
