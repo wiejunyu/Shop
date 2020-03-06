@@ -11,7 +11,7 @@ using WL.Infrastructure.Common;
 using WL.Web.Cms.Filters;
 using System.Configuration;
 using WL.Domain;
-using WL.Infrastructure.Commom;
+using WL.Infrastructure.Common;
 
 namespace WL.Web.Cms.Controllers
 {

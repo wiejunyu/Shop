@@ -80,6 +80,7 @@ namespace WL.Infrastructure.RabbitMQ
                     channel.QueueDeclare(sQueueName, false, false, false, null);
                     var consumer = new QueueingBasicConsumer(channel);
                     channel.BasicQos(0, 1, false);
+                    //消费队列,这里如果不消费队列获取不到消息
                     channel.BasicConsume(sQueueName, true, consumer);
                     var ea = consumer.Queue.Dequeue();
                     var body = ea.Body;
@@ -105,10 +106,13 @@ namespace WL.Infrastructure.RabbitMQ
                 {
                     channel.QueueDeclare(sQueueName, false, false, false, null);
                     var consumer = new QueueingBasicConsumer(channel);
+                    //消费队列,这里如果不消费队列获取不到消息
                     channel.BasicConsume(sQueueName, true, consumer);
                     var ea = consumer.Queue.Dequeue();
                     var body = ea.Body;
+                    //
                     string Email = Encoding.UTF8.GetString(body);
+                    //发送邮件，成功就结束，不成功就从新回到队列
                     if (MailSending(Email, "欢迎你注册宇宙物流", "欢迎你注册宇宙物流"))
                     {
                         return true;
