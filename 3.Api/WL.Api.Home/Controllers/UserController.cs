@@ -118,6 +118,7 @@ namespace WL.Api.Home.Controllers
             {
                 using (WLDbContext db = new WLDbContext())
                 {
+                    #region 验证
 #if DEBUG
 #else
                     Code code = CacheManager.Current.Get<Code>(CommentConfig.MailCacheCode + request.CodeKey);
@@ -133,6 +134,7 @@ namespace WL.Api.Home.Controllers
                     if (string.IsNullOrWhiteSpace(request.ConfirmPassWord)) throw new AppException("请输入确认密码");
                     if (string.IsNullOrWhiteSpace(request.ConfirmPassWord)) throw new AppException("请输入确认密码");
                     if (request.PassWord != request.ConfirmPassWord) throw new AppException("密码和确认密码不一致");
+                    #endregion
 
                     var mapper = new MapperConfiguration(x => x.CreateMap<RegisterRequest, User>()).CreateMapper();
                     User user = mapper.Map<User>(request);
@@ -154,6 +156,7 @@ namespace WL.Api.Home.Controllers
                         db.SaveChanges();
                         transaction.Commit();
                     }
+                    RabbitMQHelper.Send(RabbitMQKey.SendRegisterMessageIsEmail, user.Email);
                     return true;
                 }
             });
@@ -213,7 +216,7 @@ namespace WL.Api.Home.Controllers
         {
             return InvokeFunc(() =>
             {
-                RabbitMQHelper.Send(RabbitMQQueue.EmailQueue, Email);
+                RabbitMQHelper.Send(RabbitMQKey.SendRegisterMessageIsEmail, Email);
                 return true;
             });
         }
@@ -228,7 +231,7 @@ namespace WL.Api.Home.Controllers
             return InvokeFunc(() =>
             {
                 
-                RabbitMQHelper.Receive(RabbitMQQueue.EmailQueue);
+                RabbitMQHelper.Receive(RabbitMQKey.SendRegisterMessageIsEmail, Mail.MailSending);
                 return true;
             });
         }

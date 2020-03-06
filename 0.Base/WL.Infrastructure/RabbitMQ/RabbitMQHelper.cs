@@ -51,7 +51,7 @@ namespace WL.Infrastructure.RabbitMQ
         /// <param name="sQueueName">队列名称</param>
         /// <param name="sContent">内容</param>
         /// <returns></returns>
-        public static void Send(string sQueueName,string sContent)
+        public static void Send(string sQueueName, string sContent)
         {
             var factory = new ConnectionFactory() { HostName = RabbitMQ_HostName, UserName = RabbitMQ_UserName, Password = RabbitMQ_PassWord };
             using (var connection = factory.CreateConnection())
@@ -79,6 +79,7 @@ namespace WL.Infrastructure.RabbitMQ
                 {
                     channel.QueueDeclare(sQueueName, false, false, false, null);
                     var consumer = new QueueingBasicConsumer(channel);
+                    channel.BasicQos(0, 1, false);
                     channel.BasicConsume(sQueueName, true, consumer);
                     var ea = consumer.Queue.Dequeue();
                     var body = ea.Body;
@@ -104,92 +105,21 @@ namespace WL.Infrastructure.RabbitMQ
                 {
                     channel.QueueDeclare(sQueueName, false, false, false, null);
                     var consumer = new QueueingBasicConsumer(channel);
+                    channel.BasicConsume(sQueueName, true, consumer);
                     var ea = consumer.Queue.Dequeue();
                     var body = ea.Body;
-                    string Mail = Encoding.UTF8.GetString(body);
-                    if (!MailSending(Mail, "", "")) return false;
-                    channel.BasicConsume(sQueueName, true, consumer);
+                    string Email = Encoding.UTF8.GetString(body);
+                    if (MailSending(Email, "欢迎你注册宇宙物流", "欢迎你注册宇宙物流"))
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        Send(RabbitMQKey.SendRegisterMessageIsEmail, Email);
+                    }
                 }
             }
             return true;
-        }
-
-        ///// <summary>
-        ///// 返回队列模型
-        ///// </summary>
-        ///// <param name="queue">队列</param>
-        ///// <returns>队列模型</returns>
-        //public static IModel GetChannelModel(string queue) 
-        //{
-        //    //初始化
-        //    var factory = new ConnectionFactory();
-        //    //Rabbitmq服务IP
-        //    factory.HostName = HostName;
-        //    //用户名
-        //    factory.UserName = UserName;
-        //    //密码
-        //    factory.Password = Password;
-        //    factory.Port = AmqpTcpEndpoint.UseDefaultPort;
-        //    factory.VirtualHost = "/";
-        //    var connection = factory.CreateConnection();
-        //    var channel = connection.CreateModel();
-        //    channel.QueueDeclare(
-        //            //队列
-        //            queue: queue,
-        //            //是否设置队列为持久化
-        //            durable: false,
-        //            //排他
-        //            exclusive: false,
-        //            //设置是否自动删除
-        //            autoDelete: false,
-        //            //其他参数
-        //            arguments: null);
-        //    return channel;
-        //}
-
-
-        ///// <summary>
-        ///// 从队列获取消息
-        ///// </summary>
-        ///// <param name="channel">队列模型</param>
-        ///// <returns></returns>
-        //public static string GetMessageIsChannel(IModel channel)
-        //{
-        //    string message = null;
-        //    var consumer = new EventingBasicConsumer(channel);
-        //    consumer.Received += (model, ea) => {
-        //        message = Encoding.UTF8.GetString(ea.Body);
-        //    };
-        //    return message;
-        //}
-
-        ///// <summary>
-        ///// 从队列模型消费消息
-        ///// </summary>
-        ///// <param name="channel">队列模型</param>
-        ///// <param name="queue">队列</param>
-        ///// <returns></returns>
-        //public static void BasicConsumeChannel(IModel channel,string queue)
-        //{
-        //    var consumer = new EventingBasicConsumer(channel);
-        //    //消费消息
-        //    channel.BasicConsume(queue: queue,
-        //        autoAck: true,
-        //        consumer: consumer);
-        //}
-    }
-
-    /// <summary>
-    /// 进入队列
-    /// </summary>
-    public class RabbitMQQueue
-    {
-        /// <summary>
-        /// 邮箱队列
-        /// </summary>
-        public static string EmailQueue
-        {
-            get { return "EmailQueue"; }
         }
     }
 
